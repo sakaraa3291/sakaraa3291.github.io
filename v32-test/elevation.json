@@ -1,0 +1,9 @@
+{
+  "meta": {
+    "status": "unsupported",
+    "note": "根拠のない旧版の模式座標は除去。距離別の検証済み起伏は未登録。",
+    "schema_version": 2,
+    "dataset_id": "1e4506c3eaffe6227303d278"
+  },
+  "profiles": {}
+}

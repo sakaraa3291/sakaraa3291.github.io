@@ -1,0 +1,12 @@
+{
+  "schema_version": 2,
+  "app_version": "3.2.0",
+  "dataset_id": "1e4506c3eaffe6227303d278",
+  "updated_at": "2026-09-11T03:46:54+00:00",
+  "files": {
+    "lapdata.json": "7d6c4dac5acde9c2f79df03ba7ab9a614bdea3c00b38f640dadddc1be0a69269",
+    "courses.json": "a492338865bb120ee23da0d4bcbb4e169f191ad1c50358129a16409a025b022d",
+    "elevation.json": "0729a4e2b06acf04d692af08d339af1551ab969c579b3f13c67b304c5ffa7e75",
+    "pedigree_stats.json": "f419bddcb9c71ed01e77acf5f375e4bd6f55e822a0f0a922759efebfb88a5b09"
+  }
+}
