@@ -1,0 +1,35 @@
+{
+  "name": "ラップ断面 v3.3 TEST",
+  "short_name": "ラップ断面TEST",
+  "description": "競馬場・距離・クラス・馬場状態別のラップ断面を比較表示するツール",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "background_color": "#0E161F",
+  "theme_color": "#0E161F",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
