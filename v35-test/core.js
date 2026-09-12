@@ -1,7 +1,7 @@
 /* Shared, dependency-free validation and distance calculations. */
 (function(root){
 'use strict';
-const APP_VERSION='3.5.0', SCHEMA=2;
+const APP_VERSION='3.5.1', SCHEMA=2;
 const CLASSES=['新馬','未勝利','1勝','2勝','3勝','オープン'];
 const FILES=['lapdata.json','courses.json','elevation.json','pedigree_stats.json'];
 function assert(ok,msg){if(!ok)throw new Error(msg)}
@@ -55,8 +55,8 @@ function validateBundle(b){
   assert(c.route_unavailable_reason===undefined||text(c.route_unavailable_reason),'コース図未対応理由不正');
   for(const f of ['source_url','route_source_url'])assert(c[f]===undefined||c[f]===null||(typeof c[f]==='string'&&c[f].startsWith('https://www.jra.go.jp/')),'コース出典不正');
   // A route is only accepted when every anchor carries a distance, a role and a stated basis.
-  if(c.route!==undefined){
-   const r=c.route;assert(obj(r)&&text(r.mode)&&text(r.precision_note)&&Number.isInteger(r.distance_m)&&Array.isArray(r.anchors)&&r.anchors.length>=2,'コース経路不正');
+  const checkRoute=r=>{
+   assert(obj(r)&&text(r.mode)&&text(r.precision_note)&&Number.isInteger(r.distance_m)&&Array.isArray(r.anchors)&&r.anchors.length>=2,'コース経路不正');
    assert(kp.length===3&&r.distance_m===Number(kp[2]),'経路距離不一致');
    let prev=-1;const roles=new Set();
    for(const a of r.anchors){
@@ -77,7 +77,8 @@ function validateBundle(b){
    assert(at('start')===0,'経路スタート位置不正');
    if(r.mode==='distance-anchored-schematic')assert(at('start')<at('first_corner')&&at('first_corner')<at('straight_entry')&&at('straight_entry')<at('goal'),'経路アンカー順序不正');
    if(r.mode==='loop-schematic'){
-    assert(num(r.lap_m,1)&&at('straight_entry')<at('goal'),'ループ経路不正');
+    assert(num(r.lap_m,1)&&num(r.straight_m,1)&&at('straight_entry')<at('goal'),'ループ経路不正');
+    assert(Math.abs(r.distance_m-at('straight_entry')-r.straight_m)<0.05,'直線入口が直線距離と不一致');
     if(roles.has('first_corner'))assert(at('first_corner')<at('straight_entry'),'経路アンカー順序不正');
    }
    if(r.mode==='straight-course')assert(r.anchors.length===2&&r.lap_m===undefined,'直線経路不正');
@@ -85,6 +86,19 @@ function validateBundle(b){
    if(r.mode!=='distance-anchored-schematic'){
     assert(Array.isArray(r.unconfirmed)&&r.unconfirmed.length>0&&r.unconfirmed.every(text),'未確定項目の明示なし');
    }
+  };
+  if(c.route!==undefined)checkRoute(c.route);
+  // Where the official inner/outer assignment cannot be confirmed, both cases are published
+  // side by side. Each case must be a complete, self-labelled route.
+  if(c.route_variants!==undefined){
+   assert(Array.isArray(c.route_variants)&&c.route_variants.length>=2&&c.route===undefined,'経路バリアント不正');
+   const labels=new Set();
+   for(const r of c.route_variants){
+    assert(obj(r)&&text(r.variant_label)&&!labels.has(r.variant_label),'経路バリアント名不正');
+    labels.add(r.variant_label);checkRoute(r);
+    assert(r.unconfirmed.includes('inner_or_outer_course'),'内外未確定の明示なし');
+   }
+   assert(text(c.route_unavailable_reason),'内外未確定の理由文なし');
   }
  }
  // Elevation profiles must be explicit about what is measured, derived or qualitative.

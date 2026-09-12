@@ -1,6 +1,6 @@
 'use strict';
 const C=globalThis.LapCore;
-const APP_VERSION='3.5.0';
+const APP_VERSION='3.5.1';
 const $=id=>document.getElementById(id);
 let bundle=null, mode='cond', pedigreeView='sire', overlays=[], busy=false;
 const SER=['#FFB13B','#5BC08A','#4A9BD8','#D9945A','#C58CE0'];
@@ -133,12 +133,12 @@ function routeGeometry(route){
 }
 // 公式に確定しているのは「1周距離」「直線距離」「高低差」だけの距離を描く。
 // コーナーまでの距離は数値を持たないので、図の中でも数値を出さず未確定と明記する。
-function renderSchematicRoute(body,v,s,d,c,laps){
- const route=c.route,prof=bundle['elevation.json'].profiles[`${v}|${s}|${d}`];
+function renderSchematicRoute(body,v,s,d,c,laps,routeOverride,compact){
+ const route=routeOverride||c.route,prof=bundle['elevation.json'].profiles[`${v}|${s}|${d}`];
  if(!route||!prof||route.distance_m!==d)return false;
  const loop=route.mode==='loop-schematic',straight=route.mode==='straight-course';
  if(!loop&&!straight)return false;
- const geo=loop?loopGeometry(route,typeof c.straight_m==='number'?c.straight_m:0):straightGeometry(route);
+ const geo=loop?loopGeometry(route,typeof route.straight_m==='number'?route.straight_m:(typeof c.straight_m==='number'?c.straight_m:0)):straightGeometry(route);
  if(!geo)return false;
  const T=route.display||{};
  const grid=node('div',undefined,'courseGrid'),left=node('div'),right=node('div',undefined,'courseFacts');
@@ -186,11 +186,38 @@ function renderSchematicRoute(body,v,s,d,c,laps){
  for(const a of route.anchors){const x=X(a.m),row=x-lastLabel<34?84:72;if(row===72)lastLabel=x;
   bands.append(svg('line',{x1:x,x2:x,y1:40,y2:56,stroke:'#8195A8','stroke-width':1}),svg('text',{x,y:row,fill:'#8195A8','font-size':9,'text-anchor':'middle'},`${Math.round(a.m)}m`));}
  left.append(bands);
- const facts=[['公式アンカー',T.anchor_fact],['高低差',T.hill_fact],['精度',T.precision_fact]];
+ const facts=compact?[['公式アンカー',T.anchor_fact],['高低差',T.hill_fact]]
+                    :[['公式アンカー',T.anchor_fact],['高低差',T.hill_fact],['精度',T.precision_fact]];
  for(const [key,val]of facts){if(!val)continue;const f=node('div',undefined,'fact');f.append(node('div',key,'fk'),node('div',val,'fv'));right.append(f)}
  grid.append(left,right);body.append(grid);
+ if(!compact){
+  for(const q of prof.qualitative)body.append(node('p','起伏：'+q.label,'note'));
+  if(T.note)body.append(node('p',T.note,'note'));
+  if(c.source_url&&T.source_label){const a=node('a',T.source_label);a.href=c.source_url;a.target='_blank';a.rel='noopener noreferrer';body.append(a)}
+ }
+ return true;
+}
+// 内外の別が公式記載から確定できない距離は、両方の場合を並べて出す。
+// どちらか一方を推測で選ぶことはしない。
+function renderRouteVariants(body,v,s,d,c,laps){
+ const vs=c.route_variants;
+ if(!Array.isArray(vs)||vs.length<2)return false;
+ const blocks=[];
+ for(const r of vs){
+  const tmp=node('div');
+  if(renderSchematicRoute(tmp,v,s,d,c,laps,r,true))blocks.push([r,tmp]);
+ }
+ if(!blocks.length)return false;
+ if(c.route_unavailable_reason)body.append(node('p',c.route_unavailable_reason,'note'));
+ for(const [r,tmp] of blocks){
+  body.append(node('div',`${r.variant_label}の場合`,'variantHead'));
+  for(const ch of [...tmp.children])body.append(ch);
+  if(r.display&&r.display.note)body.append(node('p',r.display.note,'note'));
+ }
+ const prof=bundle['elevation.json'].profiles[`${v}|${s}|${d}`];
  for(const q of prof.qualitative)body.append(node('p','起伏：'+q.label,'note'));
- if(T.note)body.append(node('p',T.note,'note'));
+ const T=blocks[0][0].display||{};
+ if(T.precision_fact)body.append(node('p',T.precision_fact,'note'));
  if(c.source_url&&T.source_label){const a=node('a',T.source_label);a.href=c.source_url;a.target='_blank';a.rel='noopener noreferrer';body.append(a)}
  return true;
 }
@@ -247,6 +274,7 @@ function renderCourse(v,s,d,laps){
  body.append(facts);
  if(renderAnchoredRoute(body,v,s,d,c,laps))return;
  if(renderSchematicRoute(body,v,s,d,c,laps))return;
+ if(renderRouteVariants(body,v,s,d,c,laps))return;
  body.append(node('p','実コース位置・起伏連動：未対応。発走地点と距離別断面の根拠が揃うまで、推測の図や高低差は表示しません。','note'));
  if(c.route_unavailable_reason)body.append(node('p',c.route_unavailable_reason,'note'));
  body.append(node('p',c.verification==='verified-basic'?'基本情報は出典表と照合済みです。':'基本情報はv3.1からの参考値です。距離別の公式照合は未完了です。','note'));

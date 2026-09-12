@@ -3,7 +3,7 @@
     "status": "height-diff-verified",
     "note": "東京芝1400m・1600mのみ坂区間の数値をJRA公式の残り距離表記から換算して登録。その他の距離は高低差のみ公式値で、坂の位置・区間長は公式に数値記載がないため数値区間を登録していない。",
     "schema_version": 2,
-    "dataset_id": "4777386877e93e7585e30e8f"
+    "dataset_id": "31e9cea553d92c8b4f7a7ae2"
   },
   "profiles": {
     "東京|芝|1600": {
@@ -258,6 +258,146 @@
       ],
       "precision_note": "高低差はJRA公式コース紹介の記載値。坂の位置・勾配・区間長は公式に数値記載がないため、このプロファイルには数値区間を一切登録していない。"
     },
+    "中山|芝|1200": {
+      "mode": "official-height-diff-only",
+      "distance_m": 1200,
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り5.3m ／ 外回り5.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "中山|芝|1600": {
+      "mode": "official-height-diff-only",
+      "distance_m": 1600,
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り5.3m ／ 外回り5.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "中山|芝|1800": {
+      "mode": "official-height-diff-only",
+      "distance_m": 1800,
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り5.3m ／ 外回り5.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "中山|芝|2000": {
+      "mode": "official-height-diff-only",
+      "distance_m": 2000,
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り5.3m ／ 外回り5.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "中山|芝|2200": {
+      "mode": "official-height-diff-only",
+      "distance_m": 2200,
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り5.3m ／ 外回り5.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "中山|芝|2500": {
+      "mode": "official-height-diff-only",
+      "distance_m": 2500,
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り5.3m ／ 外回り5.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "中山|芝|2600": {
+      "mode": "official-height-diff-only",
+      "distance_m": 2600,
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り5.3m ／ 外回り5.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "中山|芝|3200": {
+      "mode": "official-height-diff-only",
+      "distance_m": 3200,
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り5.3m ／ 外回り5.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "中山|芝|3600": {
+      "mode": "official-height-diff-only",
+      "distance_m": 3600,
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り5.3m ／ 外回り5.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "中山|芝|4000": {
+      "mode": "official-height-diff-only",
+      "distance_m": 4000,
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り5.3m ／ 外回り5.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
     "中山|ダート|1000": {
       "mode": "official-height-diff-only",
       "distance_m": 1000,
@@ -341,6 +481,146 @@
         }
       ],
       "precision_note": "高低差はJRA公式コース紹介の記載値。坂の位置・勾配・区間長は公式に数値記載がないため、このプロファイルには数値区間を一切登録していない。"
+    },
+    "京都|芝|1100": {
+      "mode": "official-height-diff-only",
+      "distance_m": 1100,
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り3.1m ／ 外回り4.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "京都|芝|1200": {
+      "mode": "official-height-diff-only",
+      "distance_m": 1200,
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り3.1m ／ 外回り4.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "京都|芝|1400": {
+      "mode": "official-height-diff-only",
+      "distance_m": 1400,
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り3.1m ／ 外回り4.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "京都|芝|1600": {
+      "mode": "official-height-diff-only",
+      "distance_m": 1600,
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り3.1m ／ 外回り4.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "京都|芝|1800": {
+      "mode": "official-height-diff-only",
+      "distance_m": 1800,
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り3.1m ／ 外回り4.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "京都|芝|2000": {
+      "mode": "official-height-diff-only",
+      "distance_m": 2000,
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り3.1m ／ 外回り4.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "京都|芝|2200": {
+      "mode": "official-height-diff-only",
+      "distance_m": 2200,
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り3.1m ／ 外回り4.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "京都|芝|2400": {
+      "mode": "official-height-diff-only",
+      "distance_m": 2400,
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り3.1m ／ 外回り4.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "京都|芝|3000": {
+      "mode": "official-height-diff-only",
+      "distance_m": 3000,
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り3.1m ／ 外回り4.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "京都|芝|3200": {
+      "mode": "official-height-diff-only",
+      "distance_m": 3200,
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り3.1m ／ 外回り4.3m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
     },
     "京都|ダート|1000": {
       "mode": "official-height-diff-only",
@@ -439,6 +719,146 @@
         }
       ],
       "precision_note": "高低差はJRA公式コース紹介の記載値。坂の位置・勾配・区間長は公式に数値記載がないため、このプロファイルには数値区間を一切登録していない。"
+    },
+    "阪神|芝|1200": {
+      "mode": "official-height-diff-only",
+      "distance_m": 1200,
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り1.9m ／ 外回り2.4m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "阪神|芝|1400": {
+      "mode": "official-height-diff-only",
+      "distance_m": 1400,
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り1.9m ／ 外回り2.4m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "阪神|芝|1600": {
+      "mode": "official-height-diff-only",
+      "distance_m": 1600,
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り1.9m ／ 外回り2.4m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "阪神|芝|1800": {
+      "mode": "official-height-diff-only",
+      "distance_m": 1800,
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り1.9m ／ 外回り2.4m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "阪神|芝|2000": {
+      "mode": "official-height-diff-only",
+      "distance_m": 2000,
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り1.9m ／ 外回り2.4m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "阪神|芝|2200": {
+      "mode": "official-height-diff-only",
+      "distance_m": 2200,
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り1.9m ／ 外回り2.4m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "阪神|芝|2400": {
+      "mode": "official-height-diff-only",
+      "distance_m": 2400,
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り1.9m ／ 外回り2.4m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "阪神|芝|2600": {
+      "mode": "official-height-diff-only",
+      "distance_m": 2600,
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り1.9m ／ 外回り2.4m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "阪神|芝|3000": {
+      "mode": "official-height-diff-only",
+      "distance_m": 3000,
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り1.9m ／ 外回り2.4m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "阪神|芝|3200": {
+      "mode": "official-height-diff-only",
+      "distance_m": 3200,
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り1.9m ／ 外回り2.4m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
     },
     "阪神|ダート|1200": {
       "mode": "official-height-diff-only",
@@ -691,6 +1111,132 @@
         }
       ],
       "precision_note": "直線コース単独の高低差は公式記載を確認できていないため、数値を一切登録していない。"
+    },
+    "新潟|芝|1200": {
+      "mode": "official-height-diff-only",
+      "distance_m": 1200,
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り0.8m ／ 外回り2.2m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "新潟|芝|1400": {
+      "mode": "official-height-diff-only",
+      "distance_m": 1400,
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り0.8m ／ 外回り2.2m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "新潟|芝|1600": {
+      "mode": "official-height-diff-only",
+      "distance_m": 1600,
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り0.8m ／ 外回り2.2m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "新潟|芝|1800": {
+      "mode": "official-height-diff-only",
+      "distance_m": 1800,
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り0.8m ／ 外回り2.2m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "新潟|芝|2000": {
+      "mode": "official-height-diff-only",
+      "distance_m": 2000,
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り0.8m ／ 外回り2.2m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "新潟|芝|2200": {
+      "mode": "official-height-diff-only",
+      "distance_m": 2200,
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り0.8m ／ 外回り2.2m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "新潟|芝|2400": {
+      "mode": "official-height-diff-only",
+      "distance_m": 2400,
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り0.8m ／ 外回り2.2m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "新潟|芝|3000": {
+      "mode": "official-height-diff-only",
+      "distance_m": 3000,
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り0.8m ／ 外回り2.2m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
+    },
+    "新潟|芝|3200": {
+      "mode": "official-height-diff-only",
+      "distance_m": 3200,
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "numeric_segments": [],
+      "qualitative": [
+        {
+          "label": "コース全体の高低差は内回り0.8m ／ 外回り2.2m（いずれもJRA公式コース紹介の記載値）。この距離が内回り／外回りのどちらで行われるかは公式記載から確定できていない。上り坂・下り坂の位置と区間長も公式に数値記載がないため未確定。",
+          "position": "whole-course",
+          "precision": "official-height-diff"
+        }
+      ],
+      "precision_note": "高低差は内外それぞれJRA公式の記載値。距離別の内外の別と坂の位置は未確定のため数値区間は登録しない。"
     },
     "新潟|ダート|1000": {
       "mode": "official-height-diff-only",

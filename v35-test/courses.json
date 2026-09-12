@@ -1,10 +1,10 @@
 {
   "meta": {
     "source": "JRA公式コース紹介",
-    "note": "全10場の回り・直線距離・高低差・1周距離はJRA公式コース紹介の記載値。距離別コース図は88距離に実装（東京芝1400m・1600mは公式の週次解説でコーナーまでの距離まで確定、それ以外は公式の1周距離と直線距離から作図した模式図でコーナー位置は未確定）。中山・京都・阪神・新潟の芝39距離は内外の別が公式記載から確定できないためコース図は未対応。函館の高低差と小倉芝の直線・高低差は公式ページの表構成が読み取れず未検証。",
+    "note": "全10場の回り・直線距離・高低差・1周距離はJRA公式コース紹介の記載値。距離別コース図は127距離に実装（東京芝1400m・1600mは公式の週次解説でコーナーまでの距離まで確定、それ以外は公式の1周距離と直線距離から作図した模式図でコーナー位置は未確定）。中山・京都・阪神・新潟の芝39距離は内外の別が公式記載から確定できないため、内回りの場合と外回りの場合の両方を表示。函館の高低差と小倉芝の直線・高低差は公式ページの表構成が読み取れず未検証。",
     "checked_at": "2026-09-11",
     "schema_version": 2,
-    "dataset_id": "4777386877e93e7585e30e8f"
+    "dataset_id": "31e9cea553d92c8b4f7a7ae2"
   },
   "courses": {
     "東京|芝": {
@@ -30,7 +30,7 @@
       "notes": [],
       "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
       "verification": "verified-basic",
-      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この場の芝はコース図を未対応にしています（1周距離・直線距離が内外で異なるため、推測で作図しない方針）。直線距離・高低差は公式値を上に表示しています。"
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
     },
     "中山|ダート": {
       "turn": "右回り",
@@ -47,7 +47,7 @@
       "notes": [],
       "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
       "verification": "verified-basic",
-      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この場の芝はコース図を未対応にしています（1周距離・直線距離が内外で異なるため、推測で作図しない方針）。直線距離・高低差は公式値を上に表示しています。"
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
     },
     "京都|ダート": {
       "turn": "右回り",
@@ -64,7 +64,7 @@
       "notes": [],
       "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
       "verification": "verified-basic",
-      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この場の芝はコース図を未対応にしています（1周距離・直線距離が内外で異なるため、推測で作図しない方針）。直線距離・高低差は公式値を上に表示しています。"
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
     },
     "阪神|ダート": {
       "turn": "右回り",
@@ -157,7 +157,7 @@
         "3200": "外回り"
       },
       "verification": "verified-basic",
-      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この場の芝はコース図を未対応にしています（1周距離・直線距離が内外で異なるため、推測で作図しない方針）。直線距離・高低差は公式値を上に表示しています。"
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
     },
     "新潟|ダート": {
       "turn": "左回り",
@@ -316,6 +316,7 @@
       }
     },
     "東京|芝|1800": {
+      "variant": "芝1800m",
       "turn": "左回り",
       "straight_m": 525.9,
       "height_diff_m": 2.7,
@@ -326,6 +327,7 @@
         "mode": "loop-schematic",
         "distance_m": 1800,
         "lap_m": 2083.1,
+        "straight_m": 525.9,
         "anchors": [
           {
             "m": 0,
@@ -363,6 +365,7 @@
       }
     },
     "東京|芝|2000": {
+      "variant": "芝2000m",
       "turn": "左回り",
       "straight_m": 525.9,
       "height_diff_m": 2.7,
@@ -373,6 +376,7 @@
         "mode": "loop-schematic",
         "distance_m": 2000,
         "lap_m": 2083.1,
+        "straight_m": 525.9,
         "anchors": [
           {
             "m": 0,
@@ -410,6 +414,7 @@
       }
     },
     "東京|芝|2300": {
+      "variant": "芝2300m",
       "turn": "左回り",
       "straight_m": 525.9,
       "height_diff_m": 2.7,
@@ -420,6 +425,7 @@
         "mode": "loop-schematic",
         "distance_m": 2300,
         "lap_m": 2083.1,
+        "straight_m": 525.9,
         "anchors": [
           {
             "m": 0,
@@ -457,6 +463,7 @@
       }
     },
     "東京|芝|2400": {
+      "variant": "芝2400m",
       "turn": "左回り",
       "straight_m": 525.9,
       "height_diff_m": 2.7,
@@ -467,6 +474,7 @@
         "mode": "loop-schematic",
         "distance_m": 2400,
         "lap_m": 2083.1,
+        "straight_m": 525.9,
         "anchors": [
           {
             "m": 0,
@@ -504,6 +512,7 @@
       }
     },
     "東京|芝|2500": {
+      "variant": "芝2500m",
       "turn": "左回り",
       "straight_m": 525.9,
       "height_diff_m": 2.7,
@@ -514,6 +523,7 @@
         "mode": "loop-schematic",
         "distance_m": 2500,
         "lap_m": 2083.1,
+        "straight_m": 525.9,
         "anchors": [
           {
             "m": 0,
@@ -551,6 +561,7 @@
       }
     },
     "東京|芝|2600": {
+      "variant": "芝2600m",
       "turn": "左回り",
       "straight_m": 525.9,
       "height_diff_m": 2.7,
@@ -561,6 +572,7 @@
         "mode": "loop-schematic",
         "distance_m": 2600,
         "lap_m": 2083.1,
+        "straight_m": 525.9,
         "anchors": [
           {
             "m": 0,
@@ -598,6 +610,7 @@
       }
     },
     "東京|芝|3400": {
+      "variant": "芝3400m",
       "turn": "左回り",
       "straight_m": 525.9,
       "height_diff_m": 2.7,
@@ -608,6 +621,7 @@
         "mode": "loop-schematic",
         "distance_m": 3400,
         "lap_m": 2083.1,
+        "straight_m": 525.9,
         "anchors": [
           {
             "m": 0,
@@ -645,6 +659,7 @@
       }
     },
     "東京|ダート|1200": {
+      "variant": "ダート1200m",
       "turn": "左回り",
       "straight_m": 501.6,
       "height_diff_m": 2.5,
@@ -655,6 +670,7 @@
         "mode": "loop-schematic",
         "distance_m": 1200,
         "lap_m": 1899.0,
+        "straight_m": 501.6,
         "anchors": [
           {
             "m": 0,
@@ -692,6 +708,7 @@
       }
     },
     "東京|ダート|1300": {
+      "variant": "ダート1300m",
       "turn": "左回り",
       "straight_m": 501.6,
       "height_diff_m": 2.5,
@@ -702,6 +719,7 @@
         "mode": "loop-schematic",
         "distance_m": 1300,
         "lap_m": 1899.0,
+        "straight_m": 501.6,
         "anchors": [
           {
             "m": 0,
@@ -739,6 +757,7 @@
       }
     },
     "東京|ダート|1400": {
+      "variant": "ダート1400m",
       "turn": "左回り",
       "straight_m": 501.6,
       "height_diff_m": 2.5,
@@ -749,6 +768,7 @@
         "mode": "loop-schematic",
         "distance_m": 1400,
         "lap_m": 1899.0,
+        "straight_m": 501.6,
         "anchors": [
           {
             "m": 0,
@@ -786,6 +806,7 @@
       }
     },
     "東京|ダート|1600": {
+      "variant": "ダート1600m",
       "turn": "左回り",
       "straight_m": 501.6,
       "height_diff_m": 2.5,
@@ -796,6 +817,7 @@
         "mode": "loop-schematic",
         "distance_m": 1600,
         "lap_m": 1899.0,
+        "straight_m": 501.6,
         "anchors": [
           {
             "m": 0,
@@ -833,6 +855,7 @@
       }
     },
     "東京|ダート|2100": {
+      "variant": "ダート2100m",
       "turn": "左回り",
       "straight_m": 501.6,
       "height_diff_m": 2.5,
@@ -843,6 +866,7 @@
         "mode": "loop-schematic",
         "distance_m": 2100,
         "lap_m": 1899.0,
+        "straight_m": 501.6,
         "anchors": [
           {
             "m": 0,
@@ -880,6 +904,7 @@
       }
     },
     "東京|ダート|2400": {
+      "variant": "ダート2400m",
       "turn": "左回り",
       "straight_m": 501.6,
       "height_diff_m": 2.5,
@@ -890,6 +915,7 @@
         "mode": "loop-schematic",
         "distance_m": 2400,
         "lap_m": 1899.0,
+        "straight_m": 501.6,
         "anchors": [
           {
             "m": 0,
@@ -926,7 +952,968 @@
         }
       }
     },
+    "中山|芝|1200": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": 310.0,
+      "height_diff_m": 5.3,
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1200,
+          "lap_m": 1667.1,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,667.1m-and-straight-310m"
+            },
+            {
+              "m": 890.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 1200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,667.1m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから1,200m（公式1周1,667.1m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,667.1m・直線310m）を前提に描いています。図はJRA公式の1周距離1,667.1m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に1,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1200,
+          "lap_m": 1839.7,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,839.7m-and-straight-310m"
+            },
+            {
+              "m": 890.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 1200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,839.7m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから1,200m（公式1周1,839.7m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,839.7m・直線310m）を前提に描いています。図はJRA公式の1周距離1,839.7m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に1,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "中山|芝|1600": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": 310.0,
+      "height_diff_m": 5.3,
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1600,
+          "lap_m": 1667.1,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,667.1m-and-straight-310m"
+            },
+            {
+              "m": 1290.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 1600,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,667.1m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから1,600m（公式1周1,667.1m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,667.1m・直線310m）を前提に描いています。図はJRA公式の1周距離1,667.1m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に1,600m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1600,
+          "lap_m": 1839.7,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,839.7m-and-straight-310m"
+            },
+            {
+              "m": 1290.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 1600,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,839.7m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから1,600m（公式1周1,839.7m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,839.7m・直線310m）を前提に描いています。図はJRA公式の1周距離1,839.7m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に1,600m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "中山|芝|1800": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": 310.0,
+      "height_diff_m": 5.3,
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1800,
+          "lap_m": 1667.1,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,667.1m-and-straight-310m"
+            },
+            {
+              "m": 1490.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 1800,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,667.1m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから1,800m（公式1周1,667.1m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,667.1m・直線310m）を前提に描いています。図はJRA公式の1周距離1,667.1m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に1,800m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,667.1m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1800,
+          "lap_m": 1839.7,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,839.7m-and-straight-310m"
+            },
+            {
+              "m": 1490.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 1800,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,839.7m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから1,800m（公式1周1,839.7m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,839.7m・直線310m）を前提に描いています。図はJRA公式の1周距離1,839.7m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に1,800m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "中山|芝|2000": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": 310.0,
+      "height_diff_m": 5.3,
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2000,
+          "lap_m": 1667.1,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,667.1m-and-straight-310m"
+            },
+            {
+              "m": 1690.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 2000,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,667.1m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから2,000m（公式1周1,667.1m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,667.1m・直線310m）を前提に描いています。図はJRA公式の1周距離1,667.1m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に2,000m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,667.1m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2000,
+          "lap_m": 1839.7,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,839.7m-and-straight-310m"
+            },
+            {
+              "m": 1690.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 2000,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,839.7m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから2,000m（公式1周1,839.7m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,839.7m・直線310m）を前提に描いています。図はJRA公式の1周距離1,839.7m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に2,000m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,839.7m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "中山|芝|2200": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": 310.0,
+      "height_diff_m": 5.3,
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2200,
+          "lap_m": 1667.1,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,667.1m-and-straight-310m"
+            },
+            {
+              "m": 1890.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 2200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,667.1m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから2,200m（公式1周1,667.1m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,667.1m・直線310m）を前提に描いています。図はJRA公式の1周距離1,667.1m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に2,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,667.1m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2200,
+          "lap_m": 1839.7,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,839.7m-and-straight-310m"
+            },
+            {
+              "m": 1890.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 2200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,839.7m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから2,200m（公式1周1,839.7m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,839.7m・直線310m）を前提に描いています。図はJRA公式の1周距離1,839.7m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に2,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,839.7m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "中山|芝|2500": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": 310.0,
+      "height_diff_m": 5.3,
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2500,
+          "lap_m": 1667.1,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,667.1m-and-straight-310m"
+            },
+            {
+              "m": 2190.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 2500,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,667.1m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから2,500m（公式1周1,667.1m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,667.1m・直線310m）を前提に描いています。図はJRA公式の1周距離1,667.1m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に2,500m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,667.1m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2500,
+          "lap_m": 1839.7,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,839.7m-and-straight-310m"
+            },
+            {
+              "m": 2190.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 2500,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,839.7m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから2,500m（公式1周1,839.7m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,839.7m・直線310m）を前提に描いています。図はJRA公式の1周距離1,839.7m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に2,500m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,839.7m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "中山|芝|2600": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": 310.0,
+      "height_diff_m": 5.3,
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2600,
+          "lap_m": 1667.1,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,667.1m-and-straight-310m"
+            },
+            {
+              "m": 2290.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 2600,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,667.1m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから2,600m（公式1周1,667.1m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,667.1m・直線310m）を前提に描いています。図はJRA公式の1周距離1,667.1m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に2,600m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,667.1m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2600,
+          "lap_m": 1839.7,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,839.7m-and-straight-310m"
+            },
+            {
+              "m": 2290.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 2600,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,839.7m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから2,600m（公式1周1,839.7m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,839.7m・直線310m）を前提に描いています。図はJRA公式の1周距離1,839.7m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に2,600m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,839.7m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "中山|芝|3200": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": 310.0,
+      "height_diff_m": 5.3,
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 3200,
+          "lap_m": 1667.1,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,667.1m-and-straight-310m"
+            },
+            {
+              "m": 2890.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 3200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,667.1m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから3,200m（公式1周1,667.1m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,667.1m・直線310m）を前提に描いています。図はJRA公式の1周距離1,667.1m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に3,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,667.1m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 3200,
+          "lap_m": 1839.7,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,839.7m-and-straight-310m"
+            },
+            {
+              "m": 2890.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 3200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,839.7m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから3,200m（公式1周1,839.7m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,839.7m・直線310m）を前提に描いています。図はJRA公式の1周距離1,839.7m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に3,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,839.7m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "中山|芝|3600": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": 310.0,
+      "height_diff_m": 5.3,
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 3600,
+          "lap_m": 1667.1,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,667.1m-and-straight-310m"
+            },
+            {
+              "m": 3290.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 3600,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,667.1m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから3,600m（公式1周1,667.1m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,667.1m・直線310m）を前提に描いています。図はJRA公式の1周距離1,667.1m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に3,600m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,667.1m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 3600,
+          "lap_m": 1839.7,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,839.7m-and-straight-310m"
+            },
+            {
+              "m": 3290.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 3600,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,839.7m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから3,600m（公式1周1,839.7m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,839.7m・直線310m）を前提に描いています。図はJRA公式の1周距離1,839.7m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に3,600m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,839.7m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "中山|芝|4000": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": 310.0,
+      "height_diff_m": 5.3,
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/nakayama/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 4000,
+          "lap_m": 1667.1,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,667.1m-and-straight-310m"
+            },
+            {
+              "m": 3690.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 4000,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,667.1m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから4,000m（公式1周1,667.1m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,667.1m・直線310m）を前提に描いています。図はJRA公式の1周距離1,667.1m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に4,000m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,667.1m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 4000,
+          "lap_m": 1839.7,
+          "straight_m": 310.0,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,839.7m-and-straight-310m"
+            },
+            {
+              "m": 3690.0,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-310m"
+            },
+            {
+              "m": 4000,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,839.7m）と直線距離（310m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから4,000m（公式1周1,839.7m上で逆算） ／ 直線310m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差5.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,839.7m・直線310m）を前提に描いています。図はJRA公式の1周距離1,839.7m（内1,667.1m／外1,839.7m（Aコース））と直線310mのみを根拠に作図。ゴールを起点に4,000m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,839.7m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 中山競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
     "中山|ダート|1000": {
+      "variant": "ダート1000m",
       "turn": "右回り",
       "straight_m": 308.0,
       "height_diff_m": 4.5,
@@ -937,6 +1924,7 @@
         "mode": "loop-schematic",
         "distance_m": 1000,
         "lap_m": 1493.0,
+        "straight_m": 308.0,
         "anchors": [
           {
             "m": 0,
@@ -974,6 +1962,7 @@
       }
     },
     "中山|ダート|1200": {
+      "variant": "ダート1200m",
       "turn": "右回り",
       "straight_m": 308.0,
       "height_diff_m": 4.5,
@@ -984,6 +1973,7 @@
         "mode": "loop-schematic",
         "distance_m": 1200,
         "lap_m": 1493.0,
+        "straight_m": 308.0,
         "anchors": [
           {
             "m": 0,
@@ -1021,6 +2011,7 @@
       }
     },
     "中山|ダート|1700": {
+      "variant": "ダート1700m",
       "turn": "右回り",
       "straight_m": 308.0,
       "height_diff_m": 4.5,
@@ -1031,6 +2022,7 @@
         "mode": "loop-schematic",
         "distance_m": 1700,
         "lap_m": 1493.0,
+        "straight_m": 308.0,
         "anchors": [
           {
             "m": 0,
@@ -1068,6 +2060,7 @@
       }
     },
     "中山|ダート|1800": {
+      "variant": "ダート1800m",
       "turn": "右回り",
       "straight_m": 308.0,
       "height_diff_m": 4.5,
@@ -1078,6 +2071,7 @@
         "mode": "loop-schematic",
         "distance_m": 1800,
         "lap_m": 1493.0,
+        "straight_m": 308.0,
         "anchors": [
           {
             "m": 0,
@@ -1115,6 +2109,7 @@
       }
     },
     "中山|ダート|2400": {
+      "variant": "ダート2400m",
       "turn": "右回り",
       "straight_m": 308.0,
       "height_diff_m": 4.5,
@@ -1125,6 +2120,7 @@
         "mode": "loop-schematic",
         "distance_m": 2400,
         "lap_m": 1493.0,
+        "straight_m": 308.0,
         "anchors": [
           {
             "m": 0,
@@ -1162,6 +2158,7 @@
       }
     },
     "中山|ダート|2500": {
+      "variant": "ダート2500m",
       "turn": "右回り",
       "straight_m": 308.0,
       "height_diff_m": 4.5,
@@ -1172,6 +2169,7 @@
         "mode": "loop-schematic",
         "distance_m": 2500,
         "lap_m": 1493.0,
+        "straight_m": 308.0,
         "anchors": [
           {
             "m": 0,
@@ -1208,7 +2206,968 @@
         }
       }
     },
+    "京都|芝|1100": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "328.4m（内）/ 403.7m（外）",
+      "height_diff_m": "3.1m（内）/ 4.3m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1100,
+          "lap_m": 1782.8,
+          "straight_m": 328.4,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,782.8m-and-straight-328.4m"
+            },
+            {
+              "m": 771.6,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-328.4m"
+            },
+            {
+              "m": 1100,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,782.8m）と直線距離（328.4m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから1,100m（公式1周1,782.8m上で逆算） ／ 直線328.4m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差3.1m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,782.8m・直線328.4m）を前提に描いています。図はJRA公式の1周距離1,782.8m（内1,782.8m／外1,894.3m）と直線328.4mのみを根拠に作図。ゴールを起点に1,100m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1100,
+          "lap_m": 1894.3,
+          "straight_m": 403.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,894.3m-and-straight-403.7m"
+            },
+            {
+              "m": 696.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-403.7m"
+            },
+            {
+              "m": 1100,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,894.3m）と直線距離（403.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから1,100m（公式1周1,894.3m上で逆算） ／ 直線403.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差4.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,894.3m・直線403.7m）を前提に描いています。図はJRA公式の1周距離1,894.3m（内1,782.8m／外1,894.3m）と直線403.7mのみを根拠に作図。ゴールを起点に1,100m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "京都|芝|1200": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "328.4m（内）/ 403.7m（外）",
+      "height_diff_m": "3.1m（内）/ 4.3m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1200,
+          "lap_m": 1782.8,
+          "straight_m": 328.4,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,782.8m-and-straight-328.4m"
+            },
+            {
+              "m": 871.6,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-328.4m"
+            },
+            {
+              "m": 1200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,782.8m）と直線距離（328.4m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから1,200m（公式1周1,782.8m上で逆算） ／ 直線328.4m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差3.1m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,782.8m・直線328.4m）を前提に描いています。図はJRA公式の1周距離1,782.8m（内1,782.8m／外1,894.3m）と直線328.4mのみを根拠に作図。ゴールを起点に1,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1200,
+          "lap_m": 1894.3,
+          "straight_m": 403.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,894.3m-and-straight-403.7m"
+            },
+            {
+              "m": 796.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-403.7m"
+            },
+            {
+              "m": 1200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,894.3m）と直線距離（403.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから1,200m（公式1周1,894.3m上で逆算） ／ 直線403.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差4.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,894.3m・直線403.7m）を前提に描いています。図はJRA公式の1周距離1,894.3m（内1,782.8m／外1,894.3m）と直線403.7mのみを根拠に作図。ゴールを起点に1,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "京都|芝|1400": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "328.4m（内）/ 403.7m（外）",
+      "height_diff_m": "3.1m（内）/ 4.3m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1400,
+          "lap_m": 1782.8,
+          "straight_m": 328.4,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,782.8m-and-straight-328.4m"
+            },
+            {
+              "m": 1071.6,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-328.4m"
+            },
+            {
+              "m": 1400,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,782.8m）と直線距離（328.4m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから1,400m（公式1周1,782.8m上で逆算） ／ 直線328.4m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差3.1m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,782.8m・直線328.4m）を前提に描いています。図はJRA公式の1周距離1,782.8m（内1,782.8m／外1,894.3m）と直線328.4mのみを根拠に作図。ゴールを起点に1,400m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1400,
+          "lap_m": 1894.3,
+          "straight_m": 403.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,894.3m-and-straight-403.7m"
+            },
+            {
+              "m": 996.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-403.7m"
+            },
+            {
+              "m": 1400,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,894.3m）と直線距離（403.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから1,400m（公式1周1,894.3m上で逆算） ／ 直線403.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差4.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,894.3m・直線403.7m）を前提に描いています。図はJRA公式の1周距離1,894.3m（内1,782.8m／外1,894.3m）と直線403.7mのみを根拠に作図。ゴールを起点に1,400m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "京都|芝|1600": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "328.4m（内）/ 403.7m（外）",
+      "height_diff_m": "3.1m（内）/ 4.3m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1600,
+          "lap_m": 1782.8,
+          "straight_m": 328.4,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,782.8m-and-straight-328.4m"
+            },
+            {
+              "m": 1271.6,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-328.4m"
+            },
+            {
+              "m": 1600,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,782.8m）と直線距離（328.4m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから1,600m（公式1周1,782.8m上で逆算） ／ 直線328.4m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差3.1m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,782.8m・直線328.4m）を前提に描いています。図はJRA公式の1周距離1,782.8m（内1,782.8m／外1,894.3m）と直線328.4mのみを根拠に作図。ゴールを起点に1,600m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1600,
+          "lap_m": 1894.3,
+          "straight_m": 403.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,894.3m-and-straight-403.7m"
+            },
+            {
+              "m": 1196.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-403.7m"
+            },
+            {
+              "m": 1600,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,894.3m）と直線距離（403.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから1,600m（公式1周1,894.3m上で逆算） ／ 直線403.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差4.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,894.3m・直線403.7m）を前提に描いています。図はJRA公式の1周距離1,894.3m（内1,782.8m／外1,894.3m）と直線403.7mのみを根拠に作図。ゴールを起点に1,600m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "京都|芝|1800": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "328.4m（内）/ 403.7m（外）",
+      "height_diff_m": "3.1m（内）/ 4.3m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1800,
+          "lap_m": 1782.8,
+          "straight_m": 328.4,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,782.8m-and-straight-328.4m"
+            },
+            {
+              "m": 1471.6,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-328.4m"
+            },
+            {
+              "m": 1800,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,782.8m）と直線距離（328.4m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから1,800m（公式1周1,782.8m上で逆算） ／ 直線328.4m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差3.1m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,782.8m・直線328.4m）を前提に描いています。図はJRA公式の1周距離1,782.8m（内1,782.8m／外1,894.3m）と直線328.4mのみを根拠に作図。ゴールを起点に1,800m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,782.8m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1800,
+          "lap_m": 1894.3,
+          "straight_m": 403.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,894.3m-and-straight-403.7m"
+            },
+            {
+              "m": 1396.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-403.7m"
+            },
+            {
+              "m": 1800,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,894.3m）と直線距離（403.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから1,800m（公式1周1,894.3m上で逆算） ／ 直線403.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差4.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,894.3m・直線403.7m）を前提に描いています。図はJRA公式の1周距離1,894.3m（内1,782.8m／外1,894.3m）と直線403.7mのみを根拠に作図。ゴールを起点に1,800m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "京都|芝|2000": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "328.4m（内）/ 403.7m（外）",
+      "height_diff_m": "3.1m（内）/ 4.3m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2000,
+          "lap_m": 1782.8,
+          "straight_m": 328.4,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,782.8m-and-straight-328.4m"
+            },
+            {
+              "m": 1671.6,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-328.4m"
+            },
+            {
+              "m": 2000,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,782.8m）と直線距離（328.4m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから2,000m（公式1周1,782.8m上で逆算） ／ 直線328.4m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差3.1m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,782.8m・直線328.4m）を前提に描いています。図はJRA公式の1周距離1,782.8m（内1,782.8m／外1,894.3m）と直線328.4mのみを根拠に作図。ゴールを起点に2,000m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,782.8m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2000,
+          "lap_m": 1894.3,
+          "straight_m": 403.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,894.3m-and-straight-403.7m"
+            },
+            {
+              "m": 1596.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-403.7m"
+            },
+            {
+              "m": 2000,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,894.3m）と直線距離（403.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから2,000m（公式1周1,894.3m上で逆算） ／ 直線403.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差4.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,894.3m・直線403.7m）を前提に描いています。図はJRA公式の1周距離1,894.3m（内1,782.8m／外1,894.3m）と直線403.7mのみを根拠に作図。ゴールを起点に2,000m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,894.3m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "京都|芝|2200": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "328.4m（内）/ 403.7m（外）",
+      "height_diff_m": "3.1m（内）/ 4.3m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2200,
+          "lap_m": 1782.8,
+          "straight_m": 328.4,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,782.8m-and-straight-328.4m"
+            },
+            {
+              "m": 1871.6,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-328.4m"
+            },
+            {
+              "m": 2200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,782.8m）と直線距離（328.4m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから2,200m（公式1周1,782.8m上で逆算） ／ 直線328.4m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差3.1m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,782.8m・直線328.4m）を前提に描いています。図はJRA公式の1周距離1,782.8m（内1,782.8m／外1,894.3m）と直線328.4mのみを根拠に作図。ゴールを起点に2,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,782.8m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2200,
+          "lap_m": 1894.3,
+          "straight_m": 403.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,894.3m-and-straight-403.7m"
+            },
+            {
+              "m": 1796.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-403.7m"
+            },
+            {
+              "m": 2200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,894.3m）と直線距離（403.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから2,200m（公式1周1,894.3m上で逆算） ／ 直線403.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差4.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,894.3m・直線403.7m）を前提に描いています。図はJRA公式の1周距離1,894.3m（内1,782.8m／外1,894.3m）と直線403.7mのみを根拠に作図。ゴールを起点に2,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,894.3m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "京都|芝|2400": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "328.4m（内）/ 403.7m（外）",
+      "height_diff_m": "3.1m（内）/ 4.3m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2400,
+          "lap_m": 1782.8,
+          "straight_m": 328.4,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,782.8m-and-straight-328.4m"
+            },
+            {
+              "m": 2071.6,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-328.4m"
+            },
+            {
+              "m": 2400,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,782.8m）と直線距離（328.4m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから2,400m（公式1周1,782.8m上で逆算） ／ 直線328.4m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差3.1m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,782.8m・直線328.4m）を前提に描いています。図はJRA公式の1周距離1,782.8m（内1,782.8m／外1,894.3m）と直線328.4mのみを根拠に作図。ゴールを起点に2,400m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,782.8m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2400,
+          "lap_m": 1894.3,
+          "straight_m": 403.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,894.3m-and-straight-403.7m"
+            },
+            {
+              "m": 1996.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-403.7m"
+            },
+            {
+              "m": 2400,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,894.3m）と直線距離（403.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから2,400m（公式1周1,894.3m上で逆算） ／ 直線403.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差4.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,894.3m・直線403.7m）を前提に描いています。図はJRA公式の1周距離1,894.3m（内1,782.8m／外1,894.3m）と直線403.7mのみを根拠に作図。ゴールを起点に2,400m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,894.3m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "京都|芝|3000": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "328.4m（内）/ 403.7m（外）",
+      "height_diff_m": "3.1m（内）/ 4.3m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 3000,
+          "lap_m": 1782.8,
+          "straight_m": 328.4,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,782.8m-and-straight-328.4m"
+            },
+            {
+              "m": 2671.6,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-328.4m"
+            },
+            {
+              "m": 3000,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,782.8m）と直線距離（328.4m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから3,000m（公式1周1,782.8m上で逆算） ／ 直線328.4m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差3.1m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,782.8m・直線328.4m）を前提に描いています。図はJRA公式の1周距離1,782.8m（内1,782.8m／外1,894.3m）と直線328.4mのみを根拠に作図。ゴールを起点に3,000m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,782.8m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 3000,
+          "lap_m": 1894.3,
+          "straight_m": 403.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,894.3m-and-straight-403.7m"
+            },
+            {
+              "m": 2596.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-403.7m"
+            },
+            {
+              "m": 3000,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,894.3m）と直線距離（403.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから3,000m（公式1周1,894.3m上で逆算） ／ 直線403.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差4.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,894.3m・直線403.7m）を前提に描いています。図はJRA公式の1周距離1,894.3m（内1,782.8m／外1,894.3m）と直線403.7mのみを根拠に作図。ゴールを起点に3,000m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,894.3m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "京都|芝|3200": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "328.4m（内）/ 403.7m（外）",
+      "height_diff_m": "3.1m（内）/ 4.3m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/kyoto/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 3200,
+          "lap_m": 1782.8,
+          "straight_m": 328.4,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,782.8m-and-straight-328.4m"
+            },
+            {
+              "m": 2871.6,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-328.4m"
+            },
+            {
+              "m": 3200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,782.8m）と直線距離（328.4m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから3,200m（公式1周1,782.8m上で逆算） ／ 直線328.4m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差3.1m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,782.8m・直線328.4m）を前提に描いています。図はJRA公式の1周距離1,782.8m（内1,782.8m／外1,894.3m）と直線328.4mのみを根拠に作図。ゴールを起点に3,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,782.8m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 3200,
+          "lap_m": 1894.3,
+          "straight_m": 403.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,894.3m-and-straight-403.7m"
+            },
+            {
+              "m": 2796.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-403.7m"
+            },
+            {
+              "m": 3200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,894.3m）と直線距離（403.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから3,200m（公式1周1,894.3m上で逆算） ／ 直線403.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差4.3m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周1,894.3m・直線403.7m）を前提に描いています。図はJRA公式の1周距離1,894.3m（内1,782.8m／外1,894.3m）と直線403.7mのみを根拠に作図。ゴールを起点に3,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,894.3m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 京都競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
     "京都|ダート|1000": {
+      "variant": "ダート1000m",
       "turn": "右回り",
       "straight_m": 329.1,
       "height_diff_m": 3.0,
@@ -1219,6 +3178,7 @@
         "mode": "loop-schematic",
         "distance_m": 1000,
         "lap_m": 1607.6,
+        "straight_m": 329.1,
         "anchors": [
           {
             "m": 0,
@@ -1256,6 +3216,7 @@
       }
     },
     "京都|ダート|1100": {
+      "variant": "ダート1100m",
       "turn": "右回り",
       "straight_m": 329.1,
       "height_diff_m": 3.0,
@@ -1266,6 +3227,7 @@
         "mode": "loop-schematic",
         "distance_m": 1100,
         "lap_m": 1607.6,
+        "straight_m": 329.1,
         "anchors": [
           {
             "m": 0,
@@ -1303,6 +3265,7 @@
       }
     },
     "京都|ダート|1200": {
+      "variant": "ダート1200m",
       "turn": "右回り",
       "straight_m": 329.1,
       "height_diff_m": 3.0,
@@ -1313,6 +3276,7 @@
         "mode": "loop-schematic",
         "distance_m": 1200,
         "lap_m": 1607.6,
+        "straight_m": 329.1,
         "anchors": [
           {
             "m": 0,
@@ -1350,6 +3314,7 @@
       }
     },
     "京都|ダート|1400": {
+      "variant": "ダート1400m",
       "turn": "右回り",
       "straight_m": 329.1,
       "height_diff_m": 3.0,
@@ -1360,6 +3325,7 @@
         "mode": "loop-schematic",
         "distance_m": 1400,
         "lap_m": 1607.6,
+        "straight_m": 329.1,
         "anchors": [
           {
             "m": 0,
@@ -1397,6 +3363,7 @@
       }
     },
     "京都|ダート|1800": {
+      "variant": "ダート1800m",
       "turn": "右回り",
       "straight_m": 329.1,
       "height_diff_m": 3.0,
@@ -1407,6 +3374,7 @@
         "mode": "loop-schematic",
         "distance_m": 1800,
         "lap_m": 1607.6,
+        "straight_m": 329.1,
         "anchors": [
           {
             "m": 0,
@@ -1444,6 +3412,7 @@
       }
     },
     "京都|ダート|1900": {
+      "variant": "ダート1900m",
       "turn": "右回り",
       "straight_m": 329.1,
       "height_diff_m": 3.0,
@@ -1454,6 +3423,7 @@
         "mode": "loop-schematic",
         "distance_m": 1900,
         "lap_m": 1607.6,
+        "straight_m": 329.1,
         "anchors": [
           {
             "m": 0,
@@ -1491,6 +3461,7 @@
       }
     },
     "京都|ダート|2600": {
+      "variant": "ダート2600m",
       "turn": "右回り",
       "straight_m": 329.1,
       "height_diff_m": 3.0,
@@ -1501,6 +3472,7 @@
         "mode": "loop-schematic",
         "distance_m": 2600,
         "lap_m": 1607.6,
+        "straight_m": 329.1,
         "anchors": [
           {
             "m": 0,
@@ -1537,7 +3509,968 @@
         }
       }
     },
+    "阪神|芝|1200": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "356.5m（内）/ 473.6m（外）",
+      "height_diff_m": "1.9m（内）/ 2.4m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1200,
+          "lap_m": 1689.0,
+          "straight_m": 356.5,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,689m-and-straight-356.5m"
+            },
+            {
+              "m": 843.5,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-356.5m"
+            },
+            {
+              "m": 1200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,689m）と直線距離（356.5m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから1,200m（公式1周1,689m上で逆算） ／ 直線356.5m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差1.9m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,689m・直線356.5m）を前提に描いています。図はJRA公式の1周距離1,689m（内1,689m／外2,089m（Aコース））と直線356.5mのみを根拠に作図。ゴールを起点に1,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1200,
+          "lap_m": 2089.0,
+          "straight_m": 473.6,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,089m-and-straight-473.6m"
+            },
+            {
+              "m": 726.4,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-473.6m"
+            },
+            {
+              "m": 1200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,089m）と直線距離（473.6m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから1,200m（公式1周2,089m上で逆算） ／ 直線473.6m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.4m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,089m・直線473.6m）を前提に描いています。図はJRA公式の1周距離2,089m（内1,689m／外2,089m（Aコース））と直線473.6mのみを根拠に作図。ゴールを起点に1,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "阪神|芝|1400": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "356.5m（内）/ 473.6m（外）",
+      "height_diff_m": "1.9m（内）/ 2.4m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1400,
+          "lap_m": 1689.0,
+          "straight_m": 356.5,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,689m-and-straight-356.5m"
+            },
+            {
+              "m": 1043.5,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-356.5m"
+            },
+            {
+              "m": 1400,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,689m）と直線距離（356.5m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから1,400m（公式1周1,689m上で逆算） ／ 直線356.5m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差1.9m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,689m・直線356.5m）を前提に描いています。図はJRA公式の1周距離1,689m（内1,689m／外2,089m（Aコース））と直線356.5mのみを根拠に作図。ゴールを起点に1,400m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1400,
+          "lap_m": 2089.0,
+          "straight_m": 473.6,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,089m-and-straight-473.6m"
+            },
+            {
+              "m": 926.4,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-473.6m"
+            },
+            {
+              "m": 1400,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,089m）と直線距離（473.6m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから1,400m（公式1周2,089m上で逆算） ／ 直線473.6m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.4m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,089m・直線473.6m）を前提に描いています。図はJRA公式の1周距離2,089m（内1,689m／外2,089m（Aコース））と直線473.6mのみを根拠に作図。ゴールを起点に1,400m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "阪神|芝|1600": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "356.5m（内）/ 473.6m（外）",
+      "height_diff_m": "1.9m（内）/ 2.4m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1600,
+          "lap_m": 1689.0,
+          "straight_m": 356.5,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,689m-and-straight-356.5m"
+            },
+            {
+              "m": 1243.5,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-356.5m"
+            },
+            {
+              "m": 1600,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,689m）と直線距離（356.5m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから1,600m（公式1周1,689m上で逆算） ／ 直線356.5m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差1.9m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,689m・直線356.5m）を前提に描いています。図はJRA公式の1周距離1,689m（内1,689m／外2,089m（Aコース））と直線356.5mのみを根拠に作図。ゴールを起点に1,600m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1600,
+          "lap_m": 2089.0,
+          "straight_m": 473.6,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,089m-and-straight-473.6m"
+            },
+            {
+              "m": 1126.4,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-473.6m"
+            },
+            {
+              "m": 1600,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,089m）と直線距離（473.6m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから1,600m（公式1周2,089m上で逆算） ／ 直線473.6m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.4m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,089m・直線473.6m）を前提に描いています。図はJRA公式の1周距離2,089m（内1,689m／外2,089m（Aコース））と直線473.6mのみを根拠に作図。ゴールを起点に1,600m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "阪神|芝|1800": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "356.5m（内）/ 473.6m（外）",
+      "height_diff_m": "1.9m（内）/ 2.4m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1800,
+          "lap_m": 1689.0,
+          "straight_m": 356.5,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,689m-and-straight-356.5m"
+            },
+            {
+              "m": 1443.5,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-356.5m"
+            },
+            {
+              "m": 1800,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,689m）と直線距離（356.5m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから1,800m（公式1周1,689m上で逆算） ／ 直線356.5m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差1.9m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,689m・直線356.5m）を前提に描いています。図はJRA公式の1周距離1,689m（内1,689m／外2,089m（Aコース））と直線356.5mのみを根拠に作図。ゴールを起点に1,800m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,689m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1800,
+          "lap_m": 2089.0,
+          "straight_m": 473.6,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,089m-and-straight-473.6m"
+            },
+            {
+              "m": 1326.4,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-473.6m"
+            },
+            {
+              "m": 1800,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,089m）と直線距離（473.6m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから1,800m（公式1周2,089m上で逆算） ／ 直線473.6m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.4m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,089m・直線473.6m）を前提に描いています。図はJRA公式の1周距離2,089m（内1,689m／外2,089m（Aコース））と直線473.6mのみを根拠に作図。ゴールを起点に1,800m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "阪神|芝|2000": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "356.5m（内）/ 473.6m（外）",
+      "height_diff_m": "1.9m（内）/ 2.4m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2000,
+          "lap_m": 1689.0,
+          "straight_m": 356.5,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,689m-and-straight-356.5m"
+            },
+            {
+              "m": 1643.5,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-356.5m"
+            },
+            {
+              "m": 2000,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,689m）と直線距離（356.5m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから2,000m（公式1周1,689m上で逆算） ／ 直線356.5m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差1.9m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,689m・直線356.5m）を前提に描いています。図はJRA公式の1周距離1,689m（内1,689m／外2,089m（Aコース））と直線356.5mのみを根拠に作図。ゴールを起点に2,000m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,689m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2000,
+          "lap_m": 2089.0,
+          "straight_m": 473.6,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,089m-and-straight-473.6m"
+            },
+            {
+              "m": 1526.4,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-473.6m"
+            },
+            {
+              "m": 2000,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,089m）と直線距離（473.6m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから2,000m（公式1周2,089m上で逆算） ／ 直線473.6m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.4m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,089m・直線473.6m）を前提に描いています。図はJRA公式の1周距離2,089m（内1,689m／外2,089m（Aコース））と直線473.6mのみを根拠に作図。ゴールを起点に2,000m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "阪神|芝|2200": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "356.5m（内）/ 473.6m（外）",
+      "height_diff_m": "1.9m（内）/ 2.4m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2200,
+          "lap_m": 1689.0,
+          "straight_m": 356.5,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,689m-and-straight-356.5m"
+            },
+            {
+              "m": 1843.5,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-356.5m"
+            },
+            {
+              "m": 2200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,689m）と直線距離（356.5m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから2,200m（公式1周1,689m上で逆算） ／ 直線356.5m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差1.9m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,689m・直線356.5m）を前提に描いています。図はJRA公式の1周距離1,689m（内1,689m／外2,089m（Aコース））と直線356.5mのみを根拠に作図。ゴールを起点に2,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,689m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2200,
+          "lap_m": 2089.0,
+          "straight_m": 473.6,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,089m-and-straight-473.6m"
+            },
+            {
+              "m": 1726.4,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-473.6m"
+            },
+            {
+              "m": 2200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,089m）と直線距離（473.6m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから2,200m（公式1周2,089m上で逆算） ／ 直線473.6m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.4m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,089m・直線473.6m）を前提に描いています。図はJRA公式の1周距離2,089m（内1,689m／外2,089m（Aコース））と直線473.6mのみを根拠に作図。ゴールを起点に2,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（2,089m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "阪神|芝|2400": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "356.5m（内）/ 473.6m（外）",
+      "height_diff_m": "1.9m（内）/ 2.4m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2400,
+          "lap_m": 1689.0,
+          "straight_m": 356.5,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,689m-and-straight-356.5m"
+            },
+            {
+              "m": 2043.5,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-356.5m"
+            },
+            {
+              "m": 2400,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,689m）と直線距離（356.5m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから2,400m（公式1周1,689m上で逆算） ／ 直線356.5m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差1.9m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,689m・直線356.5m）を前提に描いています。図はJRA公式の1周距離1,689m（内1,689m／外2,089m（Aコース））と直線356.5mのみを根拠に作図。ゴールを起点に2,400m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,689m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2400,
+          "lap_m": 2089.0,
+          "straight_m": 473.6,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,089m-and-straight-473.6m"
+            },
+            {
+              "m": 1926.4,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-473.6m"
+            },
+            {
+              "m": 2400,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,089m）と直線距離（473.6m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから2,400m（公式1周2,089m上で逆算） ／ 直線473.6m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.4m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,089m・直線473.6m）を前提に描いています。図はJRA公式の1周距離2,089m（内1,689m／外2,089m（Aコース））と直線473.6mのみを根拠に作図。ゴールを起点に2,400m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（2,089m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "阪神|芝|2600": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "356.5m（内）/ 473.6m（外）",
+      "height_diff_m": "1.9m（内）/ 2.4m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2600,
+          "lap_m": 1689.0,
+          "straight_m": 356.5,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,689m-and-straight-356.5m"
+            },
+            {
+              "m": 2243.5,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-356.5m"
+            },
+            {
+              "m": 2600,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,689m）と直線距離（356.5m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから2,600m（公式1周1,689m上で逆算） ／ 直線356.5m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差1.9m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,689m・直線356.5m）を前提に描いています。図はJRA公式の1周距離1,689m（内1,689m／外2,089m（Aコース））と直線356.5mのみを根拠に作図。ゴールを起点に2,600m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,689m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2600,
+          "lap_m": 2089.0,
+          "straight_m": 473.6,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,089m-and-straight-473.6m"
+            },
+            {
+              "m": 2126.4,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-473.6m"
+            },
+            {
+              "m": 2600,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,089m）と直線距離（473.6m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから2,600m（公式1周2,089m上で逆算） ／ 直線473.6m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.4m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,089m・直線473.6m）を前提に描いています。図はJRA公式の1周距離2,089m（内1,689m／外2,089m（Aコース））と直線473.6mのみを根拠に作図。ゴールを起点に2,600m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（2,089m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "阪神|芝|3000": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "356.5m（内）/ 473.6m（外）",
+      "height_diff_m": "1.9m（内）/ 2.4m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 3000,
+          "lap_m": 1689.0,
+          "straight_m": 356.5,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,689m-and-straight-356.5m"
+            },
+            {
+              "m": 2643.5,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-356.5m"
+            },
+            {
+              "m": 3000,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,689m）と直線距離（356.5m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから3,000m（公式1周1,689m上で逆算） ／ 直線356.5m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差1.9m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,689m・直線356.5m）を前提に描いています。図はJRA公式の1周距離1,689m（内1,689m／外2,089m（Aコース））と直線356.5mのみを根拠に作図。ゴールを起点に3,000m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,689m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 3000,
+          "lap_m": 2089.0,
+          "straight_m": 473.6,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,089m-and-straight-473.6m"
+            },
+            {
+              "m": 2526.4,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-473.6m"
+            },
+            {
+              "m": 3000,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,089m）と直線距離（473.6m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから3,000m（公式1周2,089m上で逆算） ／ 直線473.6m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.4m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,089m・直線473.6m）を前提に描いています。図はJRA公式の1周距離2,089m（内1,689m／外2,089m（Aコース））と直線473.6mのみを根拠に作図。ゴールを起点に3,000m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（2,089m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "阪神|芝|3200": {
+      "variant": "内・外あり（未確定）",
+      "turn": "右回り",
+      "straight_m": "356.5m（内）/ 473.6m（外）",
+      "height_diff_m": "1.9m（内）/ 2.4m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/hanshin/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 3200,
+          "lap_m": 1689.0,
+          "straight_m": 356.5,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,689m-and-straight-356.5m"
+            },
+            {
+              "m": 2843.5,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-356.5m"
+            },
+            {
+              "m": 3200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,689m）と直線距離（356.5m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから3,200m（公式1周1,689m上で逆算） ／ 直線356.5m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差1.9m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,689m・直線356.5m）を前提に描いています。図はJRA公式の1周距離1,689m（内1,689m／外2,089m（Aコース））と直線356.5mのみを根拠に作図。ゴールを起点に3,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,689m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 3200,
+          "lap_m": 2089.0,
+          "straight_m": 473.6,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,089m-and-straight-473.6m"
+            },
+            {
+              "m": 2726.4,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-473.6m"
+            },
+            {
+              "m": 3200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,089m）と直線距離（473.6m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから3,200m（公式1周2,089m上で逆算） ／ 直線473.6m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.4m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,089m・直線473.6m）を前提に描いています。図はJRA公式の1周距離2,089m（内1,689m／外2,089m（Aコース））と直線473.6mのみを根拠に作図。ゴールを起点に3,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（2,089m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 阪神競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
     "阪神|ダート|1200": {
+      "variant": "ダート1200m",
       "turn": "右回り",
       "straight_m": 352.7,
       "height_diff_m": 1.6,
@@ -1548,6 +4481,7 @@
         "mode": "loop-schematic",
         "distance_m": 1200,
         "lap_m": 1517.6,
+        "straight_m": 352.7,
         "anchors": [
           {
             "m": 0,
@@ -1585,6 +4519,7 @@
       }
     },
     "阪神|ダート|1400": {
+      "variant": "ダート1400m",
       "turn": "右回り",
       "straight_m": 352.7,
       "height_diff_m": 1.6,
@@ -1595,6 +4530,7 @@
         "mode": "loop-schematic",
         "distance_m": 1400,
         "lap_m": 1517.6,
+        "straight_m": 352.7,
         "anchors": [
           {
             "m": 0,
@@ -1632,6 +4568,7 @@
       }
     },
     "阪神|ダート|1800": {
+      "variant": "ダート1800m",
       "turn": "右回り",
       "straight_m": 352.7,
       "height_diff_m": 1.6,
@@ -1642,6 +4579,7 @@
         "mode": "loop-schematic",
         "distance_m": 1800,
         "lap_m": 1517.6,
+        "straight_m": 352.7,
         "anchors": [
           {
             "m": 0,
@@ -1679,6 +4617,7 @@
       }
     },
     "阪神|ダート|2000": {
+      "variant": "ダート2000m",
       "turn": "右回り",
       "straight_m": 352.7,
       "height_diff_m": 1.6,
@@ -1689,6 +4628,7 @@
         "mode": "loop-schematic",
         "distance_m": 2000,
         "lap_m": 1517.6,
+        "straight_m": 352.7,
         "anchors": [
           {
             "m": 0,
@@ -1726,6 +4666,7 @@
       }
     },
     "阪神|ダート|2600": {
+      "variant": "ダート2600m",
       "turn": "右回り",
       "straight_m": 352.7,
       "height_diff_m": 1.6,
@@ -1736,6 +4677,7 @@
         "mode": "loop-schematic",
         "distance_m": 2600,
         "lap_m": 1517.6,
+        "straight_m": 352.7,
         "anchors": [
           {
             "m": 0,
@@ -1773,6 +4715,7 @@
       }
     },
     "中京|芝|1200": {
+      "variant": "芝1200m",
       "turn": "左回り",
       "straight_m": 412.5,
       "height_diff_m": 3.5,
@@ -1783,6 +4726,7 @@
         "mode": "loop-schematic",
         "distance_m": 1200,
         "lap_m": 1705.9,
+        "straight_m": 412.5,
         "anchors": [
           {
             "m": 0,
@@ -1820,6 +4764,7 @@
       }
     },
     "中京|芝|1300": {
+      "variant": "芝1300m",
       "turn": "左回り",
       "straight_m": 412.5,
       "height_diff_m": 3.5,
@@ -1830,6 +4775,7 @@
         "mode": "loop-schematic",
         "distance_m": 1300,
         "lap_m": 1705.9,
+        "straight_m": 412.5,
         "anchors": [
           {
             "m": 0,
@@ -1867,6 +4813,7 @@
       }
     },
     "中京|芝|1400": {
+      "variant": "芝1400m",
       "turn": "左回り",
       "straight_m": 412.5,
       "height_diff_m": 3.5,
@@ -1877,6 +4824,7 @@
         "mode": "loop-schematic",
         "distance_m": 1400,
         "lap_m": 1705.9,
+        "straight_m": 412.5,
         "anchors": [
           {
             "m": 0,
@@ -1914,6 +4862,7 @@
       }
     },
     "中京|芝|1600": {
+      "variant": "芝1600m",
       "turn": "左回り",
       "straight_m": 412.5,
       "height_diff_m": 3.5,
@@ -1924,6 +4873,7 @@
         "mode": "loop-schematic",
         "distance_m": 1600,
         "lap_m": 1705.9,
+        "straight_m": 412.5,
         "anchors": [
           {
             "m": 0,
@@ -1961,6 +4911,7 @@
       }
     },
     "中京|芝|2000": {
+      "variant": "芝2000m",
       "turn": "左回り",
       "straight_m": 412.5,
       "height_diff_m": 3.5,
@@ -1971,6 +4922,7 @@
         "mode": "loop-schematic",
         "distance_m": 2000,
         "lap_m": 1705.9,
+        "straight_m": 412.5,
         "anchors": [
           {
             "m": 0,
@@ -2008,6 +4960,7 @@
       }
     },
     "中京|芝|2200": {
+      "variant": "芝2200m",
       "turn": "左回り",
       "straight_m": 412.5,
       "height_diff_m": 3.5,
@@ -2018,6 +4971,7 @@
         "mode": "loop-schematic",
         "distance_m": 2200,
         "lap_m": 1705.9,
+        "straight_m": 412.5,
         "anchors": [
           {
             "m": 0,
@@ -2055,6 +5009,7 @@
       }
     },
     "中京|芝|3000": {
+      "variant": "芝3000m",
       "turn": "左回り",
       "straight_m": 412.5,
       "height_diff_m": 3.5,
@@ -2065,6 +5020,7 @@
         "mode": "loop-schematic",
         "distance_m": 3000,
         "lap_m": 1705.9,
+        "straight_m": 412.5,
         "anchors": [
           {
             "m": 0,
@@ -2102,6 +5058,7 @@
       }
     },
     "中京|ダート|1200": {
+      "variant": "ダート1200m",
       "turn": "左回り",
       "straight_m": 410.7,
       "height_diff_m": 3.4,
@@ -2112,6 +5069,7 @@
         "mode": "loop-schematic",
         "distance_m": 1200,
         "lap_m": 1530.0,
+        "straight_m": 410.7,
         "anchors": [
           {
             "m": 0,
@@ -2149,6 +5107,7 @@
       }
     },
     "中京|ダート|1400": {
+      "variant": "ダート1400m",
       "turn": "左回り",
       "straight_m": 410.7,
       "height_diff_m": 3.4,
@@ -2159,6 +5118,7 @@
         "mode": "loop-schematic",
         "distance_m": 1400,
         "lap_m": 1530.0,
+        "straight_m": 410.7,
         "anchors": [
           {
             "m": 0,
@@ -2196,6 +5156,7 @@
       }
     },
     "中京|ダート|1800": {
+      "variant": "ダート1800m",
       "turn": "左回り",
       "straight_m": 410.7,
       "height_diff_m": 3.4,
@@ -2206,6 +5167,7 @@
         "mode": "loop-schematic",
         "distance_m": 1800,
         "lap_m": 1530.0,
+        "straight_m": 410.7,
         "anchors": [
           {
             "m": 0,
@@ -2243,6 +5205,7 @@
       }
     },
     "中京|ダート|1900": {
+      "variant": "ダート1900m",
       "turn": "左回り",
       "straight_m": 410.7,
       "height_diff_m": 3.4,
@@ -2253,6 +5216,7 @@
         "mode": "loop-schematic",
         "distance_m": 1900,
         "lap_m": 1530.0,
+        "straight_m": 410.7,
         "anchors": [
           {
             "m": 0,
@@ -2290,6 +5254,7 @@
       }
     },
     "中京|ダート|2500": {
+      "variant": "ダート2500m",
       "turn": "左回り",
       "straight_m": 410.7,
       "height_diff_m": 3.4,
@@ -2300,6 +5265,7 @@
         "mode": "loop-schematic",
         "distance_m": 2500,
         "lap_m": 1530.0,
+        "straight_m": 410.7,
         "anchors": [
           {
             "m": 0,
@@ -2337,6 +5303,7 @@
       }
     },
     "新潟|芝|1000": {
+      "variant": "直線",
       "turn": "直線",
       "straight_m": null,
       "height_diff_m": null,
@@ -2373,7 +5340,872 @@
         }
       }
     },
+    "新潟|芝|1200": {
+      "variant": "内回り",
+      "turn": "左回り",
+      "straight_m": "358.7m（内）/ 658.7m（外）",
+      "height_diff_m": "0.8m（内）/ 2.2m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1200,
+          "lap_m": 1623.0,
+          "straight_m": 358.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,623m-and-straight-358.7m"
+            },
+            {
+              "m": 841.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-358.7m"
+            },
+            {
+              "m": 1200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,623m）と直線距離（358.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから1,200m（公式1周1,623m上で逆算） ／ 直線358.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差0.8m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,623m・直線358.7m）を前提に描いています。図はJRA公式の1周距離1,623m（内1,623m／外2,223m）と直線358.7mのみを根拠に作図。ゴールを起点に1,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1200,
+          "lap_m": 2223.0,
+          "straight_m": 658.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,223m-and-straight-658.7m"
+            },
+            {
+              "m": 541.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-658.7m"
+            },
+            {
+              "m": 1200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,223m）と直線距離（658.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから1,200m（公式1周2,223m上で逆算） ／ 直線658.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.2m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,223m・直線658.7m）を前提に描いています。図はJRA公式の1周距離2,223m（内1,623m／外2,223m）と直線658.7mのみを根拠に作図。ゴールを起点に1,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "新潟|芝|1400": {
+      "variant": "内・外あり（未確定）",
+      "turn": "左回り",
+      "straight_m": "358.7m（内）/ 658.7m（外）",
+      "height_diff_m": "0.8m（内）/ 2.2m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1400,
+          "lap_m": 1623.0,
+          "straight_m": 358.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,623m-and-straight-358.7m"
+            },
+            {
+              "m": 1041.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-358.7m"
+            },
+            {
+              "m": 1400,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,623m）と直線距離（358.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから1,400m（公式1周1,623m上で逆算） ／ 直線358.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差0.8m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,623m・直線358.7m）を前提に描いています。図はJRA公式の1周距離1,623m（内1,623m／外2,223m）と直線358.7mのみを根拠に作図。ゴールを起点に1,400m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1400,
+          "lap_m": 2223.0,
+          "straight_m": 658.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,223m-and-straight-658.7m"
+            },
+            {
+              "m": 741.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-658.7m"
+            },
+            {
+              "m": 1400,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,223m）と直線距離（658.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから1,400m（公式1周2,223m上で逆算） ／ 直線658.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.2m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,223m・直線658.7m）を前提に描いています。図はJRA公式の1周距離2,223m（内1,623m／外2,223m）と直線658.7mのみを根拠に作図。ゴールを起点に1,400m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "新潟|芝|1600": {
+      "variant": "外回り",
+      "turn": "左回り",
+      "straight_m": "358.7m（内）/ 658.7m（外）",
+      "height_diff_m": "0.8m（内）/ 2.2m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1600,
+          "lap_m": 1623.0,
+          "straight_m": 358.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,623m-and-straight-358.7m"
+            },
+            {
+              "m": 1241.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-358.7m"
+            },
+            {
+              "m": 1600,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,623m）と直線距離（358.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから1,600m（公式1周1,623m上で逆算） ／ 直線358.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差0.8m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,623m・直線358.7m）を前提に描いています。図はJRA公式の1周距離1,623m（内1,623m／外2,223m）と直線358.7mのみを根拠に作図。ゴールを起点に1,600m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1600,
+          "lap_m": 2223.0,
+          "straight_m": 658.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,223m-and-straight-658.7m"
+            },
+            {
+              "m": 941.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-658.7m"
+            },
+            {
+              "m": 1600,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,223m）と直線距離（658.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから1,600m（公式1周2,223m上で逆算） ／ 直線658.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.2m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,223m・直線658.7m）を前提に描いています。図はJRA公式の1周距離2,223m（内1,623m／外2,223m）と直線658.7mのみを根拠に作図。ゴールを起点に1,600m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "新潟|芝|1800": {
+      "variant": "外回り",
+      "turn": "左回り",
+      "straight_m": "358.7m（内）/ 658.7m（外）",
+      "height_diff_m": "0.8m（内）/ 2.2m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1800,
+          "lap_m": 1623.0,
+          "straight_m": 358.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,623m-and-straight-358.7m"
+            },
+            {
+              "m": 1441.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-358.7m"
+            },
+            {
+              "m": 1800,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,623m）と直線距離（358.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから1,800m（公式1周1,623m上で逆算） ／ 直線358.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差0.8m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,623m・直線358.7m）を前提に描いています。図はJRA公式の1周距離1,623m（内1,623m／外2,223m）と直線358.7mのみを根拠に作図。ゴールを起点に1,800m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,623m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 1800,
+          "lap_m": 2223.0,
+          "straight_m": 658.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,223m-and-straight-658.7m"
+            },
+            {
+              "m": 1141.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-658.7m"
+            },
+            {
+              "m": 1800,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,223m）と直線距離（658.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから1,800m（公式1周2,223m上で逆算） ／ 直線658.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.2m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,223m・直線658.7m）を前提に描いています。図はJRA公式の1周距離2,223m（内1,623m／外2,223m）と直線658.7mのみを根拠に作図。ゴールを起点に1,800m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "新潟|芝|2000": {
+      "variant": "内・外あり（未確定）",
+      "turn": "左回り",
+      "straight_m": "358.7m（内）/ 658.7m（外）",
+      "height_diff_m": "0.8m（内）/ 2.2m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2000,
+          "lap_m": 1623.0,
+          "straight_m": 358.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,623m-and-straight-358.7m"
+            },
+            {
+              "m": 1641.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-358.7m"
+            },
+            {
+              "m": 2000,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,623m）と直線距離（358.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから2,000m（公式1周1,623m上で逆算） ／ 直線358.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差0.8m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,623m・直線358.7m）を前提に描いています。図はJRA公式の1周距離1,623m（内1,623m／外2,223m）と直線358.7mのみを根拠に作図。ゴールを起点に2,000m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,623m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2000,
+          "lap_m": 2223.0,
+          "straight_m": 658.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,223m-and-straight-658.7m"
+            },
+            {
+              "m": 1341.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-658.7m"
+            },
+            {
+              "m": 2000,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,223m）と直線距離（658.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから2,000m（公式1周2,223m上で逆算） ／ 直線658.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.2m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,223m・直線658.7m）を前提に描いています。図はJRA公式の1周距離2,223m（内1,623m／外2,223m）と直線658.7mのみを根拠に作図。ゴールを起点に2,000m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "新潟|芝|2200": {
+      "variant": "内回り",
+      "turn": "左回り",
+      "straight_m": "358.7m（内）/ 658.7m（外）",
+      "height_diff_m": "0.8m（内）/ 2.2m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2200,
+          "lap_m": 1623.0,
+          "straight_m": 358.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,623m-and-straight-358.7m"
+            },
+            {
+              "m": 1841.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-358.7m"
+            },
+            {
+              "m": 2200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,623m）と直線距離（358.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから2,200m（公式1周1,623m上で逆算） ／ 直線358.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差0.8m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,623m・直線358.7m）を前提に描いています。図はJRA公式の1周距離1,623m（内1,623m／外2,223m）と直線358.7mのみを根拠に作図。ゴールを起点に2,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,623m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2200,
+          "lap_m": 2223.0,
+          "straight_m": 658.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,223m-and-straight-658.7m"
+            },
+            {
+              "m": 1541.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-658.7m"
+            },
+            {
+              "m": 2200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,223m）と直線距離（658.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから2,200m（公式1周2,223m上で逆算） ／ 直線658.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.2m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,223m・直線658.7m）を前提に描いています。図はJRA公式の1周距離2,223m（内1,623m／外2,223m）と直線658.7mのみを根拠に作図。ゴールを起点に2,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "新潟|芝|2400": {
+      "variant": "内回り",
+      "turn": "左回り",
+      "straight_m": "358.7m（内）/ 658.7m（外）",
+      "height_diff_m": "0.8m（内）/ 2.2m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2400,
+          "lap_m": 1623.0,
+          "straight_m": 358.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,623m-and-straight-358.7m"
+            },
+            {
+              "m": 2041.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-358.7m"
+            },
+            {
+              "m": 2400,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,623m）と直線距離（358.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから2,400m（公式1周1,623m上で逆算） ／ 直線358.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差0.8m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,623m・直線358.7m）を前提に描いています。図はJRA公式の1周距離1,623m（内1,623m／外2,223m）と直線358.7mのみを根拠に作図。ゴールを起点に2,400m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,623m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 2400,
+          "lap_m": 2223.0,
+          "straight_m": 658.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,223m-and-straight-658.7m"
+            },
+            {
+              "m": 1741.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-658.7m"
+            },
+            {
+              "m": 2400,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,223m）と直線距離（658.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから2,400m（公式1周2,223m上で逆算） ／ 直線658.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.2m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,223m・直線658.7m）を前提に描いています。図はJRA公式の1周距離2,223m（内1,623m／外2,223m）と直線658.7mのみを根拠に作図。ゴールを起点に2,400m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（2,223m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "新潟|芝|3000": {
+      "variant": "外回り",
+      "turn": "左回り",
+      "straight_m": "358.7m（内）/ 658.7m（外）",
+      "height_diff_m": "0.8m（内）/ 2.2m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 3000,
+          "lap_m": 1623.0,
+          "straight_m": 358.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,623m-and-straight-358.7m"
+            },
+            {
+              "m": 2641.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-358.7m"
+            },
+            {
+              "m": 3000,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,623m）と直線距離（358.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから3,000m（公式1周1,623m上で逆算） ／ 直線358.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差0.8m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,623m・直線358.7m）を前提に描いています。図はJRA公式の1周距離1,623m（内1,623m／外2,223m）と直線358.7mのみを根拠に作図。ゴールを起点に3,000m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,623m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 3000,
+          "lap_m": 2223.0,
+          "straight_m": 658.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,223m-and-straight-658.7m"
+            },
+            {
+              "m": 2341.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-658.7m"
+            },
+            {
+              "m": 3000,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,223m）と直線距離（658.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから3,000m（公式1周2,223m上で逆算） ／ 直線658.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.2m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,223m・直線658.7m）を前提に描いています。図はJRA公式の1周距離2,223m（内1,623m／外2,223m）と直線658.7mのみを根拠に作図。ゴールを起点に3,000m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（2,223m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
+    "新潟|芝|3200": {
+      "variant": "外回り",
+      "turn": "左回り",
+      "straight_m": "358.7m（内）/ 658.7m（外）",
+      "height_diff_m": "0.8m（内）/ 2.2m（外）",
+      "notes": [],
+      "source_url": "https://www.jra.go.jp/facilities/race/niigata/course/index.html",
+      "verification": "verified-distance-route",
+      "route_variants": [
+        {
+          "mode": "loop-schematic",
+          "distance_m": 3200,
+          "lap_m": 1623.0,
+          "straight_m": 358.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-1,623m-and-straight-358.7m"
+            },
+            {
+              "m": 2841.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-358.7m"
+            },
+            {
+              "m": 3200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（1,623m）と直線距離（358.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "内回りの場合：スタート＝ゴールから3,200m（公式1周1,623m上で逆算） ／ 直線358.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差0.8m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は内回り（公式1周1,623m・直線358.7m）を前提に描いています。図はJRA公式の1周距離1,623m（内1,623m／外2,223m）と直線358.7mのみを根拠に作図。ゴールを起点に3,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（1,623m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "内回り"
+        },
+        {
+          "mode": "loop-schematic",
+          "distance_m": 3200,
+          "lap_m": 2223.0,
+          "straight_m": 658.7,
+          "anchors": [
+            {
+              "m": 0,
+              "role": "start",
+              "label": "スタート",
+              "basis": "derived-from-official-lap-2,223m-and-straight-658.7m"
+            },
+            {
+              "m": 2541.3,
+              "role": "straight_entry",
+              "label": "直線入口",
+              "basis": "derived-from-official-straight-658.7m"
+            },
+            {
+              "m": 3200,
+              "role": "goal",
+              "label": "ゴール",
+              "basis": "official"
+            }
+          ],
+          "unconfirmed": [
+            "inner_or_outer_course",
+            "first_corner",
+            "backstretch_length",
+            "corner_radius",
+            "hill_position"
+          ],
+          "precision_note": "公式の1周距離（2,223m）と直線距離（658.7m）だけを根拠にした距離比例の模式図。1mあたりの長さは全区間そろえてあるので、ラップ色の位置は距離として正しい。向正面の長さとコーナー半径は公式非公表のため、図の中のコーナー位置は模式であり未確定。",
+          "display": {
+            "anchor_fact": "外回りの場合：スタート＝ゴールから3,200m（公式1周2,223m上で逆算） ／ 直線658.7m ／ コーナーまでの距離は公式記載なし（未確定）",
+            "hill_fact": "高低差2.2m（JRA公式）。坂の位置・区間長は公式コース紹介に数値記載がないため未確定。",
+            "precision_fact": "公式の1周距離と直線距離から作図した距離比例の模式図。1mあたりの長さは全区間そろえています。向正面の長さとコーナー半径は公式非公表のため、コーナー位置は模式・未確定です。",
+            "note": "この図は外回り（公式1周2,223m・直線658.7m）を前提に描いています。図はJRA公式の1周距離2,223m（内1,623m／外2,223m）と直線658.7mのみを根拠に作図。ゴールを起点に3,200m分を逆算してスタート位置を示しています。コーナーまでの距離は公式記載を確認できていないため、コーナーの距離数値は入れていません。この距離は1周（2,223m）を超えるため、ラップ色は最終1周分のみ表示しています。",
+            "source_label": "JRA 新潟競馬場 コース紹介（1周距離・直線・高低差）"
+          },
+          "variant_label": "外回り"
+        }
+      ],
+      "route_unavailable_reason": "距離ごとの内回り／外回りの別をJRA公式記載から一意に確定できないため、この距離は内回りの場合と外回りの場合の両方を表示しています。実際に使われるのはどちらか一方です。"
+    },
     "新潟|ダート|1000": {
+      "variant": "ダート1000m",
       "turn": "左回り",
       "straight_m": 353.9,
       "height_diff_m": 0.6,
@@ -2384,6 +6216,7 @@
         "mode": "loop-schematic",
         "distance_m": 1000,
         "lap_m": 1472.5,
+        "straight_m": 353.9,
         "anchors": [
           {
             "m": 0,
@@ -2421,6 +6254,7 @@
       }
     },
     "新潟|ダート|1200": {
+      "variant": "ダート1200m",
       "turn": "左回り",
       "straight_m": 353.9,
       "height_diff_m": 0.6,
@@ -2431,6 +6265,7 @@
         "mode": "loop-schematic",
         "distance_m": 1200,
         "lap_m": 1472.5,
+        "straight_m": 353.9,
         "anchors": [
           {
             "m": 0,
@@ -2468,6 +6303,7 @@
       }
     },
     "新潟|ダート|1700": {
+      "variant": "ダート1700m",
       "turn": "左回り",
       "straight_m": 353.9,
       "height_diff_m": 0.6,
@@ -2478,6 +6314,7 @@
         "mode": "loop-schematic",
         "distance_m": 1700,
         "lap_m": 1472.5,
+        "straight_m": 353.9,
         "anchors": [
           {
             "m": 0,
@@ -2515,6 +6352,7 @@
       }
     },
     "新潟|ダート|1800": {
+      "variant": "ダート1800m",
       "turn": "左回り",
       "straight_m": 353.9,
       "height_diff_m": 0.6,
@@ -2525,6 +6363,7 @@
         "mode": "loop-schematic",
         "distance_m": 1800,
         "lap_m": 1472.5,
+        "straight_m": 353.9,
         "anchors": [
           {
             "m": 0,
@@ -2562,6 +6401,7 @@
       }
     },
     "新潟|ダート|2500": {
+      "variant": "ダート2500m",
       "turn": "左回り",
       "straight_m": 353.9,
       "height_diff_m": 0.6,
@@ -2572,6 +6412,7 @@
         "mode": "loop-schematic",
         "distance_m": 2500,
         "lap_m": 1472.5,
+        "straight_m": 353.9,
         "anchors": [
           {
             "m": 0,
@@ -2609,6 +6450,7 @@
       }
     },
     "札幌|芝|1000": {
+      "variant": "芝1000m",
       "turn": "右回り",
       "straight_m": 266.1,
       "height_diff_m": 0.7,
@@ -2619,6 +6461,7 @@
         "mode": "loop-schematic",
         "distance_m": 1000,
         "lap_m": 1640.9,
+        "straight_m": 266.1,
         "anchors": [
           {
             "m": 0,
@@ -2656,6 +6499,7 @@
       }
     },
     "札幌|芝|1200": {
+      "variant": "芝1200m",
       "turn": "右回り",
       "straight_m": 266.1,
       "height_diff_m": 0.7,
@@ -2666,6 +6510,7 @@
         "mode": "loop-schematic",
         "distance_m": 1200,
         "lap_m": 1640.9,
+        "straight_m": 266.1,
         "anchors": [
           {
             "m": 0,
@@ -2703,6 +6548,7 @@
       }
     },
     "札幌|芝|1500": {
+      "variant": "芝1500m",
       "turn": "右回り",
       "straight_m": 266.1,
       "height_diff_m": 0.7,
@@ -2713,6 +6559,7 @@
         "mode": "loop-schematic",
         "distance_m": 1500,
         "lap_m": 1640.9,
+        "straight_m": 266.1,
         "anchors": [
           {
             "m": 0,
@@ -2750,6 +6597,7 @@
       }
     },
     "札幌|芝|1800": {
+      "variant": "芝1800m",
       "turn": "右回り",
       "straight_m": 266.1,
       "height_diff_m": 0.7,
@@ -2760,6 +6608,7 @@
         "mode": "loop-schematic",
         "distance_m": 1800,
         "lap_m": 1640.9,
+        "straight_m": 266.1,
         "anchors": [
           {
             "m": 0,
@@ -2797,6 +6646,7 @@
       }
     },
     "札幌|芝|2000": {
+      "variant": "芝2000m",
       "turn": "右回り",
       "straight_m": 266.1,
       "height_diff_m": 0.7,
@@ -2807,6 +6657,7 @@
         "mode": "loop-schematic",
         "distance_m": 2000,
         "lap_m": 1640.9,
+        "straight_m": 266.1,
         "anchors": [
           {
             "m": 0,
@@ -2844,6 +6695,7 @@
       }
     },
     "札幌|芝|2600": {
+      "variant": "芝2600m",
       "turn": "右回り",
       "straight_m": 266.1,
       "height_diff_m": 0.7,
@@ -2854,6 +6706,7 @@
         "mode": "loop-schematic",
         "distance_m": 2600,
         "lap_m": 1640.9,
+        "straight_m": 266.1,
         "anchors": [
           {
             "m": 0,
@@ -2891,6 +6744,7 @@
       }
     },
     "札幌|ダート|1000": {
+      "variant": "ダート1000m",
       "turn": "右回り",
       "straight_m": 264.3,
       "height_diff_m": 0.9,
@@ -2901,6 +6755,7 @@
         "mode": "loop-schematic",
         "distance_m": 1000,
         "lap_m": 1487.0,
+        "straight_m": 264.3,
         "anchors": [
           {
             "m": 0,
@@ -2938,6 +6793,7 @@
       }
     },
     "札幌|ダート|1700": {
+      "variant": "ダート1700m",
       "turn": "右回り",
       "straight_m": 264.3,
       "height_diff_m": 0.9,
@@ -2948,6 +6804,7 @@
         "mode": "loop-schematic",
         "distance_m": 1700,
         "lap_m": 1487.0,
+        "straight_m": 264.3,
         "anchors": [
           {
             "m": 0,
@@ -2985,6 +6842,7 @@
       }
     },
     "札幌|ダート|2400": {
+      "variant": "ダート2400m",
       "turn": "右回り",
       "straight_m": 264.3,
       "height_diff_m": 0.9,
@@ -2995,6 +6853,7 @@
         "mode": "loop-schematic",
         "distance_m": 2400,
         "lap_m": 1487.0,
+        "straight_m": 264.3,
         "anchors": [
           {
             "m": 0,
@@ -3032,6 +6891,7 @@
       }
     },
     "函館|芝|1000": {
+      "variant": "芝1000m",
       "turn": "右回り",
       "straight_m": 262.1,
       "height_diff_m": 3.5,
@@ -3042,6 +6902,7 @@
         "mode": "loop-schematic",
         "distance_m": 1000,
         "lap_m": 1626.6,
+        "straight_m": 262.1,
         "anchors": [
           {
             "m": 0,
@@ -3079,6 +6940,7 @@
       }
     },
     "函館|芝|1200": {
+      "variant": "芝1200m",
       "turn": "右回り",
       "straight_m": 262.1,
       "height_diff_m": 3.5,
@@ -3089,6 +6951,7 @@
         "mode": "loop-schematic",
         "distance_m": 1200,
         "lap_m": 1626.6,
+        "straight_m": 262.1,
         "anchors": [
           {
             "m": 0,
@@ -3126,6 +6989,7 @@
       }
     },
     "函館|芝|1700": {
+      "variant": "芝1700m",
       "turn": "右回り",
       "straight_m": 262.1,
       "height_diff_m": 3.5,
@@ -3136,6 +7000,7 @@
         "mode": "loop-schematic",
         "distance_m": 1700,
         "lap_m": 1626.6,
+        "straight_m": 262.1,
         "anchors": [
           {
             "m": 0,
@@ -3173,6 +7038,7 @@
       }
     },
     "函館|芝|1800": {
+      "variant": "芝1800m",
       "turn": "右回り",
       "straight_m": 262.1,
       "height_diff_m": 3.5,
@@ -3183,6 +7049,7 @@
         "mode": "loop-schematic",
         "distance_m": 1800,
         "lap_m": 1626.6,
+        "straight_m": 262.1,
         "anchors": [
           {
             "m": 0,
@@ -3220,6 +7087,7 @@
       }
     },
     "函館|芝|2000": {
+      "variant": "芝2000m",
       "turn": "右回り",
       "straight_m": 262.1,
       "height_diff_m": 3.5,
@@ -3230,6 +7098,7 @@
         "mode": "loop-schematic",
         "distance_m": 2000,
         "lap_m": 1626.6,
+        "straight_m": 262.1,
         "anchors": [
           {
             "m": 0,
@@ -3267,6 +7136,7 @@
       }
     },
     "函館|芝|2600": {
+      "variant": "芝2600m",
       "turn": "右回り",
       "straight_m": 262.1,
       "height_diff_m": 3.5,
@@ -3277,6 +7147,7 @@
         "mode": "loop-schematic",
         "distance_m": 2600,
         "lap_m": 1626.6,
+        "straight_m": 262.1,
         "anchors": [
           {
             "m": 0,
@@ -3314,6 +7185,7 @@
       }
     },
     "函館|ダート|1000": {
+      "variant": "ダート1000m",
       "turn": "右回り",
       "straight_m": 260.3,
       "height_diff_m": 3.5,
@@ -3324,6 +7196,7 @@
         "mode": "loop-schematic",
         "distance_m": 1000,
         "lap_m": 1475.8,
+        "straight_m": 260.3,
         "anchors": [
           {
             "m": 0,
@@ -3361,6 +7234,7 @@
       }
     },
     "函館|ダート|1700": {
+      "variant": "ダート1700m",
       "turn": "右回り",
       "straight_m": 260.3,
       "height_diff_m": 3.5,
@@ -3371,6 +7245,7 @@
         "mode": "loop-schematic",
         "distance_m": 1700,
         "lap_m": 1475.8,
+        "straight_m": 260.3,
         "anchors": [
           {
             "m": 0,
@@ -3408,6 +7283,7 @@
       }
     },
     "函館|ダート|2400": {
+      "variant": "ダート2400m",
       "turn": "右回り",
       "straight_m": 260.3,
       "height_diff_m": 3.5,
@@ -3418,6 +7294,7 @@
         "mode": "loop-schematic",
         "distance_m": 2400,
         "lap_m": 1475.8,
+        "straight_m": 260.3,
         "anchors": [
           {
             "m": 0,
@@ -3455,6 +7332,7 @@
       }
     },
     "福島|芝|1000": {
+      "variant": "芝1000m",
       "turn": "右回り",
       "straight_m": 292.0,
       "height_diff_m": 1.9,
@@ -3465,6 +7343,7 @@
         "mode": "loop-schematic",
         "distance_m": 1000,
         "lap_m": 1614.1,
+        "straight_m": 292.0,
         "anchors": [
           {
             "m": 0,
@@ -3502,6 +7381,7 @@
       }
     },
     "福島|芝|1200": {
+      "variant": "芝1200m",
       "turn": "右回り",
       "straight_m": 292.0,
       "height_diff_m": 1.9,
@@ -3512,6 +7392,7 @@
         "mode": "loop-schematic",
         "distance_m": 1200,
         "lap_m": 1614.1,
+        "straight_m": 292.0,
         "anchors": [
           {
             "m": 0,
@@ -3549,6 +7430,7 @@
       }
     },
     "福島|芝|1700": {
+      "variant": "芝1700m",
       "turn": "右回り",
       "straight_m": 292.0,
       "height_diff_m": 1.9,
@@ -3559,6 +7441,7 @@
         "mode": "loop-schematic",
         "distance_m": 1700,
         "lap_m": 1614.1,
+        "straight_m": 292.0,
         "anchors": [
           {
             "m": 0,
@@ -3596,6 +7479,7 @@
       }
     },
     "福島|芝|1800": {
+      "variant": "芝1800m",
       "turn": "右回り",
       "straight_m": 292.0,
       "height_diff_m": 1.9,
@@ -3606,6 +7490,7 @@
         "mode": "loop-schematic",
         "distance_m": 1800,
         "lap_m": 1614.1,
+        "straight_m": 292.0,
         "anchors": [
           {
             "m": 0,
@@ -3643,6 +7528,7 @@
       }
     },
     "福島|芝|2000": {
+      "variant": "芝2000m",
       "turn": "右回り",
       "straight_m": 292.0,
       "height_diff_m": 1.9,
@@ -3653,6 +7539,7 @@
         "mode": "loop-schematic",
         "distance_m": 2000,
         "lap_m": 1614.1,
+        "straight_m": 292.0,
         "anchors": [
           {
             "m": 0,
@@ -3690,6 +7577,7 @@
       }
     },
     "福島|芝|2600": {
+      "variant": "芝2600m",
       "turn": "右回り",
       "straight_m": 292.0,
       "height_diff_m": 1.9,
@@ -3700,6 +7588,7 @@
         "mode": "loop-schematic",
         "distance_m": 2600,
         "lap_m": 1614.1,
+        "straight_m": 292.0,
         "anchors": [
           {
             "m": 0,
@@ -3737,6 +7626,7 @@
       }
     },
     "福島|ダート|1000": {
+      "variant": "ダート1000m",
       "turn": "右回り",
       "straight_m": 295.7,
       "height_diff_m": 2.1,
@@ -3747,6 +7637,7 @@
         "mode": "loop-schematic",
         "distance_m": 1000,
         "lap_m": 1444.6,
+        "straight_m": 295.7,
         "anchors": [
           {
             "m": 0,
@@ -3784,6 +7675,7 @@
       }
     },
     "福島|ダート|1150": {
+      "variant": "ダート1150m",
       "turn": "右回り",
       "straight_m": 295.7,
       "height_diff_m": 2.1,
@@ -3794,6 +7686,7 @@
         "mode": "loop-schematic",
         "distance_m": 1150,
         "lap_m": 1444.6,
+        "straight_m": 295.7,
         "anchors": [
           {
             "m": 0,
@@ -3831,6 +7724,7 @@
       }
     },
     "福島|ダート|1700": {
+      "variant": "ダート1700m",
       "turn": "右回り",
       "straight_m": 295.7,
       "height_diff_m": 2.1,
@@ -3841,6 +7735,7 @@
         "mode": "loop-schematic",
         "distance_m": 1700,
         "lap_m": 1444.6,
+        "straight_m": 295.7,
         "anchors": [
           {
             "m": 0,
@@ -3878,6 +7773,7 @@
       }
     },
     "福島|ダート|2400": {
+      "variant": "ダート2400m",
       "turn": "右回り",
       "straight_m": 295.7,
       "height_diff_m": 2.1,
@@ -3888,6 +7784,7 @@
         "mode": "loop-schematic",
         "distance_m": 2400,
         "lap_m": 1444.6,
+        "straight_m": 295.7,
         "anchors": [
           {
             "m": 0,
@@ -3925,6 +7822,7 @@
       }
     },
     "小倉|芝|1000": {
+      "variant": "芝1000m",
       "turn": "右回り",
       "straight_m": 293.0,
       "height_diff_m": 3.0,
@@ -3935,6 +7833,7 @@
         "mode": "loop-schematic",
         "distance_m": 1000,
         "lap_m": 1615.1,
+        "straight_m": 293.0,
         "anchors": [
           {
             "m": 0,
@@ -3972,6 +7871,7 @@
       }
     },
     "小倉|芝|1200": {
+      "variant": "芝1200m",
       "turn": "右回り",
       "straight_m": 293.0,
       "height_diff_m": 3.0,
@@ -3982,6 +7882,7 @@
         "mode": "loop-schematic",
         "distance_m": 1200,
         "lap_m": 1615.1,
+        "straight_m": 293.0,
         "anchors": [
           {
             "m": 0,
@@ -4019,6 +7920,7 @@
       }
     },
     "小倉|芝|1700": {
+      "variant": "芝1700m",
       "turn": "右回り",
       "straight_m": 293.0,
       "height_diff_m": 3.0,
@@ -4029,6 +7931,7 @@
         "mode": "loop-schematic",
         "distance_m": 1700,
         "lap_m": 1615.1,
+        "straight_m": 293.0,
         "anchors": [
           {
             "m": 0,
@@ -4066,6 +7969,7 @@
       }
     },
     "小倉|芝|1800": {
+      "variant": "芝1800m",
       "turn": "右回り",
       "straight_m": 293.0,
       "height_diff_m": 3.0,
@@ -4076,6 +7980,7 @@
         "mode": "loop-schematic",
         "distance_m": 1800,
         "lap_m": 1615.1,
+        "straight_m": 293.0,
         "anchors": [
           {
             "m": 0,
@@ -4113,6 +8018,7 @@
       }
     },
     "小倉|芝|2000": {
+      "variant": "芝2000m",
       "turn": "右回り",
       "straight_m": 293.0,
       "height_diff_m": 3.0,
@@ -4123,6 +8029,7 @@
         "mode": "loop-schematic",
         "distance_m": 2000,
         "lap_m": 1615.1,
+        "straight_m": 293.0,
         "anchors": [
           {
             "m": 0,
@@ -4160,6 +8067,7 @@
       }
     },
     "小倉|芝|2600": {
+      "variant": "芝2600m",
       "turn": "右回り",
       "straight_m": 293.0,
       "height_diff_m": 3.0,
@@ -4170,6 +8078,7 @@
         "mode": "loop-schematic",
         "distance_m": 2600,
         "lap_m": 1615.1,
+        "straight_m": 293.0,
         "anchors": [
           {
             "m": 0,
@@ -4207,6 +8116,7 @@
       }
     },
     "小倉|ダート|1000": {
+      "variant": "ダート1000m",
       "turn": "右回り",
       "straight_m": 291.3,
       "height_diff_m": 2.9,
@@ -4217,6 +8127,7 @@
         "mode": "loop-schematic",
         "distance_m": 1000,
         "lap_m": 1445.4,
+        "straight_m": 291.3,
         "anchors": [
           {
             "m": 0,
@@ -4254,6 +8165,7 @@
       }
     },
     "小倉|ダート|1700": {
+      "variant": "ダート1700m",
       "turn": "右回り",
       "straight_m": 291.3,
       "height_diff_m": 2.9,
@@ -4264,6 +8176,7 @@
         "mode": "loop-schematic",
         "distance_m": 1700,
         "lap_m": 1445.4,
+        "straight_m": 291.3,
         "anchors": [
           {
             "m": 0,
@@ -4301,6 +8214,7 @@
       }
     },
     "小倉|ダート|2400": {
+      "variant": "ダート2400m",
       "turn": "右回り",
       "straight_m": 291.3,
       "height_diff_m": 2.9,
@@ -4311,6 +8225,7 @@
         "mode": "loop-schematic",
         "distance_m": 2400,
         "lap_m": 1445.4,
+        "straight_m": 291.3,
         "anchors": [
           {
             "m": 0,
