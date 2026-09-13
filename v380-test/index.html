@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="app-version" content="3.8.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ラップ断面 × コース × 血統</title>
+<meta name="theme-color" content="#031729">
+<meta name="application-name" content="ラップ断面">
+<meta name="apple-mobile-web-app-title" content="ラップ断面">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<style>
+:root{
+  --bg:#031729;--panel:#08243A;--panel2:#0B2D47;--panel3:#0E3551;--rule:#175476;
+  --ink:#F2F7FB;--dim:#91ADBF;--blue:#129BFF;--green:#33D27F;--yellow:#F1D64B;
+  --hot:#FF615F;--orange:#FF9B3F;--cool:#42A5F5;
+  --mono:ui-monospace,"SF Mono","Roboto Mono",Menlo,Consolas,monospace;
+  --sans:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:radial-gradient(circle at 50% -15%,#0B3657 0,#061F34 31%,var(--bg) 72%);color:var(--ink);font-family:var(--sans);-webkit-text-size-adjust:100%}
+button,select{font:inherit}.wrap{max-width:920px;margin:0 auto;padding:calc(10px + env(safe-area-inset-top)) 12px calc(74px + env(safe-area-inset-bottom))}
+.appShell{border:1px solid rgba(31,125,178,.5);border-radius:18px;background:rgba(2,20,34,.88);box-shadow:0 18px 70px rgba(0,0,0,.3);overflow:hidden}
+header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:15px 16px 12px;border-bottom:1px solid rgba(35,130,184,.35);background:linear-gradient(180deg,rgba(8,43,70,.98),rgba(3,25,42,.95))}
+.brand{display:flex;gap:11px;align-items:center;min-width:0}.horseMark{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;font-size:32px;background:linear-gradient(145deg,#0C385A,#08253C);border:1px solid #1C628E;box-shadow:inset 0 0 16px rgba(69,166,220,.08)}
+h1{margin:0;font-size:25px;line-height:1.05;font-weight:900;letter-spacing:-.045em;white-space:nowrap}.x{color:#7E9CB1;font-weight:600}.brandAccent{color:#F0D44F}.sub{margin-top:5px;color:#9FB7C7;font-size:11px;line-height:1.4}.sub strong{color:#D5E6EF}.updateBox{display:flex;align-items:center;gap:8px;border:1px solid var(--rule);background:#06263F;border-radius:11px;padding:8px 9px;min-width:238px}.uText{font:10.5px/1.45 var(--mono);color:#AFC4D2;flex:1}.updateBtn{border:1px solid #1A6D9D;background:#0B3D60;color:#EAF7FF;border-radius:8px;padding:9px 11px;font-weight:800;white-space:nowrap}.updateBtn:disabled{opacity:.45}
+#appStatus{margin:6px 16px 0}.modeTabs{display:flex;gap:6px;padding:10px 14px 5px}.modeTabs button{border:1px solid var(--rule);background:#082840;color:#99B2C2;border-radius:8px;padding:8px 15px;font-weight:800;font-size:12px}.modeTabs button[aria-selected="true"]{background:#0A8DEB;color:#fff;border-color:#2AA8FF}
+#paneCond,#paneGrade{padding:6px 14px 10px}.filters{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.filters>div{border:1px solid var(--rule);background:linear-gradient(180deg,#0A2E49,#08243B);border-radius:10px;padding:7px 9px}.filters label{display:block;font:10px var(--mono);color:#8DA9BB;margin-bottom:4px}.filters select{width:100%;border:0;outline:0;color:#F3F8FB;background:transparent;font-size:15px;font-weight:850;min-height:28px}.filters select option{background:#08243A;color:#F3F8FB}.filters .full{grid-column:auto}.gradeFilters{grid-template-columns:1fr 1fr 2.1fr}.btnRow{display:flex;gap:8px;margin-top:9px}.btn{flex:1;border:1px solid var(--rule);background:#0A2B45;color:#D8E8F1;border-radius:8px;padding:9px;font-weight:800;font-size:12px}.btn.amber{background:#0A8DEB;border-color:#2AA8FF;color:#fff}
+.content{padding:0 10px 12px}.legend{display:flex;flex-wrap:wrap;gap:6px;margin:4px 4px 8px}.chip{display:flex;align-items:center;gap:5px;background:#0A2D48;border:1px solid var(--rule);border-radius:999px;padding:5px 9px;font:10.5px var(--mono);color:#D8E7EF}.chip button{background:none;border:0;color:#9EB5C3;font-size:14px;padding:0}
+.readout{border:1px solid #176491;border-radius:12px;background:linear-gradient(180deg,#0A2E49,#07263D);padding:12px;margin-bottom:10px}.rTop{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.rTitle{font-size:20px;font-weight:900;letter-spacing:-.02em}.badge{padding:5px 11px;border-radius:999px;background:#0A6843;color:#6FFFB0;font-size:12px;font-weight:900}.rGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.cell{border:1px solid rgba(32,105,149,.55);border-radius:8px;background:rgba(7,36,58,.88);padding:9px}.cell .k{font:10px var(--mono);color:#A6BECD}.cell .v{margin-top:3px;font:800 20px/1.16 var(--mono);overflow-wrap:anywhere}
+.chartBox{border:1px solid #176491;border-radius:12px;background:linear-gradient(180deg,#08243A,#061D31);padding:8px 4px 2px;margin-bottom:9px;overflow:hidden}.chartBox svg{display:block;width:100%;height:auto}.stripWrap{margin:0 3px 12px}.stripLbl{font-size:11px;color:#C1D2DC;font-weight:800;margin-bottom:6px}.strip{display:flex;height:34px;border-radius:6px;overflow:hidden;border:1px solid rgba(34,132,190,.5)}.strip div{display:flex;align-items:center;justify-content:center;color:#061623;font:800 10px var(--mono);min-width:0}.scale{display:flex;justify-content:space-between;color:#8DA8BA;font:10px var(--mono);margin-top:4px}
+.sectionCard{border:1px solid #176491;border-radius:12px;background:linear-gradient(180deg,rgba(8,36,58,.99),rgba(5,29,47,.99));padding:11px;margin-bottom:10px}.sectionHead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}.sectionHead h2{margin:0;font-size:19px;font-weight:900}.sectionSub{font:11px var(--mono);color:#B1C8D7}.courseGrid{display:grid;grid-template-columns:1.55fr .82fr;gap:10px}.courseSvg{background:linear-gradient(180deg,#0F4A3F,#0A302F);border:1px solid #1B6A69;border-radius:10px;width:100%;min-height:210px}.profileSvg{background:#071D2F;border:1px solid #176491;border-radius:10px;width:100%;margin-top:8px}.courseFacts{display:grid;gap:6px;align-content:start}.fact{background:#0A2A43;border:1px solid rgba(31,100,142,.45);border-radius:8px;padding:8px}.fact .fk{font:10px var(--mono);color:#8AA9BC}.fact .fv{font-size:13px;margin-top:2px;line-height:1.45}.variantHead{margin:12px 0 6px;font-weight:900;font-size:13px;color:#F1D64B}
+.pedigreeMeta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.miniBadge{background:#0A2A43;border:1px solid var(--rule);border-radius:999px;padding:4px 7px;font:10px var(--mono);color:#CFE0E9}.pedigreeTabs{display:none}.pedigreeGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.pedCard{border:1px solid #15577D;border-radius:9px;background:#071F34;overflow:hidden}.pedTitle{padding:7px 9px;background:#0A2A45;font-size:12px;font-weight:900;color:#F2D248}.pedCard table{margin:0}.pedigreeStatus{padding:22px 10px;border:1px dashed var(--rule);border-radius:8px;text-align:center;color:#91ADBF;font-size:12px;line-height:1.7}
+.tblWrap{overflow:auto;border:1px solid var(--rule);border-radius:9px;background:#071F33;margin-bottom:10px}table{width:100%;border-collapse:collapse;font:10.5px var(--mono);white-space:nowrap}th,td{padding:6px 7px;border-bottom:1px solid rgba(30,87,122,.45);text-align:right}th:first-child,td:first-child{text-align:left}th{color:#8FABB9;background:#092941;font-weight:600}.note{font-size:11px;color:#8FAABB;line-height:1.65}.empty{padding:28px 14px;text-align:center;color:#8FAABB}
+a{color:#59BDF8}.trendMemo{display:flex;gap:10px;align-items:flex-start;border:1px solid #176491;background:#08243A;border-radius:12px;padding:12px;margin:0 10px 12px}.trendIcon{font-size:23px}.trendMemo strong{color:#F2D248}.trendMemo p{margin:3px 0 0;color:#C2D4DF;font-size:12px;line-height:1.7}.bottomNav{position:sticky;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(3,20,34,.97);backdrop-filter:blur(14px);border-top:1px solid #154D70;padding:7px 6px calc(7px + env(safe-area-inset-bottom));margin:8px -12px calc(-74px - env(safe-area-inset-bottom));z-index:10}.navItem{text-align:center;color:#819DB0;font-size:10px}.navItem b{display:block;font-size:20px;line-height:1.05;margin-bottom:2px}.navItem.active{color:#F0D343}
+@media(max-width:760px){header{grid-template-columns:1fr}.updateBox{min-width:0}.filters{grid-template-columns:repeat(2,minmax(0,1fr))}.filters .full{grid-column:1/-1}.gradeFilters{grid-template-columns:1fr 1fr}.gradeFilters>div:last-child{grid-column:1/-1}.courseGrid{grid-template-columns:1fr}.rGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.wrap{padding-left:7px;padding-right:7px}.appShell{border-left:0;border-right:0;border-radius:0}h1{font-size:20px}.sub{font-size:10px}.horseMark{width:44px;height:44px;font-size:28px}.content{padding-left:7px;padding-right:7px}.rTitle{font-size:16px}.cell .v{font-size:17px}.sectionHead h2{font-size:17px}.pedigreeGrid{grid-template-columns:1fr}.bottomNav{margin-left:-7px;margin-right:-7px}}
+</style>
+</head><body>
+<div class="wrap"><div class="appShell">
+<header>
+  <div class="brand"><div class="horseMark" aria-hidden="true">♞</div><div><h1>ラップ断面 <span class="x">×</span> <span class="brandAccent">コース</span> <span class="x">×</span> 血統</h1><div class="sub">コース・ラップ・血統をつなげて、勝ち筋が見えてくる</div><div id="metaLine" class="sub"></div></div></div>
+  <div class="updateBox"><div class="uText" id="dataStatus" role="status" aria-live="polite">データ読み込み中…</div><button class="updateBtn" id="btnUpdate" type="button">↻ 更新</button></div>
+</header>
+<p id="appStatus" class="note" role="status"></p>
+<div class="modeTabs" role="tablist"><button id="tabCond" role="tab" aria-selected="true">条件別</button><button id="tabGrade" role="tab" aria-selected="false">重賞別</button></div>
+<div id="paneCond">
+  <div class="filters"><div><label for="fVenue">競馬場</label><select id="fVenue"></select></div><div><label for="fSurf">芝／ダート</label><select id="fSurf"></select></div><div><label for="fDist">距離</label><select id="fDist"></select></div><div><label for="fClass">クラス</label><select id="fClass"></select></div><div class="full"><label for="fGoing">馬場状態</label><select id="fGoing"></select></div></div>
+  <div class="btnRow"><button class="btn amber" id="btnAdd">この条件を重ねる</button><button class="btn" id="btnClear">重ねを消す</button></div>
+</div>
+<div id="paneGrade" hidden>
+  <div class="filters gradeFilters"><div><label for="fGradeClass">クラス別</label><select id="fGradeClass"></select></div><div><label for="fGradeDist">距離別</label><select id="fGradeDist"></select></div><div><label for="fRace">重賞レース</label><select id="fRace"></select></div></div>
+</div>
+<main class="content">
+  <div id="legend" class="legend"></div><div id="readout"></div>
+  <div class="chartBox"><svg id="chart" viewBox="0 0 700 340" role="img" aria-label="ラップ推移グラフ"></svg></div>
+  <div class="stripWrap"><div class="stripLbl">ペース断面（赤＝速い区間／青＝遅い区間）</div><div class="strip" id="strip"></div><div class="scale"><span>スタート</span><span>ゴール</span></div></div>
+  <section class="sectionCard" id="courseSection"><div class="sectionHead"><h2>コース図・起伏</h2><span class="sectionSub" id="courseTitle"></span></div><div id="courseBody"></div></section>
+  <section class="sectionCard" id="pedigreeSection"><div class="sectionHead"><h2>コース適性血統</h2><span class="sectionSub" id="pedigreeTitle"></span></div><div class="pedigreeMeta" id="pedigreeMeta"></div><div class="pedigreeTabs" aria-hidden="true"><button data-ped="sire" class="active">父系</button><button data-ped="damsire">母父系</button><button data-ped="cross">父大系統 × 母父大系統</button><button data-ped="stallion">個別種牡馬</button></div><div id="pedigreeBody"></div></section>
+  <div class="tblWrap"><table id="tbl"></table></div><p class="note" id="note"></p>
+</main>
+<div class="trendMemo"><div class="trendIcon">💡</div><div><strong>傾向メモ</strong><p id="trendMemoText">表示条件を読み込み中です。</p></div></div>
+</div>
+<nav class="bottomNav" aria-label="分析画面ナビゲーション"><div class="navItem"><b>⌂</b>ホーム</div><div class="navItem active"><b>▥</b>分析</div><div class="navItem"><b>♞</b>レース</div><div class="navItem"><b>★</b>お気に入り</div><div class="navItem"><b>☰</b>メニュー</div></nav>
+</div>
+<script src="./core.js?v=3.8.0" defer></script>
+<script src="./app.js?v=3.8.0" defer></script>
+</body></html>
