@@ -15,11 +15,12 @@ function summary(){if(!bundle)return '';const m=bundle['lapdata.json'].meta;retu
 function currentKey(){return ['fVenue','fSurf','fDist','fClass','fGoing'].map(id=>$(id).value).join('|')}
 function cond(){return bundle?.['lapdata.json'].cond||{}}
 function grades(){return bundle?.['lapdata.json'].grade||{}}
+function classLabel(c){return c==='オープン'?'オープン（重賞含む）':c}
 function fill(id,items,desired){const s=$(id),keep=desired??s.value;s.replaceChildren(...items.map(v=>{const o=node('option',v.label??v);o.value=String(v.value??v);return o}));s.value=items.some(v=>String(v.value??v)===keep)?keep:(items[0]?.value??items[0]??'')}
 function refreshFilters(){
  let rs=Object.keys(cond()).map(k=>k.split('|'));
  const ids=['fVenue','fSurf','fDist','fClass','fGoing'];
- ids.forEach((id,i)=>{const values=[...new Set(rs.map(r=>r[i]))].sort(i===0?(a,b)=>SORT(a,VORDER)-SORT(b,VORDER):i===2?(a,b)=>+a-+b:i===3?(a,b)=>SORT(a,C.CLASSES)-SORT(b,C.CLASSES):undefined);fill(id,values);rs=rs.filter(r=>r[i]===$(id).value)});
+ ids.forEach((id,i)=>{const values=[...new Set(rs.map(r=>r[i]))].sort(i===0?(a,b)=>SORT(a,VORDER)-SORT(b,VORDER):i===2?(a,b)=>+a-+b:i===3?(a,b)=>SORT(a,C.CLASSES)-SORT(b,C.CLASSES):undefined);fill(id,i===3?values.map(value=>({value,label:classLabel(value)})):values);rs=rs.filter(r=>r[i]===$(id).value)});
  const d=+$('fDist').value;overlays=overlays.filter(k=>cond()[k]&&+k.split('|')[2]===d);
 }
 function gradeRows(){
@@ -81,7 +82,7 @@ async function update(initial=false){
  }finally{busy=false;$('btnUpdate').disabled=false}
 }
 function fmt(x){if(x===null||x===undefined)return '—';if(x<60)return x.toFixed(1);return `${Math.floor(x/60)}:${(x%60).toFixed(1).padStart(4,'0')}`}
-function label(k){const [v,s,d,c,g]=k.split('|');return `${v}${s}${d}m ${c} ${g}`}
+function label(k){const [v,s,d,c,g]=k.split('|');return `${v}${s}${d}m ${classLabel(c)} ${g}`}
 function color(t,lo,hi){return `hsl(${8+(t-lo)/((hi-lo)||1)*205},72%,55%)`}
 function pace(a,b){const d=a-b;return d<=-1?'ハイペース':d<=-.3?'やや前傾':d<.4?'ミドル':d<1.2?'やや後傾':'スローペース'}
 function table(headers,rows){const t=node('table'),head=node('tr');headers.forEach(x=>head.append(node('th',x)));t.append(head);for(const row of rows){const tr=node('tr');row.forEach(x=>tr.append(node('td',x)));t.append(tr)}return t}
@@ -385,7 +386,7 @@ function renderCourse(v,s,d,laps){
  body.append(node('p','走行距離上のラップ区間（実コース図との連動ではありません）','note'),strip);
 }
 function renderPedigree(v,s,d,cls,going,grade){
- const bc=C.bloodClass(cls,grade),bcLabel=bc==='オープン'?'オープン（重賞含む）':bc;$('pedigreeTitle').textContent=`${v}${s}${d}m ／ ${bcLabel||'集計対象外'}`;
+ const bc=C.bloodClass(cls,grade),bcLabel=classLabel(bc);$('pedigreeTitle').textContent=`${v}${s}${d}m ／ ${bcLabel||'集計対象外'}`;
  $('pedigreeMeta').replaceChildren(node('span',`クラス：${bcLabel||'集計対象外'}`,'miniBadge'),node('span',`馬場：${going==='全'?'全馬場':going}`,'miniBadge'));
  if(!bc){empty('pedigreeBody','このクラスは血統集計対象外です。');return}
  const ped=bundle['pedigree_stats.json'];if(!ped.meta.source_rows){empty('pedigreeBody','データ未登録');return}
