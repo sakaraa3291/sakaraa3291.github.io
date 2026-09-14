@@ -391,7 +391,7 @@ function renderPedigree(v,s,d,cls,going,grade){
  const ped=bundle['pedigree_stats.json'];if(!ped.meta.source_rows){empty('pedigreeBody','データ未登録');return}
  const rec=ped.stats[[v,s,d,bc,going].join('|')];if(!rec){empty('pedigreeBody','この条件の血統データは未登録です。');return}
  const pct=(x,n=0)=>x===null?'欠損':`${x.toFixed(1)}%${n?'（欠損'+n+'）':''}`;
- const layers=[['父系ランキング','sire_line'],['母父系ランキング','damsire_line'],['父大系統 × 母父大系統ランキング','cross_major'],['個別種牡馬ランキング','stallion']];
+ const layers=[['父大系統ランキング','sire_line'],['母父大系統ランキング','damsire_line'],['父大系統 × 母父大系統ランキング','cross_major'],['個別種牡馬ランキング','stallion']];
  const grid=node('div',undefined,'pedigreeGrid');
  for(const [title,key] of layers){
   const card=node('div',undefined,'pedCard');card.append(node('div',title,'pedTitle'));const arr=rec[key]||[];
@@ -406,7 +406,7 @@ function trendText(v,s,d,cls,going,grade,front,back,fastest){
  const bc=C.bloodClass(cls,grade),ped=bundle['pedigree_stats.json'];
  if(!ped.meta.source_rows)return text+' 血統は実データ未登録のため、ランキングは表示していません。';
  const rec=bc&&ped.stats[[v,s,d,bc,going].join('|')],top=rec?.sire_line?.[0];
- if(top)text+=` 血統では父系「${top.name}」が現在の集計上位です（${top.starts}走、勝率${top.win_rate.toFixed(1)}%）。`;
+ if(top)text+=` 血統では父大系統「${top.name}」が現在の集計上位です（${top.starts}走、勝率${top.win_rate.toFixed(1)}%）。`;
  else text+=' この条件では血統の最低出走数を満たす集計がありません。';
  return text;
 }
