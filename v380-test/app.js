@@ -385,8 +385,8 @@ function renderCourse(v,s,d,laps){
  body.append(node('p','走行距離上のラップ区間（実コース図との連動ではありません）','note'),strip);
 }
 function renderPedigree(v,s,d,cls,going,grade){
- const bc=C.bloodClass(cls,grade);$('pedigreeTitle').textContent=`${v}${s}${d}m ／ ${bc||'集計対象外'}`;
- $('pedigreeMeta').replaceChildren(node('span',`クラス：${bc||'集計対象外'}`,'miniBadge'),node('span',`馬場：${going==='全'?'全馬場':going}`,'miniBadge'));
+ const bc=C.bloodClass(cls,grade),bcLabel=bc==='オープン'?'オープン（重賞含む）':bc;$('pedigreeTitle').textContent=`${v}${s}${d}m ／ ${bcLabel||'集計対象外'}`;
+ $('pedigreeMeta').replaceChildren(node('span',`クラス：${bcLabel||'集計対象外'}`,'miniBadge'),node('span',`馬場：${going==='全'?'全馬場':going}`,'miniBadge'));
  if(!bc){empty('pedigreeBody','このクラスは血統集計対象外です。');return}
  const ped=bundle['pedigree_stats.json'];if(!ped.meta.source_rows){empty('pedigreeBody','データ未登録');return}
  const rec=ped.stats[[v,s,d,bc,going].join('|')];if(!rec){empty('pedigreeBody','この条件の血統データは未登録です。');return}
