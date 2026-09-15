@@ -28,7 +28,8 @@ def sha256(path: Path) -> str:
 
 
 files = {name: sha256(ROOT / name) for name in ASSETS}
-shell_digest = hashlib.sha256(json.dumps(files, sort_keys=True).encode()).hexdigest()[:16]
+shell_inputs = {"files": files, "generator": sha256(Path(__file__))}
+shell_digest = hashlib.sha256(json.dumps(shell_inputs, sort_keys=True).encode()).hexdigest()[:16]
 release = {"app_version": APP_VERSION, "shell_id": f"{APP_VERSION}-{shell_digest}", "files": files}
 release_json = json.dumps(release, ensure_ascii=False, separators=(",", ":"))
 
@@ -59,6 +60,9 @@ self.addEventListener('activate',event=>{{
   await Promise.all(keys.filter(k=>k.startsWith(PREFIX)&&k!==CACHE).map(k=>caches.delete(k)));
   await self.clients.claim();
  }})());
+}});
+self.addEventListener('message',event=>{{
+ if(event.data?.type==='GET_SHELL_ID'&&event.ports[0])event.ports[0].postMessage(RELEASE.shell_id);
 }});
 self.addEventListener('fetch',event=>{{
  const r=event.request;if(r.method!=='GET')return;const u=new URL(r.url);
