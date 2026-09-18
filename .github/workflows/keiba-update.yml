@@ -1,0 +1,105 @@
+name: Horse racing v4.2 update
+on:
+  workflow_dispatch:
+    inputs:
+      to_date:
+        description: 'Inclusive completed JST date (YYYY-MM-DD); empty means yesterday'
+        required: false
+        type: string
+      dry_run:
+        description: 'Validate and build only; no commit or deployment'
+        type: boolean
+        default: true
+  schedule:
+    # Tuesday 05:23 JST: includes Sunday and occasional Monday meetings.
+    - cron: '23 20 * * 1'
+permissions:
+  contents: write
+concurrency:
+  group: keiba-production-update
+  cancel-in-progress: false
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    outputs:
+      changed: ${{ steps.update.outputs.changed }}
+      sha: ${{ steps.commit.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: automation/requirements-ci.txt
+      - run: python -m pip install -r automation/requirements-ci.txt
+      - name: Contract and safety tests
+        run: python -m pytest -q automation/keiba_update_pkg/tests automation/tests
+      - name: Verify persistent state against production aggregates
+        run: python automation/verify_state.py --out automation/runs/baseline-verification
+      - name: Validate and update
+        id: update
+        env:
+          REQUESTED_DATE: ${{ inputs.to_date }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          args=(--workdir automation/runs/current)
+          if [[ -n "$REQUESTED_DATE" ]]; then args+=(--to-date "$REQUESTED_DATE"); fi
+          if [[ "$DRY_RUN" != 'true' ]]; then args+=(--apply); fi
+          python automation/run_update.py "${args[@]}"
+      - name: Commit state and public data together
+        if: steps.update.outputs.changed == 'true'
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python automation/check_changes.py
+          git add -- lapdata.json pedigree_stats.json data-version.json automation/state/keiba_master.csv.gz automation/state/payout.csv.gz automation/state/horse_pedigree.csv automation/state/manifest.json
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Update horse racing data and persistent state'
+          # Normal fast-forward push only; concurrent human changes cause a safe failure.
+          git push origin HEAD:main
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Retain diagnostics and fetch checkpoints
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: keiba-run-${{ github.run_id }}-${{ github.run_attempt }}
+          path: automation/runs/current
+          if-no-files-found: ignore
+          retention-days: 14
+  deploy:
+    needs: update
+    if: needs.update.outputs.changed == 'true' && needs.update.outputs.sha != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.update.outputs.sha }}
+      - uses: actions/configure-pages@v5
+      - name: Stage public site only
+        run: python automation/stage_site.py --out _site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - uses: actions/deploy-pages@v4
+        id: deployment
+      - name: Verify deployed public hashes
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: python automation/verify_public.py --url "$PAGE_URL"

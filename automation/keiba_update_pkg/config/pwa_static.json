@@ -1,0 +1,7 @@
+{
+  "app_version": "3.8.0",
+  "dataset_id": "fbeec520667fb2bf4794407b",
+  "courses_sha256": "71a84783890fc812a58726f8f73b7363b8b2876729b78651d380423524a52d30",
+  "elevation_sha256": "a39c9c64e6dfb94a1c48c60d68e46dcf499068c723c3fedbab6a82efa3bc49a3",
+  "static_policy": "courses.json/elevation.json are immutable during race-data-only updates"
+}

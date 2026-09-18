@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "through": "2026-09-13",
+  "files": {
+    "keiba_master.csv.gz": "4b78879d7c4a79de6b7cd0fd2ed78804f10c56361e489ef33e0d393b9213764f",
+    "payout.csv.gz": "44fd70c6c225dd4b942b21dcfb57b3276085e5c6d5c36f38e86e476965df6637",
+    "horse_pedigree.csv": "68fcf1daa685ecef3c833e7d9fa40142ece974dd9866c29e2a11fbdec16c1073"
+  },
+  "production": {
+    "lapdata.json": "d31d02a7f97e6caa292940ed66012b9db3fe0b36fa83cf5226c7cd5eb7612f61",
+    "pedigree_stats.json": "d89c62f41e87a67b64baee90165db727c40218f40ebdf65de5977ce2bc840692"
+  }
+}

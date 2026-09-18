@@ -1,0 +1,86 @@
+{
+  "baseline_cutoff": "2026-08-02",
+  "cached_races": 512,
+  "cached_jra_races": 480,
+  "cached_nar_races": 32,
+  "overlap_races": 156,
+  "added_races": 356,
+  "baseline_rows": 459452,
+  "merged_rows": 464161,
+  "merged_races": 39996,
+  "baseline_race_horse_order_preserved": true,
+  "immutable_through": "2026-07-19",
+  "immutable_master_cells_and_order_preserved": true,
+  "immutable_payout_cells_and_order_preserved": true,
+  "untouched_master_cells_and_order_preserved": true,
+  "source_sha256": {
+    "build_delta.py": "e663ed43299c6ccdbf33ed5d4547056c865acbd5f80e2acda474ebe574c17693",
+    "horse_pedigree_baseline.csv": "78981f4ee30075eb0e472e99511171d398390706b1a58d3939181719a0230552",
+    "horse_pedigree_delta.csv.gz": "4a856113cf987f3551a9542de24fc789ecff601f1f56b302d0811e64171a7527",
+    "keiba_master_baseline.csv.gz": "236750cc4a23bf05d3333670d5287e5531cc58e2b18b1af310e90bdd248b49dd",
+    "payout_baseline.csv.gz": "e8bf9ec356aeb89b1758901e46fb416e3ddb182b73d5fdc2e49b907e0c6cf239",
+    "race_fetch_512_full.json.gz": "85fe6e3c4781fd82650aae5dfe15f4a0edc5531df3fccc752ccb47984998a242"
+  },
+  "delta_sha256": {
+    "horse_details_delta.csv": "af0567f0187c0a60165661c87f285895dd22571ff4f684ed502dc02023206fbf",
+    "horse_pedigree_delta.csv": "2e8786327d012da80efb22c27d9c95e491350d4099097dbef8f7a934c8e8d0cc",
+    "payout_delta.csv": "616e79f28753879db4c020cd77c8b35f82af4d1ce507802a22a46668e7bc1e43",
+    "race_corners_delta.csv": "676b30408ef284001908face6a4c4860b8e66a44f6312d2e631ba94f90e6076f",
+    "race_laps_delta.csv": "65ef0f348d4db226dd370984ad57af5705f720727e8826a568cbe55f82528531",
+    "race_meta_delta.csv": "f2ae3ab09706233678bde73f14b8909d081dff9bed0df98711ceb41570b65b80"
+  },
+  "class_corrections": {
+    "races": 96,
+    "mapping_sha256": "62e69ccdccb5804417fa5377a7a14862ee290a635d221ba532ec5f54cc917f49",
+    "source": "existing state_20260913, checked against production aggregates"
+  },
+  "release_record": {
+    "status": "PRODUCTION_RELEASED",
+    "package_version": "4.2",
+    "released_at": "2026-09-17T05:35:03Z",
+    "github_commit": "d2c62094f5c20a38618b828d4f893a8ebae2900a",
+    "public_url": "https://sakaraa3291.github.io/",
+    "app_version": "3.8.0",
+    "dataset_id": "fbeec520667fb2bf4794407b",
+    "data_to": "2026-09-13",
+    "lap_races": 18256,
+    "pedigree_source_rows": 242454,
+    "recovery_period": {
+      "from": "2026-07-25",
+      "to": "2026-09-13",
+      "races": 512,
+      "flat": 498,
+      "obstacle": 14
+    },
+    "public_file_sha256": {
+      "lapdata.json": "d31d02a7f97e6caa292940ed66012b9db3fe0b36fa83cf5226c7cd5eb7612f61",
+      "pedigree_stats.json": "d89c62f41e87a67b64baee90165db727c40218f40ebdf65de5977ce2bc840692",
+      "courses.json": "71a84783890fc812a58726f8f73b7363b8b2876729b78651d380423524a52d30",
+      "elevation.json": "a39c9c64e6dfb94a1c48c60d68e46dcf499068c723c3fedbab6a82efa3bc49a3"
+    },
+    "publication": {
+      "changed_files": [
+        "lapdata.json",
+        "pedigree_stats.json",
+        "data-version.json"
+      ],
+      "shell_changed": false,
+      "runtime_public_check": "PASS",
+      "hash_warning": false,
+      "data_update_error": false
+    },
+    "notes": "Production data through 2026-09-13 is verified. v4.2 embeds fail-closed Git commit/push/public-SHA publication automation for future updates.",
+    "publication_automation": {
+      "embedded": true,
+      "changed_files_only": [
+        "lapdata.json",
+        "pedigree_stats.json",
+        "data-version.json"
+      ],
+      "requires_git_push_credentials": true,
+      "post_push_public_sha_verify": true,
+      "precommit_rollback_on_failure": true,
+      "no_changes_safe_exit": true
+    }
+  }
+}
