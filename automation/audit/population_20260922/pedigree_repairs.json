@@ -1,0 +1,12 @@
+{
+  "normalization": "Keep existing netkeiba spellings used by the mapping CSVs; only fill empty fields. Horse IDs and names must both match.",
+  "horses": [
+    {"馬ID":"2012104463","馬名":"マサハヤドリーム","父":"メイショウサムソン","母":"ランペイア","父父":"オペラハウスOpera House(英)","母父":"アグネスタキオン","母母":"スマラSmala(仏)","sources":["https://www.jbis.or.jp/horse/0001155043/"]},
+    {"馬ID":"2011101814","馬名":"パリカラノテガミ","父":"ジャングルポケット","母":"シンコウローズ","父父":"トニービンTony Bin(愛)","母父":"ブライアンズタイムBrian's Time(米)","母母":"ピンクタートルPink Turtle(米)","sources":["https://pogdb.com/detail/horse/2011101814"]},
+    {"馬ID":"2017110146","馬名":"ジゲン","父":"Into Mischief","母":"Under Wraps","父父":"Harlan's Holiday","母父":"Dixie Union","母母":"Unacloud","sources":["https://sp.jra.jp/JRADB/accessU.html?CNAME=sj01ude102017110146%2F74","https://umanity.jp/sp/racedata/db/horse_top.php?code=2017110146"]},
+    {"馬ID":"2013101904","馬名":"マイネルヴァッサー","父":"ステイゴールド","母":"コスモスプラッシュ","父父":"サンデーサイレンスSunday Silence(米)","母父":"メジロブライト","母母":"スプライトパッサー","sources":["https://db.netkeiba.com/horse/ped/2013101904/"]},
+    {"馬ID":"2015100244","馬名":"ウインリベロ","父":"ステイゴールド","母":"フリーヴァケイションFree Vacation(加)","父父":"サンデーサイレンスSunday Silence(米)","母父":"Fly So Free","母母":"Miami Vacation","sources":["https://www.keiba.go.jp/KeibaWeb/DataRoom/RaceHorseInfo?k_activeCode=2&k_lineageLoginCode=30012409126"]},
+    {"馬ID":"2018103114","馬名":"シズヨシ","父":"ホッコータルマエ","母":"オールオールオール","父父":"キングカメハメハ","母父":"アグネスタキオン","母母":"スターダーラStardara(米)","sources":["https://keiba.rakuten.co.jp/horse_detail/detail/HORSEID/720210198","https://spaia-keiba.com/nar/db/horse/detail?horse_id=720210198"]},
+    {"馬ID":"2023103072","馬名":"ベイビーシスター","父":"ビッグアーサー","母":"ボイルトウショウ","父父":"サクラバクシンオー","母父":"ケイムホームCame Home(米)","母母":"ミッドナイトオアシスMidnight Oasis(米)","sources":["https://db.netkeiba.com/horse/ped/2023103072/","https://www.keibalab.jp/db/horse/2023103072/blood.html"]}
+  ]
+}

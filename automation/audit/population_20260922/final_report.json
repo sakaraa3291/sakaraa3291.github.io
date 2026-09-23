@@ -1,0 +1,72 @@
+{
+  "status": "LOCAL_AUDIT_PASS",
+  "period": {
+    "from": "2021-01-02",
+    "to": "2026-09-22"
+  },
+  "official": {
+    "meetings": 1654,
+    "races": 19839,
+    "by_year": {
+      "2021": 3456,
+      "2022": 3456,
+      "2023": 3456,
+      "2024": 3454,
+      "2025": 3455,
+      "2026": 2562
+    }
+  },
+  "master": {
+    "before_races": 18323,
+    "backfilled_races": 1516,
+    "after_races": 19839,
+    "missing": 0,
+    "extra": 0
+  },
+  "lap": {
+    "jra_flat_races": 19126,
+    "jra_flat_lap_present": 19126,
+    "jra_flat_lap_missing": 0,
+    "jra_obstacle_races": 713,
+    "display_conditions": 944,
+    "display_condition_races": 19798,
+    "singleton_excluded": 58
+  },
+  "pedigree": {
+    "jra_horse_ids": 34172,
+    "missing_ids": 0,
+    "embedded_blank_rows": {
+      "父": 0,
+      "父父": 0,
+      "母父": 0
+    },
+    "source_rows_before_nonstarter_exclusion": 264969,
+    "accepted_rows": 263998,
+    "excluded_nonstarters": 971,
+    "conditions": 1449,
+    "from": "2021-01-05",
+    "to": "2026-09-22"
+  },
+  "grade": {
+    "keys": 142,
+    "baseline_exact_preserved": true
+  },
+  "tests": {
+    "passed": 61,
+    "failed": 0
+  },
+  "release": {
+    "validation": "PASS",
+    "lap_sha256": "5320a87d39b0b1818904f2ffc25066a16073ea4ccb848ec056b9e26222d6edc4",
+    "pedigree_sha256": "b753c95dd87ec9728d5eada860290f60a0a9031581bf369a93a8cf10bbc591e4",
+    "app_version": "3.8.0",
+    "dataset_id": "fbeec520667fb2bf4794407b"
+  },
+  "protected": {
+    "courses_sha256": "71a84783890fc812a58726f8f73b7363b8b2876729b78651d380423524a52d30",
+    "elevation_sha256": "a39c9c64e6dfb94a1c48c60d68e46dcf499068c723c3fedbab6a82efa3bc49a3",
+    "index_sha256": "e3f56f5cfa42e73c3ce72f62dade4800d6ae25a878f86c5bf77d6da63dbdd6dd",
+    "sw_sha256": "174c499bcc3908ea89503524f65c97b1d560c623fe6ae4255f21288a8c105a03"
+  },
+  "published": false
+}

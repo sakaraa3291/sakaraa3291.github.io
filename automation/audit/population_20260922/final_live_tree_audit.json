@@ -1,0 +1,37 @@
+{
+  "from": "2021-01-02",
+  "to": "2026-09-22",
+  "official_races": 19839,
+  "master_jra_races": 19839,
+  "missing_races": 0,
+  "extra_races": 0,
+  "missing_ids": [],
+  "extra_ids": [],
+  "official_by_year": {
+    "2021": 3456,
+    "2022": 3456,
+    "2023": 3456,
+    "2024": 3454,
+    "2025": 3455,
+    "2026": 2562
+  },
+  "annual_total_mismatch": {},
+  "obstacle_races": 713,
+  "flat_races": 19126,
+  "flat_lap_present": 19126,
+  "flat_lap_missing": 0,
+  "flat_lap_missing_ids": [],
+  "jra_horse_ids": 34172,
+  "pedigree_missing_ids": 0,
+  "pedigree_missing_id_list": [],
+  "embedded_pedigree_blank_rows": {
+    "父": 0,
+    "父父": 0,
+    "母父": 0
+  },
+  "pedigree_table_blank_horses": {
+    "父": 0,
+    "父父": 0,
+    "母父": 0
+  }
+}

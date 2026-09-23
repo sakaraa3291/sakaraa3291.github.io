@@ -1,0 +1,106 @@
+{
+  "from_date": "2021-01-02",
+  "to_date": "2026-09-22",
+  "index_snapshot_date": "2026-09-23",
+  "annual_totals": {
+    "2021": 3456,
+    "2022": 3456,
+    "2023": 3456,
+    "2024": 3454,
+    "2025": 3455
+  },
+  "annual_totals_source": "https://japanracing.jp/_statistics/2025/s01.html",
+  "slot_policy": "Every indexed meeting must have result headers or individually sourced cancellation/page-image adjudications for races 01..12. Never infer a missing race from master.",
+  "cancelled": [
+    {
+      "race_id": "202404030612",
+      "date": "2024-08-25",
+      "reason": "落雷のおそれによる取りやめ（代替・続行なし）",
+      "source_url": "https://www.radionikkei.jp/keiba_article/news/post_32915.html"
+    },
+    {
+      "race_id": "202408060108",
+      "date": "2024-11-02",
+      "reason": "降雨による取りやめ",
+      "source_url": "https://www.jra.go.jp/keiba/calendar2024/2024/11/1102.html"
+    },
+    {
+      "race_id": "202505021109",
+      "date": "2025-05-31",
+      "reason": "落雷のおそれによる取りやめ",
+      "source_url": "https://www.jra.go.jp/news/202505/053104.html"
+    },
+    {
+      "race_id": "202605010308",
+      "date": "2026-02-07",
+      "reason": "積雪による第8レース以降取りやめ",
+      "source_url": "https://jra.jp/news/202602/020707.html"
+    },
+    {
+      "race_id": "202605010309",
+      "date": "2026-02-07",
+      "reason": "積雪による第8レース以降取りやめ",
+      "source_url": "https://jra.jp/news/202602/020707.html"
+    },
+    {
+      "race_id": "202605010310",
+      "date": "2026-02-07",
+      "reason": "積雪による第8レース以降取りやめ",
+      "source_url": "https://jra.jp/news/202602/020707.html"
+    },
+    {
+      "race_id": "202605010311",
+      "date": "2026-02-07",
+      "reason": "積雪による第8レース以降取りやめ",
+      "source_url": "https://jra.jp/news/202602/020707.html"
+    },
+    {
+      "race_id": "202605010312",
+      "date": "2026-02-07",
+      "reason": "積雪による第8レース以降取りやめ",
+      "source_url": "https://jra.jp/news/202602/020707.html"
+    },
+    {
+      "race_id": "202610010604",
+      "date": "2026-02-08",
+      "reason": "小倉第4レース取りやめ",
+      "source_url": "https://www.jra.go.jp/news/202602/020802.html"
+    }
+  ],
+  "image_verified": [
+    {
+      "race_id": "202301020407",
+      "date": "2023-08-20",
+      "venue": "札幌",
+      "source_url": "https://www.jra.go.jp/datafile/seiseki/report/2023/2023-2sapporo4.pdf",
+      "source_serial": "",
+      "result_status": "result",
+      "evidence": "PDF page 4 (1-based), both result headers visually verified by user via Desktop Commander on 2026-09-23; PyMuPDF Japanese header extraction missing"
+    },
+    {
+      "race_id": "202301020408",
+      "date": "2023-08-20",
+      "venue": "札幌",
+      "source_url": "https://www.jra.go.jp/datafile/seiseki/report/2023/2023-2sapporo4.pdf",
+      "source_serial": "",
+      "result_status": "result",
+      "evidence": "PDF page 4 (1-based), both result headers visually verified by user via Desktop Commander on 2026-09-23; PyMuPDF Japanese header extraction missing"
+    }
+  ],
+  "manual_pdf_repairs": [
+    {
+      "race_id": "202301020407",
+      "date": "2023-08-20",
+      "venue": "札幌",
+      "source_url": "https://www.jra.go.jp/datafile/seiseki/report/2023/2023-2sapporo4.pdf",
+      "reason": "PyMuPDF text extraction omitted the 7R heading on page 4; page image confirms the race."
+    },
+    {
+      "race_id": "202301020408",
+      "date": "2023-08-20",
+      "venue": "札幌",
+      "source_url": "https://www.jra.go.jp/datafile/seiseki/report/2023/2023-2sapporo4.pdf",
+      "reason": "PyMuPDF text extraction omitted the 8R heading on page 4; page image confirms the race."
+    }
+  ]
+}

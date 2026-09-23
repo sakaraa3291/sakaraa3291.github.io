@@ -6,6 +6,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 CENTRAL=['札幌','函館','福島','新潟','東京','中山','中京','京都','阪神','小倉']
+DEFAULT_FROM_DATE='2021-01-02'
 MAJOR=['サンデーサイレンス系','ミスタープロスペクター系','ノーザンダンサー系','ロベルト系','ナスルーラ系','その他系','不明']
 
 def read_master(path):
@@ -62,7 +63,7 @@ def compare_baseline(obj,baseline_path,tol=1e-12):
     print(f'PASS: pedigree baseline exact match ({len(obj["stats"])} conditions)')
 
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument('--master',required=True);ap.add_argument('--payout',required=True);ap.add_argument('--sire-map',required=True);ap.add_argument('--damsire-map',required=True);ap.add_argument('--stallion-map',required=True);ap.add_argument('--out',required=True);ap.add_argument('--dataset-id',default='UNPACKAGED');ap.add_argument('--from-date',default='2021-01-09');ap.add_argument('--to-date',default='');ap.add_argument('--compare-baseline',default='');a=ap.parse_args()
+    ap=argparse.ArgumentParser();ap.add_argument('--master',required=True);ap.add_argument('--payout',required=True);ap.add_argument('--sire-map',required=True);ap.add_argument('--damsire-map',required=True);ap.add_argument('--stallion-map',required=True);ap.add_argument('--out',required=True);ap.add_argument('--dataset-id',default='UNPACKAGED');ap.add_argument('--from-date',default=DEFAULT_FROM_DATE);ap.add_argument('--to-date',default='');ap.add_argument('--compare-baseline',default='');a=ap.parse_args()
     m=read_master(a.master);required={'race_id','日付','競馬場','レース名','クラス','条件','馬場','距離','馬場状態','馬番','馬名','馬ID','着順','単勝','父','父父','母父'};miss=required-set(m.columns)
     if miss:raise SystemExit(f'master missing columns: {sorted(miss)}')
     m['_date']=pd.to_datetime(m['日付'],errors='coerce');mask=(m['競馬場'].isin(CENTRAL))&(m['_date']>=pd.Timestamp(a.from_date))

@@ -179,6 +179,19 @@ def test_metadata_enrichment_can_resume_twice(tmp_path):
     assert second.iloc[0].winner_time==24.0
 
 
+def test_pedigree_default_start_date_covers_full_audit_window():
+    from rebuild_pedigree_stats import DEFAULT_FROM_DATE
+    assert DEFAULT_FROM_DATE == '2021-01-02'
+
+
+def test_jra_pdf_parser_fails_closed_on_missing_race_headers():
+    from audit_jra_sources import parse_result_text
+    meeting={'meeting_id':'2023010204','year':2023,'venue':'札幌','url':'https://www.jra.go.jp/example.pdf'}
+    text='00001 8月20日 晴 第1競走 x 00002 8月20日 晴 第2競走 x 00005 8月20日 晴 第5競走'
+    with pytest.raises(ValueError,match='unresolved result slots'):
+        parse_result_text(text,meeting)
+
+
 def test_nonstarters_are_excluded_but_dnf_counts():
     from rebuild_pedigree_stats import nonstarter_mask
     d=pd.DataFrame({'着順':['1','取消','除外','中止','',''],'単勝':['2.0','','','','','3.0']})
