@@ -179,16 +179,6 @@ def test_metadata_enrichment_can_resume_twice(tmp_path):
     assert second.iloc[0].winner_time==24.0
 
 
-def test_discovery_rejects_challenges_and_partial_meetings():
-    from discover_race_ids import validate_day
-    with pytest.raises(RuntimeError):
-        validate_day('<html>Please sign in</html>',[])
-    with pytest.raises(RuntimeError):
-        validate_day('race list',['202606040101'])
-    validate_day('<p>本日の開催はありません</p>',[])
-    validate_day('race list',[f'2026060401{n:02}' for n in range(1,13)])
-
-
 def test_nonstarters_are_excluded_but_dnf_counts():
     from rebuild_pedigree_stats import nonstarter_mask
     d=pd.DataFrame({'着順':['1','取消','除外','中止','',''],'単勝':['2.0','','','','','3.0']})

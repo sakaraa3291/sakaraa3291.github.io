@@ -18,9 +18,9 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-BASE = "https://db.netkeiba.com/race/{race_id}/"
+BASE = "https://race.netkeiba.com/race/result.html?race_id={race_id}"
 BET_TYPES = {"単勝","複勝","枠連","馬連","ワイド","馬単","三連複","3連複","三連単","3連単"}
-UA = "Mozilla/5.0 (compatible; keiba-data-maintenance/1.0; +https://github.com/sakaraa3291/sakaraa3291.github.io)"
+UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
 
 
 def clean(s: object) -> str:
@@ -75,8 +75,8 @@ def header_map(table) -> tuple[list[str], dict[str,int]]:
             best = hs
     aliases = {
         "着順": ("着順","着"), "馬番": ("馬番","馬"), "馬名": ("馬名",),
-        "タイム": ("タイム",), "着差": ("着差",), "通過順": ("通過",),
-        "上がり3F": ("上り","上がり","上り3F","上がり3F"),
+        "タイム": ("タイム",), "着差": ("着差",), "通過順": ("通過","コーナー通過順"),
+        "上がり3F": ("上り","上がり","上り3F","上がり3F","後3F"),
     }
     out = {}
     for key, names in aliases.items():
@@ -95,8 +95,14 @@ def get_cell(cells, idxmap, key) -> str:
 def parse_meta(soup: BeautifulSoup, race_id: str, fallback: dict) -> dict:
     text = soup.get_text(" ", strip=True)
     # Title/name
+    race_name = soup.select_one('.RaceName')
     h1 = soup.find("h1")
-    name = h1.get_text(" ", strip=True) if h1 else str(fallback.get("レース名", ""))
+    if race_name and race_name.get_text(" ", strip=True):
+        name = race_name.get_text(" ", strip=True)
+    elif h1 and h1.get_text(" ", strip=True):
+        name = h1.get_text(" ", strip=True)
+    else:
+        name = str(fallback.get("レース名", ""))
     # Date
     mdate = re.search(r"(20\d{2})年(\d{1,2})月(\d{1,2})日", text)
     date = f"{int(mdate.group(1)):04d}-{int(mdate.group(2)):02d}-{int(mdate.group(3)):02d}" if mdate else str(fallback.get("date", ""))
@@ -109,8 +115,12 @@ def parse_meta(soup: BeautifulSoup, race_id: str, fallback: dict) -> dict:
     distance = int(md.group(2)) if md else None
     surface = "ダート" if surface_raw == "ダ" else surface_raw
     # Going. Netkeiba labels are usually 芝 : 良 / ダート : 重.
-    mg = re.search(r"(?:芝|ダート)\s*[:：]\s*(良|稍重|重|不良)", text)
+    mg = re.search(r"(?:芝|ダート)\s*[:：]\s*(良|稍重|稍|重|不良|不)", text)
+    if not mg:
+        header_text = " ".join(x.get_text(" ", strip=True) for x in soup.select('.RaceData01, .RaceData02'))
+        mg = re.search(r"馬場\s*[:：]\s*(良|稍重|稍|重|不良|不)", header_text)
     going = mg.group(1) if mg else ""
+    going = {'稍':'稍重','不':'不良'}.get(going,going)
     # Class from page text/name.
     # Scope class parsing to the race header: navigation/other races may mention 未勝利.
     headers=soup.select('.RaceData02, .data_intro, .race_data, .RaceData01')
@@ -178,6 +188,16 @@ def parse_lap(soup: BeautifulSoup, race_id: str, distance: int | None) -> dict |
             if nums:
                 vals=nums; break
     if not vals:
+        table=soup.select_one('table.Race_HaronTime')
+        if table is not None:
+            candidates=[]
+            for tr in table.select('tr.HaronTime'):
+                raw=[clean(td.get_text(" ",strip=True)) for td in tr.find_all('td')]
+                if raw and all(re.fullmatch(r"\d{1,2}\.\d",x) for x in raw):
+                    candidates.append([float(x) for x in raw])
+            if candidates:
+                vals=candidates[-1]
+    if not vals:
         return None
     if distance and distance >= 600:
         expected=math.ceil(distance/200)
@@ -199,32 +219,39 @@ def parse_lap(soup: BeautifulSoup, race_id: str, distance: int | None) -> dict |
 def parse_payouts(soup: BeautifulSoup, race_id: str) -> list[dict]:
     out=[]
     for tr in soup.find_all("tr"):
-        cells=tr.find_all(["th","td"])
-        if len(cells) < 3: continue
-        kind=clean(cells[0].get_text(" ",strip=True))
-        kind=kind.replace("3連複","三連複").replace("3連単","三連単")
+        th=tr.find("th")
+        if th is None: continue
+        kind=clean(th.get_text(" ",strip=True)).replace("3連複","三連複").replace("3連単","三連単")
         if kind not in {"単勝","複勝","枠連","馬連","ワイド","馬単","三連複","三連単"}: continue
-        def lines(cell):
-            return [re.sub(r"\s+"," ",x).strip() for x in cell.get_text("\n",strip=True).splitlines() if x.strip()]
-        combos=lines(cells[1]); pays=lines(cells[2]); pops=lines(cells[3]) if len(cells)>3 else []
-        # Some cells collapse line breaks. If counts differ, keep the record only when unambiguous.
-        n=max(len(combos),len(pays),len(pops) or 1)
-        if len(combos)==1 and n>1: combos=combos*n
-        if len(pays)==1 and n>1: pays=pays*n
-        if not pops: pops=[""]*n
-        if len(pops)==1 and n>1: pops=pops*n
-        if not (len(combos)==len(pays)==len(pops)): continue
+        result=tr.find("td",class_=lambda c: c and 'Result' in (c if isinstance(c,str) else ' '.join(c)))
+        payout=tr.find("td",class_=lambda c: c and 'Payout' in (c if isinstance(c,str) else ' '.join(c)))
+        ninki=tr.find("td",class_=lambda c: c and 'Ninki' in (c if isinstance(c,str) else ' '.join(c)))
+        if result is None or payout is None: continue
+        combos=[]
+        groups=result.find_all('ul',recursive=False)
+        if groups:
+            for ul in groups:
+                nums=[clean(x.get_text(" ",strip=True)) for x in ul.find_all('li')]
+                nums=[x for x in nums if x]
+                if nums: combos.append('-'.join(nums))
+        else:
+            combos=[clean(x) for x in result.stripped_strings if clean(x)]
+        pays=[clean(x) for x in payout.stripped_strings if clean(x)]
+        pops=[clean(x) for x in ninki.stripped_strings if clean(x)] if ninki is not None else []
+        if not pops: pops=['']*len(pays)
+        if not (len(combos)==len(pays)==len(pops)):
+            continue
         for c,p,po in zip(combos,pays,pops):
-            p=re.sub(r"[^0-9,]","",p)
-            po=re.sub(r"[^0-9]","",po)
-            if c and p: out.append({"race_id":race_id,"券種":kind,"組み合わせ":c,"払戻金":p,"人気":po})
-    # de-duplicate tables/rows
+            amount=re.sub(r"[^0-9,]","",p)
+            popularity=re.sub(r"[^0-9]","",po)
+            if c and amount:
+                out.append({"race_id":race_id,"券種":kind,"組み合わせ":c,"払戻金":amount,"人気":popularity})
     seen=set(); ded=[]
-    for r in out:
-        k=tuple(r.values())
-        if k not in seen: seen.add(k); ded.append(r)
+    for row in out:
+        key=tuple(row.values())
+        if key not in seen:
+            seen.add(key); ded.append(row)
     return ded
-
 
 def classify_style(last_pos: str, field_size: int) -> str:
     try: p=int(last_pos)
@@ -236,8 +263,15 @@ def classify_style(last_pos: str, field_size: int) -> str:
 
 
 def corners_from_entries(entries: list[dict]) -> list[dict]:
-    n=len(entries); out=[]
+    # entries can contain multiple races in one checkpoint batch.  Field size must
+    # be counted per race, never across the whole accumulated batch.
+    counts={}
     for e in entries:
+        rid=str(e.get("race_id", ""))
+        counts[rid]=counts.get(rid,0)+1
+    out=[]
+    for e in entries:
+        rid=str(e.get("race_id", "")); n=counts[rid]
         vals=[x for x in re.split(r"[-－]", str(e.get("通過順", ""))) if re.fullmatch(r"\d+",x.strip())]
         # Standard flat-race convention: shorter passage sequences correspond to later corners.
         pos=[""]*(4-len(vals))+vals if len(vals)<=4 else vals[-4:]
