@@ -7,7 +7,8 @@ from pathlib import Path
 
 def public_path(path):
     p = Path(path)
-    return ((len(p.parts) == 1 or (len(p.parts) == 2 and p.parts[0].startswith('v') and p.parts[0].endswith('-test')))
+    return ((p.parts[0] == 'prediction-data' and p.suffix == '.json') or
+            (len(p.parts) == 1 or (len(p.parts) == 2 and p.parts[0].startswith('v') and p.parts[0].endswith('-test')))
             and p.suffix in {'.html', '.js', '.css', '.json', '.png', '.ico', '.svg', '.webmanifest', '.txt'}
             or path in {'CNAME', '.nojekyll'})
 

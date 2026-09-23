@@ -1,0 +1,342 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sakaraa3291.github.io/prediction-data/schema.json",
+  "title": "Prediction racecard v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "race_id",
+    "source_race_id",
+    "organization",
+    "source_name",
+    "source_url",
+    "fetched_at",
+    "target_date",
+    "race_status",
+    "race_name",
+    "venue",
+    "race_number",
+    "start_time",
+    "surface",
+    "distance_m",
+    "grade",
+    "declared_entry_count",
+    "weather",
+    "going",
+    "availability",
+    "observed_at",
+    "horses",
+    "changes",
+    "derived_from"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "race_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_race_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "organization": {
+      "enum": [
+        "JRA",
+        "NAR"
+      ]
+    },
+    "source_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_url": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fetched_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "race_status": {
+      "enum": [
+        "scheduled",
+        "cancelled"
+      ]
+    },
+    "race_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "venue": {
+      "type": "string",
+      "minLength": 1
+    },
+    "race_number": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 12
+    },
+    "start_time": {
+      "type": "string",
+      "minLength": 1
+    },
+    "surface": {
+      "enum": [
+        "turf",
+        "dirt",
+        "jump"
+      ]
+    },
+    "distance_m": {
+      "type": "integer",
+      "minimum": 800,
+      "maximum": 5000
+    },
+    "grade": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "declared_entry_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 18
+    },
+    "weather": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "going": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "availability": {
+      "type": "object",
+      "additionalProperties": {
+        "enum": [
+          "available",
+          "not_published",
+          "not_available",
+          "fetch_failed"
+        ]
+      }
+    },
+    "observed_at": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "horses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "horse_id",
+          "horse_name",
+          "id_namespace",
+          "entry_status",
+          "horse_number",
+          "gate_number",
+          "jockey_id",
+          "jockey_name",
+          "trainer_id",
+          "trainer_name",
+          "carried_weight",
+          "win_odds",
+          "popularity",
+          "body_weight",
+          "body_weight_diff",
+          "availability",
+          "observed_at",
+          "predictions",
+          "past_performances",
+          "history_availability"
+        ],
+        "properties": {
+          "horse_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "horse_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "id_namespace": {
+            "enum": [
+              "netkeiba",
+              "nar"
+            ]
+          },
+          "entry_status": {
+            "enum": [
+              "active",
+              "scratched",
+              "excluded"
+            ]
+          },
+          "horse_number": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 18
+          },
+          "gate_number": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 8
+          },
+          "jockey_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "jockey_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "trainer_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "trainer_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "carried_weight": {
+            "type": "number",
+            "minimum": 40,
+            "maximum": 80
+          },
+          "win_odds": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "popularity": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          },
+          "body_weight": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 200,
+            "maximum": 800
+          },
+          "body_weight_diff": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "availability": {
+            "type": "object",
+            "additionalProperties": {
+              "enum": [
+                "available",
+                "not_published",
+                "not_available",
+                "fetch_failed"
+              ]
+            }
+          },
+          "observed_at": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "predictions": {
+            "type": "object"
+          },
+          "past_performances": {
+            "type": "array",
+            "maxItems": 5,
+            "items": {
+              "type": "object",
+              "required": [
+                "race_id",
+                "date",
+                "race_name",
+                "jockey_id",
+                "source_url",
+                "raw"
+              ],
+              "properties": {
+                "race_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "date": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "race_name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "jockey_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "source_url": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "raw": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "history_availability": {
+            "enum": [
+              "available",
+              "no_starts"
+            ]
+          }
+        }
+      }
+    },
+    "changes": {
+      "type": "array"
+    },
+    "derived_from": {
+      "type": "object",
+      "required": [
+        "dataset_id",
+        "data_through",
+        "lapdata_sha256",
+        "pedigree_sha256"
+      ]
+    }
+  },
+  "schema_version": 1
+}

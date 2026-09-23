@@ -1,0 +1,124 @@
+name: Prediction racecards
+on:
+  schedule:
+    # UTC schedules: previous-day 21:00, race-day 07:00 and 11:30 JST.
+    - cron: '0 12 * * *'
+    - cron: '0 22 * * *'
+    - cron: '30 2 * * *'
+  workflow_dispatch:
+    inputs:
+      target_date:
+        description: 'JST YYYY-MM-DD; empty: today before 21:00, tomorrow from 21:00'
+        required: false
+        type: string
+      dry_run:
+        description: 'Fetch and validate without publishing'
+        type: boolean
+        default: false
+permissions:
+  contents: write
+# Shared lock covers the entire update AND deployment of both production workflows.
+concurrency:
+  group: keiba-production-update
+  cancel-in-progress: false
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    outputs:
+      sha: ${{ steps.release.outputs.sha }}
+      target_date: ${{ steps.fetch.outputs.target_date }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: automation/racecard/requirements.txt
+      - run: python -m pip install -r automation/racecard/requirements.txt
+      - name: Safety and parser contract tests
+        run: python -m pytest -q automation/racecard/tests
+      - name: Fetch both sources and validate complete candidate
+        id: fetch
+        env:
+          REQUESTED_DATE: ${{ inputs.target_date }}
+          SCHEDULE: ${{ github.event.schedule }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          args=(--diagnostics "$RUNNER_TEMP/racecard-run")
+          if [[ -n "$REQUESTED_DATE" ]]; then args+=(--target-date "$REQUESTED_DATE"); fi
+          if [[ -n "$SCHEDULE" ]]; then args+=(--schedule "$SCHEDULE"); fi
+          if [[ "$DRY_RUN" != 'true' ]]; then args+=(--apply); fi
+          python -m automation.racecard.run "${args[@]}"
+      - name: Guard and commit only racecard data/state
+        id: commit
+        if: steps.fetch.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m automation.racecard.guard changes
+          python -m automation.racecard.guard head
+          git add -- prediction-data automation/racecard-state/cache.json
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Update prediction racecards'
+          git push origin HEAD:main
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Select current commit for publication or deployment retry
+        id: release
+        if: github.event_name != 'workflow_dispatch' || !inputs.dry_run
+        run: |
+          python -m automation.racecard.guard head
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Keep source-specific diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: racecard-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/racecard-run
+          if-no-files-found: ignore
+          retention-days: 7
+  deploy:
+    needs: update
+    if: needs.update.outputs.sha != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.update.outputs.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install -r automation/racecard/requirements.txt
+      - uses: actions/configure-pages@v5
+      - name: Refuse stale main before staging
+        run: python -m automation.racecard.guard head
+      - run: python automation/stage_site.py --out _site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Refuse stale main immediately before deployment
+        run: python -m automation.racecard.guard head
+      - uses: actions/deploy-pages@v4
+        id: deployment
+      - name: Verify public JSON and actual source race
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          TARGET_DATE: ${{ needs.update.outputs.target_date }}
+        run: |
+          python -m automation.racecard.verify_public --url "$PAGE_URL" --target-date "$TARGET_DATE"
+          python automation/verify_public.py --url "$PAGE_URL"

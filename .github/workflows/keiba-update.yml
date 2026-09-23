@@ -92,11 +92,15 @@ jobs:
         with:
           ref: ${{ needs.update.outputs.sha }}
       - uses: actions/configure-pages@v5
+      - name: Refuse stale main before staging
+        run: python -m automation.racecard.guard head
       - name: Stage public site only
         run: python automation/stage_site.py --out _site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+      - name: Refuse stale main immediately before deployment
+        run: python -m automation.racecard.guard head
       - uses: actions/deploy-pages@v4
         id: deployment
       - name: Verify deployed public hashes
