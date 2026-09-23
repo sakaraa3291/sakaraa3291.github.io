@@ -59,6 +59,18 @@ def write(path, value):
     path.write_bytes(canonical(value) + b'\n')
 
 
+def read_cache(path):
+    state = read(path, {'schema_version': 1, 'horses': {}})
+    validate_cache(state)
+    return state
+
+
+def validate_cache(state):
+    require(isinstance(state, dict) and type(state.get('schema_version')) is int
+            and state['schema_version'] == 1, 'unsupported cache schema')
+    require(isinstance(state.get('horses'), dict), 'invalid cache horses')
+
+
 def enrich(race, root):
     version = read(root / 'data-version.json')
     state = read(root / 'automation/state/manifest.json')
@@ -132,10 +144,14 @@ def collect_nar(fetch, target, cache, stamp):
     return races, dict(status='complete', race_count=len(races), meeting_count=len(meetings), source_url=url, fetched_at=stamp)
 
 
-def build(root, target, fetch, stamp):
-    state = read(root / 'automation/racecard-state/cache.json', {'schema_version': 1, 'horses': {}})
-    require(state['schema_version'] == 1, 'unsupported cache version')
-    cache = copy.deepcopy(state['horses'])
+def build(root, target, fetch, stamp, reusable_cache=None):
+    state = read_cache(root / 'automation/racecard-state/cache.json')
+    cache = {}
+    if reusable_cache is not None:
+        validate_cache(reusable_cache)
+        cache.update(copy.deepcopy(reusable_cache['horses']))
+    # Committed observations are authoritative when a restored cache overlaps.
+    cache.update(copy.deepcopy(state['horses']))
     races, sources, errors = [], {}, []
     for org, collector in [('JRA', collect_jra), ('NAR', collect_nar)]:
         try:
@@ -238,11 +254,12 @@ def main():
     ap.add_argument('--schedule', default='')
     ap.add_argument('--apply', action='store_true')
     ap.add_argument('--diagnostics', type=Path, default=Path('/tmp/racecard-run'))
+    ap.add_argument('--cache-file', type=Path)
     args = ap.parse_args()
     target = target_date(args.target_date, schedule=args.schedule)
     stamp = datetime.now(JST).isoformat(timespec='seconds')
     fetch = Fetcher(args.diagnostics)
-    races, sources, cache = build(ROOT, target, fetch, stamp)
+    races, sources, cache = build(ROOT, target, fetch, stamp, read_cache(args.cache_file) if args.cache_file else None)
     candidate = prepare(ROOT, target, races, sources, stamp)
     changed = tree_hash(candidate) != tree_hash(ROOT / 'prediction-data')
     if changed and args.apply:
@@ -253,6 +270,9 @@ def main():
         os.replace(temp, cache_path)
     else:
         shutil.rmtree(candidate)
+    if args.cache_file:
+        # Actions cache persists successful fetches even when no Git commit is needed.
+        write(args.cache_file, cache)
     status = 'UPDATED' if changed and args.apply else 'VALIDATED' if changed else 'NO_CHANGES'
     report = dict(status=status, target_date=str(target), race_count=len(races), fetched_pages=fetch.count, changed=changed and args.apply)
     write(args.diagnostics / 'report.json', report)

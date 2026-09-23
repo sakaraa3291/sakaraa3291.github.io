@@ -39,6 +39,12 @@ jobs:
           cache: pip
           cache-dependency-path: automation/racecard/requirements.txt
       - run: python -m pip install -r automation/racecard/requirements.txt
+      - name: Restore horse history without requiring no-op Git commits
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/racecard-cache
+          key: racecard-history-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: racecard-history-v1-
       - name: Safety and parser contract tests
         run: python -m pytest -q automation/racecard/tests
       - name: Fetch both sources and validate complete candidate
@@ -50,7 +56,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          args=(--diagnostics "$RUNNER_TEMP/racecard-run")
+          args=(--diagnostics "$RUNNER_TEMP/racecard-run" --cache-file "$RUNNER_TEMP/racecard-cache/cache.json")
           if [[ -n "$REQUESTED_DATE" ]]; then args+=(--target-date "$REQUESTED_DATE"); fi
           if [[ -n "$SCHEDULE" ]]; then args+=(--schedule "$SCHEDULE"); fi
           if [[ "$DRY_RUN" != 'true' ]]; then args+=(--apply); fi
