@@ -101,6 +101,49 @@ def test_dynamic_js_placeholder_not_unpublished():
     assert r['horses'][0]['availability']['win_odds'] == 'not_available'
 
 
+def test_jra_body_weight_previous_unavailable():
+    soup = page(fixture('jra-card'))
+    cell = soup.select_one('tr.HorseList .Weight')
+    cell.string = '532'
+    comparison = soup.new_tag('small')
+    comparison.string = '(前計不)'
+    cell.append(comparison)
+    r = parse_jra(str(soup), '202606040711', date(2026, 9, 22), STAMP)
+    assert len(r['horses']) == 16
+    horse = r['horses'][0]
+    assert horse['entry_status'] == 'active'
+    assert horse['body_weight'] == 532
+    assert horse['availability']['body_weight'] == 'available'
+    assert horse['body_weight_diff'] is None
+    assert horse['availability']['body_weight_diff'] == 'not_available'
+    for key in ('body_weight', 'body_weight_diff'):
+        assert horse['observed_at'][key] == STAMP
+
+
+@pytest.mark.parametrize('raw,weight,diff,status', [
+    ('532(+4)', 532, 4, 'active'), ('532(-2)', 532, -2, 'active'),
+    ('532', 532, None, 'active'), ('計不', None, None, 'active'),
+    ('取消', None, None, 'scratched'), ('除外', None, None, 'excluded')])
+def test_jra_body_weight_existing_forms(raw, weight, diff, status):
+    soup = page(fixture('jra-card'))
+    soup.select_one('tr.HorseList .Weight').string = raw
+    r = parse_jra(str(soup), '202606040711', date(2026, 9, 22), STAMP)
+    horse = r['horses'][0]
+    assert horse['entry_status'] == status
+    for key, value in [('body_weight', weight), ('body_weight_diff', diff)]:
+        assert horse[key] == value
+        assert horse['availability'][key] == ('available' if value is not None else 'not_available')
+        assert horse['observed_at'][key] == STAMP
+
+
+@pytest.mark.parametrize('raw', ['不明', '532(不明)', '532(前計不)extra'])
+def test_jra_unknown_body_weight_fails(raw):
+    soup = page(fixture('jra-card'))
+    soup.select_one('tr.HorseList .Weight').string = raw
+    with pytest.raises(ValueError, match='unknown body weight:'):
+        parse_jra(str(soup), '202606040711', date(2026, 9, 22), STAMP)
+
+
 @pytest.mark.parametrize('key,selector', [
     ('win_odds', '[id^="odds-"]'), ('popularity', '[id^="ninki-"]')])
 def test_jra_missing_dynamic_node(key, selector):

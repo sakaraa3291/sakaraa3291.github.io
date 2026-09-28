@@ -136,7 +136,7 @@ def optional_number(value, integer=False):
 
 def weight_fields(horse, raw, stamp):
     raw = normalized(raw).replace('kg', '')
-    m = re.fullmatch(r'(\d{3})(?:\(([+-]?\d+)\))?', raw)
+    m = re.fullmatch(r'(\d{3})(?:\((?:([+-]?\d+)|前計不)\))?', raw)
     if m:
         dynamic(horse, 'body_weight', int(m[1]), stamp)
         dynamic(horse, 'body_weight_diff', int(m[2]) if m[2] else None, stamp,
