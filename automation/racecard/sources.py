@@ -200,7 +200,6 @@ def parse_jra(html, rid, target, stamp):
         weight_fields(horse, text(cells[8]), stamp)
         for key, selector, integer in [('win_odds', '[id^="odds-"]', False), ('popularity', '[id^="ninki-"]', True)]:
             node = row.select_one(selector)
-            require(node is not None, f'missing dynamic cell: {key}')
             # A JS placeholder is not evidence that betting has not opened.
             dynamic(horse, key, optional_number(text(node), integer), stamp, 'not_available')
         race['horses'].append(horse)
