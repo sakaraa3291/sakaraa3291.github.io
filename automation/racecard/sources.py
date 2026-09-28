@@ -226,7 +226,7 @@ def parse_jra_history(html, race):
                 # Rest intervals and debut cells are not starts.
                 require(not re.search(r'\d{4}\.\d{2}\.\d{2}', text(cell)), 'dated history missing race ID')
                 continue
-            old_id = source_id(anchor, r'/race/(\d{12})')
+            old_id = source_id(anchor, r'/race/([A-Za-z0-9]{12})(?=[/?#]|$)')
             if text(cell.select_one('.Num')) in ('除', '除外', '取消', '取'):
                 continue
             first = text(cell.select_one('.Data01'))

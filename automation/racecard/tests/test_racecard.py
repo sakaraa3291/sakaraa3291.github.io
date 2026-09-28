@@ -236,6 +236,29 @@ def test_parser_preserves_scratched_and_jockey_identity():
     assert r['horses'][0]['jockey_id'] == '99999'
 
 
+@pytest.mark.parametrize('race_id', ['2026A0a00603', '202601020210'])
+def test_jra_history_preserves_race_id(race_id):
+    r = parse_jra(fixture('jra-card'), '202606040711', date(2026, 9, 22), STAMP)
+    expected = parse_jra_history(fixture('jra-past5'), r)
+    soup = page(fixture('jra-past5'))
+    href = f'https://db.netkeiba.com/race/{race_id}'
+    soup.select_one('tr.HorseList .Data02 a[href*="/race/"]')['href'] = href
+    first = expected[r['horses'][0]['horse_id']]['past_performances'][0]
+    first.update(race_id=race_id, source_url=href)
+    assert parse_jra_history(str(soup), r) == expected
+
+
+@pytest.mark.parametrize('race_id', [
+    '', '2026A0a0060', '2026A0a006030', '2026060407110',
+    '2026A0a0060_', '2026A0a00603-', '2026A0a0060é', '2026A0a00603é'])
+def test_jra_history_malformed_race_id_fails(race_id):
+    r = parse_jra(fixture('jra-card'), '202606040711', date(2026, 9, 22), STAMP)
+    soup = page(fixture('jra-past5'))
+    soup.select_one('tr.HorseList .Data02 a[href*="/race/"]')['href'] = f'/race/{race_id}'
+    with pytest.raises(ValueError, match='ID unavailable/malformed'):
+        parse_jra_history(str(soup), r)
+
+
 def test_history_cache_reuses_same_horse_day(monkeypatch):
     from automation.racecard import run
     class Fake:
