@@ -101,6 +101,55 @@ def test_dynamic_js_placeholder_not_unpublished():
     assert r['horses'][0]['availability']['win_odds'] == 'not_available'
 
 
+@pytest.mark.parametrize('key,selector', [
+    ('win_odds', '[id^="odds-"]'), ('popularity', '[id^="ninki-"]')])
+def test_jra_missing_dynamic_node(key, selector):
+    soup = page(fixture('jra-card'))
+    row = soup.select_one('tr.HorseList')
+    row.select_one(selector).decompose()
+    r = parse_jra(str(soup), '202606040711', date(2026, 9, 22), STAMP)
+    assert len(r['horses']) == 16
+    horse = r['horses'][0]
+    assert horse['horse_number'] == 1
+    assert horse['entry_status'] == 'active'
+    assert horse[key] is None
+    assert horse['availability'][key] == 'not_available'
+
+
+def test_jra_scratched_missing_both_dynamic_nodes():
+    soup = page(fixture('jra-card'))
+    row = soup.select_one('tr.HorseList')
+    row['class'].append('Cancel')
+    for selector in ('[id^="odds-"]', '[id^="ninki-"]'):
+        row.select_one(selector).decompose()
+    r = parse_jra(str(soup), '202606040711', date(2026, 9, 22), STAMP)
+    assert len(r['horses']) == 16
+    horse = r['horses'][0]
+    assert horse['horse_number'] == 1
+    assert horse['entry_status'] == 'scratched'
+    for key in ('win_odds', 'popularity'):
+        assert horse[key] is None
+        assert horse['availability'][key] == 'not_available'
+
+
+def test_jra_missing_jockey_identity_fails():
+    soup = page(fixture('jra-card'))
+    soup.select_one('tr.HorseList .Jockey a').decompose()
+    with pytest.raises(ValueError, match='missing ID link'):
+        parse_jra(str(soup), '202606040711', date(2026, 9, 22), STAMP)
+
+
+def test_jra_partial_active_horse_odds_fails():
+    from automation.racecard.sources import apply_odds
+    r = jra()
+    actual = json.loads((FIX/'jra-odds.json').read_text())
+    horse = r['horses'][0]
+    assert horse['entry_status'] == 'active'
+    del actual['data']['odds']['1'][str(horse['horse_number']).zfill(2)]
+    with pytest.raises(ValueError, match='partial active-horse odds'):
+        apply_odds(r, actual, 'https://race.netkeiba.com/api/api_get_jra_odds.html')
+
+
 def test_actual_odds_and_prediction_separation():
     from automation.racecard.sources import apply_odds
     r = jra()
