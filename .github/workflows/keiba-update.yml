@@ -11,8 +11,11 @@ on:
         type: boolean
         default: true
   schedule:
-    # Tuesday 05:23 JST: includes Sunday and occasional Monday meetings.
+    # Tuesday 05:23 JST: primary weekly update.
     - cron: '23 20 * * 1'
+    # Tuesday 06:23 JST: fallback for an occasional missed/delayed GitHub schedule delivery.
+    # The updater is idempotent; after a successful primary run this should produce no data commit.
+    - cron: '23 21 * * 1'
 permissions:
   contents: write
 concurrency:
