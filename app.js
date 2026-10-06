@@ -394,7 +394,7 @@ function renderSchematicRoute(body,v,s,d,c,laps,routeOverride,compact){
  for(const arc of geo.cornerArcs)map.append(svg('path',{d:arc,fill:'none',stroke:'#8195A8','stroke-width':2,'stroke-dasharray':'6 6',opacity:0.9}));
  // 距離マーカー（1mあたりの長さが一定なので、位置は距離として正しい）
  const mstep=d<=1200?200:d<=2400?400:600;
- const visibleAnchors=route.anchors.filter(a=>!geo.morphology||(d-a.m<=geo.lap&&['start','straight_entry','goal'].includes(a.role)));
+ const visibleAnchors=route.anchors.filter(a=>!geo.morphology||(['start','straight_entry','goal'].includes(a.role)&&(a.role==='start'||d-a.m<=geo.lap)));
  const anchorPts=visibleAnchors.map(a=>{const r0=d-a.m;return geo.at(loop?((r0%geo.lap)+geo.lap)%geo.lap:r0)});
  for(let m=mstep;m<d;m+=mstep){
   const rem=d-m;if(geo.morphology&&rem>geo.lap)continue;const pt=geo.at(loop?((rem%geo.lap)+geo.lap)%geo.lap:rem);
@@ -423,7 +423,7 @@ function renderSchematicRoute(body,v,s,d,c,laps,routeOverride,compact){
   }else while(placed.some(q=>Math.abs(q[0]-lx)<56&&Math.abs(q[1]-(pt.y+dy))<17))dy+=down?26:-26;
   placed.push([lx,pt.y+dy]);
   map.append(svg('circle',{class:'anchorDot',cx:pt.x.toFixed(2),cy:pt.y.toFixed(2),r:5,fill:'#0E161F',stroke:'#E9EFF5','stroke-width':2}),
-   svg('text',{x:lx.toFixed(2),y:(pt.y+dy).toFixed(2),fill:'#E9EFF5','font-size':12,'font-weight':700,'text-anchor':'middle'},(geo.morphology&&isStart?'開始※':a.label)),
+   svg('text',{x:lx.toFixed(2),y:(pt.y+dy).toFixed(2),fill:'#E9EFF5','font-size':12,'font-weight':700,'text-anchor':'middle'},(geo.morphology&&isStart?'スタート':a.label)),
    svg('text',{x:lx.toFixed(2),y:(pt.y+dy+(dy>0?14:-13)).toFixed(2),fill:'#8195A8','font-size':9,'text-anchor':'middle'},`${Math.round(a.m)}m`));
  }
  if(loop){
@@ -437,7 +437,7 @@ function renderSchematicRoute(body,v,s,d,c,laps,routeOverride,compact){
   map.append(svg('text',{x:290,y:26,fill:'#8195A8','font-size':10,'text-anchor':'middle'},'直線コース（コーナーなし）'));
  }
  left.append(map);
- if(geo.morphology)left.append(node('p','JRA公式平面図準拠・表示用簡略図 ／ ※開始は距離換算'+(route.companion_shape_id?' ／ 灰線は別回り':''),'note'));
+ if(geo.morphology)left.append(node('p','JRA公式平面図準拠・表示用簡略図 ／ スタート位置は距離換算'+(route.companion_shape_id?' ／ 灰線は別回り':''),'note'));
  left.append(profilePanel(prof,route,d,`${v}${s}${d}m 起伏プロファイルと距離目盛`));
  const facts=compact?[['公式アンカー',T.anchor_fact],['高低差',T.hill_fact]]
                     :[['公式アンカー',T.anchor_fact],['高低差',T.hill_fact],['精度',T.precision_fact]];
