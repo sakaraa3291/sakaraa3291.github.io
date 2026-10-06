@@ -300,6 +300,14 @@ function profilePanel(prof,route,d,label){
   el.append(svg('line',{x1:X(m),x2:X(m),y1:BASE,y2:BASE+5,stroke:'#41566B','stroke-width':1}),
    svg('text',{x:X(m),y:BASE+20,fill:'#7f93a6','font-size':11,'text-anchor':'middle'},String(m)));
  el.append(svg('text',{x:W-RG,y:BASE+38,fill:'#7f93a6','font-size':11,'text-anchor':'end'},'通過距離（m）'));
+ const dirY=158,dirEnd=W-RG-50;
+ el.append(
+  svg('text',{x:L,y:dirY+4,fill:'#9FC3D8','font-size':10,'font-weight':700,'text-anchor':'start'},'スタート'),
+  svg('line',{x1:L+48,x2:dirEnd,y1:dirY,y2:dirY,stroke:'#9FC3D8','stroke-width':2}),
+  svg('path',{d:`M ${dirEnd-8} ${dirY-5} L ${dirEnd} ${dirY} L ${dirEnd-8} ${dirY+5}`,fill:'none',stroke:'#9FC3D8','stroke-width':2,'stroke-linecap':'round','stroke-linejoin':'round'}),
+  svg('text',{x:(L+W-RG)/2,y:dirY-6,fill:'#9FC3D8','font-size':10,'font-weight':700,'text-anchor':'middle'},'進行方向'),
+  svg('text',{x:W-RG,y:dirY+4,fill:'#9FC3D8','font-size':10,'font-weight':700,'text-anchor':'end'},'ゴール')
+ );
  if(shaped){
   const line=pts.map((q,i)=>`${i?'L':'M'} ${X(q[0]).toFixed(1)} ${Y(q[1]).toFixed(1)}`).join(' ');
   el.append(svg('path',{d:`${line} L ${X(d).toFixed(1)} ${BASE} L ${X(0).toFixed(1)} ${BASE} Z`,fill:'#1D3A52',opacity:0.8}),
