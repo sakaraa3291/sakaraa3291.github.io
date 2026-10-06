@@ -114,6 +114,93 @@ function ellipseHalfLength(rx,ry,n=2048){let L=0,px=0,py=-ry;for(let i=1;i<=n;i+
 function ellipseRx(target,ry){let lo=.01,hi=Math.max(4*target,4*ry);for(let i=0;i<80;i++){const mid=(lo+hi)/2;if(ellipseHalfLength(mid,ry)<target)lo=mid;else hi=mid}return (lo+hi)/2}
 function ellipseAngleAt(arc,rx,ry,n=2048){let L=0,px=0,py=-ry;for(let i=1;i<=n;i++){const t=Math.PI*i/n,x=-rx*Math.sin(t),y=-ry*Math.cos(t),step=Math.hypot(x-px,y-py);if(L+step>=arc)return Math.PI*(i-1)/n+(Math.PI/n)*(arc-L)/(step||1);L+=step;px=x;py=y}return Math.PI}
 const ROLE=(route,r)=>route.anchors.find(a=>a.role===r);
+// Original display vectors, reviewed against JRA course plan images (2026-10-06).
+// Coordinates are illustration units, never surveyed coordinates. Each template
+// runs backwards from the home-straight entrance (remaining distance increases).
+// Cubics describe the different bends; straight segments preserve shared branches.
+const COURSE_SHAPES={
+ 'tokyo-turf':[[115,215],[38,215,32,167,48,111],[58,73,78,55,125,55],[420,55],[474,55,489,78,505,108],[528,141,510,191,465,205],[440,215,422,215,400,215],[115,215]],
+ 'tokyo-dirt':[[128,199],[70,199,60,171,72,121],[80,91,96,78,133,78],[401,78],[440,78,460,103,470,130],[487,164,457,194,408,199],[128,199]],
+ 'nakayama-inner':[[427,214],[487,214,527,180,518,147],[509,111,480,100,442,100],[154,100],[104,100,69,132,76,167],[83,202,107,214,153,214],[427,214]],
+ 'nakayama-outer':[[427,214],[487,214,527,180,518,147],[480,92,337,39,205,34],[129,25,117,58,100,110],[80,151,72,170,91,192],[107,208,126,214,153,214],[427,214]],
+ 'nakayama-dirt':[[418,197],[466,197,490,177,486,151],[482,124,463,117,430,117],[159,117],[119,117,100,138,104,160],[109,187,128,197,165,197],[418,197]],
+ 'kyoto-inner':[[417,215],[475,215,490,172,480,132],[471,88,390,78,350,85],[163,119],[115,129,103,161,123,192],[135,210,153,215,184,215],[417,215]],
+ 'kyoto-outer':[[417,215],[517,215,522,174,513,116],[509,49,483,61,437,69],[350,85],[163,119],[115,129,103,161,123,192],[135,210,153,215,184,215],[417,215]],
+ 'kyoto-dirt':[[403,198],[450,198,465,163,454,133],[444,105,428,96,405,99],[175,135],[139,141,133,164,147,183],[158,195,174,198,194,198],[403,198]],
+ 'hanshin-inner':[[389,218],[433,203,450,169,428,125],[406,78,378,70,348,79],[133,142],[94,154,91,184,111,204],[122,217,139,218,165,218],[389,218]],
+ 'hanshin-outer':[[389,218],[476,218,540,179,521,120],[506,66,451,24,413,35],[348,79],[133,142],[94,154,91,184,111,204],[122,217,139,218,165,218],[389,218]],
+ 'hanshin-dirt':[[374,198],[411,188,420,168,402,132],[386,102,368,96,347,101],[148,157],[121,165,119,181,135,192],[144,198,154,198,176,198],[374,198]],
+ 'chukyo-turf':[[155,214],[83,214,35,172,48,123],[57,73,100,40,156,48],[428,72],[482,78,512,107,508,148],[504,190,479,214,435,214],[155,214]],
+ 'chukyo-dirt':[[159,197],[102,197,66,165,77,127],[86,88,115,67,160,73],[417,94],[458,99,482,121,476,151],[470,181,452,197,414,197],[159,197]],
+ 'niigata-inner':[[255,207],[201,207,185,172,191,139],[197,109,218,92,255,92],[459,92],[510,92,531,115,526,151],[521,188,502,207,463,207],[255,207]],
+ 'niigata-outer':[[110,207],[54,207,38,173,43,138],[49,108,70,92,110,92],[459,92],[510,92,531,115,526,151],[521,188,502,207,463,207],[110,207]],
+ 'niigata-dirt':[[270,191],[229,191,211,168,216,143],[221,120,239,108,271,108],[451,108],[488,108,507,125,502,152],[497,178,481,191,451,191],[270,191]],
+ 'fukushima-turf':[[420,211],[479,211,519,181,513,141],[507,95,453,73,409,72],[156,70],[90,70,55,109,58,151],[60,188,96,211,154,211],[420,211]],
+ 'fukushima-dirt':[[411,195],[461,195,492,175,487,143],[482,110,445,91,401,90],[163,88],[112,88,80,115,82,148],[84,177,115,195,164,195],[411,195]],
+ 'sapporo-turf':[[399,212],[460,212,504,180,502,137],[500,94,459,60,401,60],[179,60],[120,60,76,94,75,137],[74,180,119,212,179,212],[399,212]],
+ 'sapporo-dirt':[[391,194],[442,194,479,171,479,137],[479,103,445,80,393,80],[185,80],[136,80,101,104,100,137],[99,170,136,194,185,194],[391,194]],
+ 'hakodate-turf':[[414,210],[472,210,505,178,504,137],[503,96,470,66,414,66],[158,66],[102,66,68,96,68,137],[68,178,102,210,158,210],[414,210]],
+ 'hakodate-dirt':[[405,192],[449,192,478,168,478,137],[478,106,449,84,405,84],[167,84],[123,84,95,106,95,137],[95,168,123,192,167,192],[405,192]],
+ 'kokura-turf':[[425,215],[483,215,515,178,511,138],[508,95,476,60,421,60],[162,60],[102,60,60,95,60,139],[60,182,101,215,162,215],[425,215]],
+ 'kokura-dirt':[[414,193],[459,193,488,168,485,137],[482,104,457,83,414,83],[170,83],[122,83,88,106,88,138],[88,171,122,193,170,193],[414,193]]
+};
+// Corner label positions follow the bends in each plan, not fixed lap fractions.
+const COURSE_CORNERS={
+ 'tokyo-turf':[[53,173],[66,85],[478,81],[490,177]],
+ 'tokyo-dirt':[[75,172],[90,100],[448,102],[467,173]],
+ 'nakayama-inner':[[496,183],[488,119],[100,121],[97,187]],
+ 'nakayama-outer':[[496,183],[470,110],[155,43],[96,187]],
+ 'nakayama-dirt':[[470,180],[468,129],[123,132],[120,179]],
+ 'kyoto-inner':[[466,188],[459,98],[133,137],[135,193]],
+ 'kyoto-outer':[[504,184],[497,69],[133,137],[135,193]],
+ 'kyoto-dirt':[[442,176],[439,116],[153,149],[157,181]],
+ 'hanshin-inner':[[423,187],[406,103],[114,156],[112,196]],
+ 'hanshin-outer':[[490,187],[489,70],[114,156],[112,196]],
+ 'hanshin-dirt':[[398,178],[387,121],[138,167],[138,189]],
+ 'chukyo-turf':[[61,176],[85,72],[482,102],[483,181]],
+ 'chukyo-dirt':[[87,168],[108,91],[455,114],[454,177]],
+ 'niigata-inner':[[203,183],[210,113],[510,114],[510,183]],
+ 'niigata-outer':[[55,183],[ 60,113],[510,114],[510,183]],
+ 'niigata-dirt':[[230,175],[233,124],[489,123],[486,175]],
+ 'fukushima-turf':[[493,179],[474,96],[83,98],[ 80,180]],
+ 'fukushima-dirt':[[471,173],[452,113],[103,112],[107,173]],
+ 'sapporo-turf':[[477,182],[477, 90],[103,90],[103,183]],
+ 'sapporo-dirt':[[459,171],[456,102],[122,102],[123,171]],
+ 'hakodate-turf':[[486,180],[484,96],[90,96],[90,180]],
+ 'hakodate-dirt':[[458,170],[458,107],[115,107],[115,170]],
+ 'kokura-turf':[[491,184],[487,92],[87,92],[87,184]],
+ 'kokura-dirt':[[466,169],[465,105],[108,105],[108,169]]
+};
+// Sample the same polyline used for SVG and distance lookup: no browser-specific
+// curve-length approximation can move lap bands relative to distance markers.
+function sampleCourse(shape){
+ const pts=[{x:shape[0][0],y:shape[0][1]}];
+ for(const seg of shape.slice(1)){
+  const a=pts.at(-1);
+  if(seg.length===2){pts.push({x:seg[0],y:seg[1]});continue}
+  for(let i=1;i<=40;i++){const t=i/40,u=1-t;pts.push({x:u*u*u*a.x+3*u*u*t*seg[0]+3*u*t*t*seg[2]+t*t*t*seg[4],y:u*u*u*a.y+3*u*u*t*seg[1]+3*u*t*t*seg[3]+t*t*t*seg[5]})}
+ }
+ return pts;
+}
+function courseMorphology(route){
+ const shape=COURSE_SHAPES[route.shape_id];if(!shape||!(route.lap_m>0))return null;
+ const pts=sampleCourse(shape),lengths=[0];
+ for(let i=1;i<pts.length;i++)lengths.push(lengths[i-1]+Math.hypot(pts[i].x-pts[i-1].x,pts[i].y-pts[i-1].y));
+ const total=lengths.at(-1),lap=route.lap_m,k=total/lap;
+ const rawAt=p=>{p=Math.max(0,Math.min(total,p));let i=1;while(i<lengths.length-1&&lengths[i]<p)i++;const t=(p-lengths[i-1])/(lengths[i]-lengths[i-1]);return {x:pts[i-1].x+(pts[i].x-pts[i-1].x)*t,y:pts[i-1].y+(pts[i].y-pts[i-1].y)*t}};
+ // Put the goal on the home straight using the official straight/lap ratio.
+ const origin=total-route.straight_m*k,goal=rawAt(origin);
+ const rotated=[goal,...pts.filter((_,i)=>lengths[i]>origin),...pts.slice(1).filter((_,i)=>lengths[i+1]<origin),goal];
+ const at=s=>{const pt=rawAt((origin+Math.max(0,Math.min(lap,s))*k)%total);return {...pt,zone:pt.y<120?'back':pt.y>190?'home':pt.x<290?'corner-late':'corner-early'}};
+ const right=route.turn==='右回り';
+ // Labels are visual corner positions, never asserted distance anchors.
+ const corners=COURSE_CORNERS[route.shape_id].map(([x,y])=>({x,y}));
+ return {mode:'loop',morphology:true,d:route.distance_m,lap,k,total,at,laps:route.distance_m/lap,
+  loopPath:rotated.map((p,i)=>`${i?'L':'M'} ${p.x} ${p.y}`).join(' '),cornerArcs:[],
+  corners:corners.map((p,i)=>({...p,label:[4,3,2,1][i]+'角',dx:p.x>290?-20:20})),
+  right,goalX:goal.x,LX:Math.min(...pts.map(p=>p.x)),RX:Math.max(...pts.map(p=>p.x)),TOP:Math.min(...pts.map(p=>p.y)),BOT:shape[0][1],CY:140};
+}
+
 // ---- 全場共通の模式ジオメトリ -------------------------------------------------
 // loopGeometry: 公式の「1周距離」と「直線距離」だけを根拠に、1m=一定pxのスタジアム型
 // 経路を作る。経路長は s=「ゴールまでの残り距離(m)」で、ゴールが s=0。
@@ -240,60 +327,74 @@ function renderSchematicRoute(body,v,s,d,c,laps,routeOverride,compact){
  if(!route||!prof||route.distance_m!==d)return false;
  const loop=route.mode==='loop-schematic',straight=route.mode==='straight-course';
  if(!loop&&!straight)return false;
- const geo=loop?loopGeometry(route,typeof route.straight_m==='number'?route.straight_m:(typeof c.straight_m==='number'?c.straight_m:0)):straightGeometry(route);
+ const geo=loop?(courseMorphology(route)||loopGeometry(route,typeof route.straight_m==='number'?route.straight_m:(typeof c.straight_m==='number'?c.straight_m:0))):straightGeometry(route);
  if(!geo)return false;
  const T=route.display||{};
  const grid=node('div',undefined,'courseGrid'),left=node('div'),right=node('div',undefined,'courseFacts');
- const map=svg('svg',{viewBox:loop?'0 0 580 270':'0 0 580 120',class:'courseSvg',role:'img','aria-label':`${v}${s}${d}m 模式コース図（コーナー位置は未確定）`});
+ const map=svg('svg',{viewBox:loop?'0 0 580 270':'0 0 580 120',class:'courseSvg',role:'img','aria-label':`${v}${s}${d}m JRA公式平面図準拠・表示用簡略図`});
+ if(geo.morphology&&route.companion_shape_id){
+  const companion=courseMorphology({...route,shape_id:route.companion_shape_id});
+  if(companion)map.append(svg('path',{d:companion.loopPath,fill:'none',stroke:'#536575','stroke-width':9,opacity:.6}));
+ }
  map.append(svg('path',{d:geo.loopPath,fill:'none',stroke:'#22432f','stroke-width':22,'stroke-linecap':'round'}));
  // 走行区間（ゴールから距離分だけ遡った範囲）を本線色で重ねる
  const runLen=Math.min(geo.d,geo.lap)*geo.k;
  map.append(svg('path',{d:geo.loopPath,fill:'none',stroke:'#2d5c3f','stroke-width':22,'stroke-linecap':'butt','stroke-dasharray':`${runLen.toFixed(3)} ${(geo.total-runLen).toFixed(3)}`}));
- // ラップ色。位置は距離そのものなので、図の形が模式でも色の境目は正しい。
+ // ラップ帯は簡略経路の全長に対し距離比例で配置（実地座標ではない）。
  const ss=C.segments(laps,d),lo=Math.min(...ss.map(x=>x.normalized)),hi=Math.max(...ss.map(x=>x.normalized));
  ss.forEach(seg=>{
   const a=Math.max(d-seg.start-seg.distance,0),b=Math.min(d-seg.start,geo.lap);
   if(!(b>a))return;
   map.append(svg('path',{d:geo.loopPath,fill:'none',stroke:color(seg.normalized,lo,hi),'stroke-width':12,'stroke-linecap':'butt','stroke-dasharray':`${((b-a)*geo.k).toFixed(3)} ${(geo.total-(b-a)*geo.k).toFixed(3)}`,'stroke-dashoffset':(-a*geo.k).toFixed(3)}));
  });
- // コーナーは公式非公表なので、模式であることを破線で示す
+ // 旧式のfallbackだけは、模式のコーナーを破線で示す
  for(const arc of geo.cornerArcs)map.append(svg('path',{d:arc,fill:'none',stroke:'#8195A8','stroke-width':2,'stroke-dasharray':'6 6',opacity:0.9}));
  // 距離マーカー（1mあたりの長さが一定なので、位置は距離として正しい）
  const mstep=d<=1200?200:d<=2400?400:600;
- const anchorPts=route.anchors.map(a=>{const r0=d-a.m;return geo.at(loop?((r0%geo.lap)+geo.lap)%geo.lap:r0)});
+ const visibleAnchors=route.anchors.filter(a=>!geo.morphology||(d-a.m<=geo.lap&&['start','straight_entry','goal'].includes(a.role)));
+ const anchorPts=visibleAnchors.map(a=>{const r0=d-a.m;return geo.at(loop?((r0%geo.lap)+geo.lap)%geo.lap:r0)});
  for(let m=mstep;m<d;m+=mstep){
-  const rem=d-m,pt=geo.at(loop?((rem%geo.lap)+geo.lap)%geo.lap:rem);
+  const rem=d-m;if(geo.morphology&&rem>geo.lap)continue;const pt=geo.at(loop?((rem%geo.lap)+geo.lap)%geo.lap:rem);
   // アンカーのラベルと重なる位置の距離マーカーは出さない
   if(anchorPts.some(q=>Math.hypot(q.x-pt.x,q.y-pt.y)<30))continue;
   const off=pt.zone==='back'?[0,-13]:pt.zone==='corner-late'?[-15,0]:pt.zone==='corner-early'?[15,0]:[0,15];
   map.append(svg('circle',{class:'kmDot',cx:pt.x.toFixed(2),cy:pt.y.toFixed(2),r:2.6,fill:'#E9EFF5',opacity:0.85}),
-   svg('text',{x:(pt.x+off[0]).toFixed(2),y:(pt.y+off[1]+3).toFixed(2),fill:'#9fb2c4','font-size':9,
-    'text-anchor':off[0]<0?'end':off[0]>0?'start':'middle'},`${m}m`));
+   svg('text',{x:Math.max(32,Math.min(548,pt.x+off[0])).toFixed(2),y:Math.max(16,Math.min(254,pt.y+off[1]+3)).toFixed(2),fill:'#9fb2c4','font-size':9,
+    'text-anchor':'middle'},`${m}m`));
  }
  const placed=[];
- for(const a of route.anchors){
+ for(const a of visibleAnchors){
   const sRem=d-a.m,pt=geo.at(loop?((sRem%geo.lap)+geo.lap)%geo.lap:sRem),isStart=a.m===0,isGoal=a.m===d;
-  // 向正面のラベルは楕円の内側へ置く（上の「向正面」キャプションと重ならないように）
+  // 新図の上半分は経路の上側へ、ホーム側は下側へラベルを置く。
   const down=pt.zone==='back'||pt.y>140;
-  let dy=pt.zone==='back'?24:down?28:-18;const dx=isStart?0:isGoal?10:0;
-  const lx=Math.max(44,Math.min(536,pt.x+dx));
-  // 近すぎるラベルは段をずらす（重なって読めなくなるのを防ぐ）
-  while(placed.some(q=>Math.abs(q[0]-lx)<56&&Math.abs(q[1]-(pt.y+dy))<17))dy+=down?26:-26;
+  let dy=geo.morphology?(pt.y<175?-23:28):(pt.zone==='back'?24:down?28:-18);const dx=isStart?0:isGoal?10:0;
+  let lx=Math.max(44,Math.min(536,pt.x+dx));
+  if(geo.morphology){
+   const candidates=[];
+   for(const oy of [dy,dy+28,dy-28,-28,28])for(const ox of [dx,dx-64,dx+64]){
+    const x=Math.max(44,Math.min(536,pt.x+ox)),y=Math.max(34,Math.min(240,pt.y+oy));
+    candidates.push({x,y});
+   }
+   const pos=candidates.find(p=>!placed.some(q=>Math.abs(q[0]-p.x)<64&&Math.abs(q[1]-p.y)<36))||candidates[0];
+   lx=pos.x;dy=pos.y-pt.y;
+  }else while(placed.some(q=>Math.abs(q[0]-lx)<56&&Math.abs(q[1]-(pt.y+dy))<17))dy+=down?26:-26;
   placed.push([lx,pt.y+dy]);
   map.append(svg('circle',{class:'anchorDot',cx:pt.x.toFixed(2),cy:pt.y.toFixed(2),r:5,fill:'#0E161F',stroke:'#E9EFF5','stroke-width':2}),
-   svg('text',{x:lx.toFixed(2),y:(pt.y+dy).toFixed(2),fill:'#E9EFF5','font-size':12,'font-weight':700,'text-anchor':'middle'},a.label),
+   svg('text',{x:lx.toFixed(2),y:(pt.y+dy).toFixed(2),fill:'#E9EFF5','font-size':12,'font-weight':700,'text-anchor':'middle'},(geo.morphology&&isStart?'開始※':a.label)),
    svg('text',{x:lx.toFixed(2),y:(pt.y+dy+(dy>0?14:-13)).toFixed(2),fill:'#8195A8','font-size':9,'text-anchor':'middle'},`${Math.round(a.m)}m`));
  }
  if(loop){
-  map.append(svg('text',{x:(geo.LX+geo.RX)/2,y:geo.TOP-24,fill:'#8195A8','font-size':10,'text-anchor':'middle'},'向正面（長さは模式）'),
-   svg('text',{x:(geo.LX+geo.goalX)/2,y:geo.BOT+46,fill:'#8195A8','font-size':10,'text-anchor':'middle'},'ホームストレッチ'),
-   svg('text',{x:geo.LX+14,y:geo.CY-2,fill:'#8195A8','font-size':9,'text-anchor':'start'},'コーナー'),
-   svg('text',{x:geo.LX+14,y:geo.CY+10,fill:'#8195A8','font-size':9,'text-anchor':'start'},'位置未確定'));
-  if(geo.laps>1)map.append(svg('text',{x:572,y:24,fill:'#FF9A82','font-size':10,'text-anchor':'end'},'1周超（色は最終1周分）'));
+  if(geo.morphology){
+   for(const p of geo.corners)map.append(svg('text',{x:p.x+p.dx,y:p.y+4,fill:'#EDF5FF','font-size':13,'font-weight':700,'text-anchor':'middle',stroke:'#0E161F','stroke-width':4,'paint-order':'stroke'},p.label));
+   map.append(svg('text',{x:290,y:145,fill:'#BDD0DD','font-size':13,'text-anchor':'middle'},`${v} ${route.variant_label||c.variant||s}`),
+    svg('text',{x:290,y:164,fill:'#9FB2C4','font-size':11,'text-anchor':'middle'},geo.right?'← 右回り':'左回り →'));
+  }
+  if(geo.laps>1)map.append(svg('text',{x:572,y:18,fill:'#FF9A82','font-size':10,'text-anchor':'end'},'色帯・距離点は最終1周分'));
  }else{
   map.append(svg('text',{x:290,y:26,fill:'#8195A8','font-size':10,'text-anchor':'middle'},'直線コース（コーナーなし）'));
  }
  left.append(map);
+ if(geo.morphology)left.append(node('p','JRA公式平面図準拠・表示用簡略図 ／ ※開始は距離換算'+(route.companion_shape_id?' ／ 灰線は別回り':''),'note'));
  left.append(profilePanel(prof,route,d,`${v}${s}${d}m 起伏プロファイルと距離目盛`));
  const facts=compact?[['公式アンカー',T.anchor_fact],['高低差',T.hill_fact]]
                     :[['公式アンカー',T.anchor_fact],['高低差',T.hill_fact],['精度',T.precision_fact]];
