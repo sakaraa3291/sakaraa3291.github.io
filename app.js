@@ -246,71 +246,100 @@ function routeGeometry(route){
 }
 // 公式に確定しているのは「1周距離」「直線距離」「高低差」だけの距離を描く。
 // コーナーまでの距離は数値を持たないので、図の中でも数値を出さず未確定と明記する。
-// 起伏プロファイル＋距離目盛。公式に数値がある区間だけを線として描き、
-// 数値が無い距離は形状を一切描かず「公式非公表」と示す（波形の創作をしない）。
-// 出典の記述を距離軸の標高列へ。up/down は出典どおりの向き、
-// 高さは数値がある区間はその値、無い区間は合計からの按分（模式）。
-function routeHeightDiff(route){
+// 起伏プロファイル＋距離目盛。上り下りの方向は出典記述を優先し、
+// 数値のある区間はその値を保持する。数値が無い区間は公式高低差の範囲へ模式補間する。
+// 距離別の発走位置は周回距離で折り返し、内外回りは route.shape_id ごとの形状を使う。
+const ELEVATION_SHAPE_PROFILE={
+ 'tokyo-turf':'東京|芝|1600','tokyo-dirt':'東京|ダート|1600',
+ 'nakayama-inner':'中山|芝|2000','nakayama-outer':'中山|芝|1600','nakayama-dirt':'中山|ダート|1800',
+ 'kyoto-inner':'京都|芝|1200','kyoto-outer':'京都|芝|1800','kyoto-dirt':'京都|ダート|1800',
+ 'hanshin-inner':'阪神|芝|2000','hanshin-outer':'阪神|芝|1600','hanshin-dirt':'阪神|ダート|1800',
+ 'chukyo-turf':'中京|芝|2000','chukyo-dirt':'中京|ダート|1800',
+ 'niigata-inner':'新潟|芝|1200','niigata-outer':'新潟|芝|1600','niigata-dirt':'新潟|ダート|1800',
+ 'sapporo-turf':'札幌|芝|1800','sapporo-dirt':'札幌|ダート|1700',
+ 'hakodate-turf':'函館|芝|1800','hakodate-dirt':'函館|ダート|1700',
+ 'fukushima-turf':'福島|芝|1800','fukushima-dirt':'福島|ダート|1700',
+ 'kokura-turf':'小倉|芝|1800','kokura-dirt':'小倉|ダート|1700'
+};
+function routeHeightDiff(route,shape){
+ if(typeof shape?.total_m==='number'&&shape.total_m>0)return shape.total_m;
  const t=route&&route.display&&route.display.hill_fact||'';
  const m=t.match(/高低差\s*([0-9.]+)m/);
  return m?Number(m[1]):null;
 }
-function elevationSeries(prof,d,route){
- const sh=prof&&prof.shape;if(!sh||!Array.isArray(sh.segments)||!sh.segments.length)return null;
- let list=[];
- for(const sg of sh.segments){
-  const a=Math.max(0,d-sg.to_rem),b=Math.min(d,d-sg.from_rem);
-  if(b-a<=0.5)continue;
-  const mag=typeof sg.rise_m==='number'?Math.abs(sg.rise_m):null;
-  list.push({a,b,dir:sg.dir,rise:mag,numeric:sg.precision==='numeric'&&mag!==null});
+function routeElevationShape(prof,route){
+ const key=ELEVATION_SHAPE_PROFILE[route&&route.shape_id];
+ const picked=key&&bundle&&bundle['elevation.json']&&bundle['elevation.json'].profiles[key]&&bundle['elevation.json'].profiles[key].shape;
+ return picked||(prof&&prof.shape)||null;
+}
+function resolvedElevationLap(prof,route){
+ const sh=routeElevationShape(prof,route);
+ if(!sh||!Array.isArray(sh.segments)||!sh.segments.length||!(route&&route.lap_m>0))return null;
+ const lap=route.lap_m,target=routeHeightDiff(route,sh);
+ const raw=sh.segments.map(x=>({...x,from_rem:Math.max(0,Math.min(lap,Number(x.from_rem)||0)),to_rem:Math.max(0,Math.min(lap,Number(x.to_rem)||0))})).filter(x=>x.to_rem-x.from_rem>.1);
+ const cuts=[0,lap];for(const x of raw)cuts.push(x.from_rem,x.to_rem);
+ const xs=[...new Set(cuts.map(x=>+x.toFixed(6)))].sort((a,b)=>a-b),parts=[];
+ for(let i=0;i<xs.length-1;i++){
+  const a=xs[i],b=xs[i+1],mid=(a+b)/2,active=raw.filter(x=>x.from_rem<=mid&&mid<x.to_rem);
+  let chosen=null;
+  if(active.length)chosen=active.find(x=>x.precision==='numeric'&&typeof x.rise_m==='number')||active.find(x=>x.dir!=='flat'&&x.dir!=='unknown')||active[0];
+  if(!chosen){parts.push({a,b,dir:'unknown',delta:null,numeric:false,gap:true});continue}
+  const numeric=chosen.precision==='numeric'&&typeof chosen.rise_m==='number';
+  const full=Math.max(.1,chosen.to_rem-chosen.from_rem);
+  parts.push({a,b,dir:chosen.dir||'unknown',delta:numeric?Math.abs(chosen.rise_m)*(b-a)/full:null,numeric,gap:false});
  }
- if(!list.length)return null;
- list.sort((x,y)=>x.a-y.a);
- // 同じ向きの重複区間は二重加算しない。複数資料の表現が重なる場合は1区間として扱う。
- const merged=[];
+ const upKnown=parts.filter(x=>x.dir==='up'&&x.delta!=null).reduce((n,x)=>n+x.delta,0);
+ const dnKnown=parts.filter(x=>x.dir==='down'&&x.delta!=null).reduce((n,x)=>n+x.delta,0);
+ const ups=parts.filter(x=>x.dir==='up'&&x.delta==null),dns=parts.filter(x=>x.dir==='down'&&x.delta==null);
+ const distribute=(arr,total)=>{const L=arr.reduce((n,x)=>n+(x.b-x.a),0)||1;for(const x of arr)x.delta=total*(x.b-x.a)/L};
+ if(ups.length&&dns.length){
+  const T=Math.max(upKnown,dnKnown,target||0,.1);
+  distribute(ups,Math.max(0,T-upKnown));distribute(dns,Math.max(0,T-dnKnown));
+ }else if(ups.length){
+  distribute(ups,Math.max(0,dnKnown-upKnown)||(target&&upKnown===0?target:0));
+ }else if(dns.length){
+  distribute(dns,Math.max(0,upKnown-dnKnown)||(target&&dnKnown===0?target:0));
+ }
+ let net=parts.reduce((n,x)=>n+(x.dir==='up'?(x.delta||0):x.dir==='down'?-(x.delta||0):0),0);
+ const gaps=parts.filter(x=>x.dir==='unknown').sort((x,y)=>(y.b-y.a)-(x.b-x.a));
+ if(Math.abs(net)>.001&&gaps.length){
+  gaps[0].dir=net>0?'down':'up';gaps[0].delta=Math.abs(net);gaps[0].inferred=true;
+ }
+ const estimated=!!sh.has_estimated_heights||parts.some(x=>(x.dir==='up'||x.dir==='down')&&!x.numeric)||parts.some(x=>x.inferred);
+ return {parts,lap,target,estimated,sources:sh.sources||[]};
+}
+function elevationSeries(prof,route,d){
+ const base=resolvedElevationLap(prof,route);if(!base)return null;
+ const list=[],maxK=Math.ceil(d/base.lap)+1;
+ for(let k=0;k<=maxK;k++)for(const sg of base.parts){
+  if(sg.dir==='unknown')continue;
+  const rf=sg.a+k*base.lap,rt=sg.b+k*base.lap;
+  let a=d-rt,b=d-rf;if(b<=0||a>=d)continue;
+  const aa=Math.max(0,a),bb=Math.min(d,b);if(bb-aa<=.5)continue;
+  const frac=(bb-aa)/(b-a||1);
+  list.push({a:aa,b:bb,dir:sg.dir,rise:(sg.delta||0)*frac,numeric:sg.numeric,inferred:sg.inferred});
+ }
+ list.sort((x,y)=>x.a-y.a||x.b-y.b);
+ let e=0,last=0,pts=[[0,0]];
  for(const sg of list){
-  const z=merged[merged.length-1];
-  if(z&&sg.a<z.b-0.5&&sg.dir===z.dir){
-   z.b=Math.max(z.b,sg.b);
-   if(z.rise===null)z.rise=sg.rise;
-   else if(sg.rise!==null)z.rise=Math.max(z.rise,sg.rise);
-   z.numeric=z.numeric&&sg.numeric;
-  }else merged.push({...sg});
+  if(sg.a>last+.5)pts.push([sg.a,e]);
+  e+=sg.dir==='up'?sg.rise:sg.dir==='down'?-sg.rise:0;
+  pts.push([sg.b,e]);last=Math.max(last,sg.b);
  }
- list=merged;
- const target=(typeof sh.total_m==='number'&&sh.total_m>0)?sh.total_m:routeHeightDiff(route);
- let e=0,minE=0,maxE=0,estimated=!!sh.has_estimated_heights;
- const pts=[[list[0].a,0]];
- for(const sg of list){
-  if(pts[pts.length-1][0]<sg.a-0.5)pts.push([sg.a,e]);
-  let delta=0;
-  if(sg.dir==='up'||sg.dir==='down'){
-   let mag=sg.rise;
-   if(!(typeof mag==='number'&&mag>0)){
-    estimated=true;
-    // 高低差の総量は公式値、区間ごとの高さが非公表なら、
-    // 方向だけは資料どおりにし、公式高低差の範囲内で模式化する。
-    if(target>0){
-     if(sg.dir==='up')mag=Math.max(0,(minE+target)-e);
-     else mag=Math.max(0,e-(maxE-target));
-     if(mag<target*0.12)mag=target*0.35;
-    }else mag=1;
-   }
-   delta=(sg.dir==='up'?1:-1)*mag;
-  }
-  e+=delta;minE=Math.min(minE,e);maxE=Math.max(maxE,e);
-  pts.push([sg.b,e]);
+ if(last<d)pts.push([d,e]);
+ let lo=Math.min(...pts.map(p=>p[1])),hi=Math.max(...pts.map(p=>p[1])),range=hi-lo;
+ let out=pts.map(p=>[p[0],p[1]-lo]);
+ if(base.estimated&&base.target>0&&range>.001){
+  const scale=base.target/range;out=out.map(p=>[p[0],p[1]*scale]);range=base.target;
  }
- const lo=Math.min(...pts.map(p=>p[1])),hi=Math.max(...pts.map(p=>p[1]));
- return {pts:pts.map(p=>[p[0],p[1]-lo]),segs:list,range:hi-lo,target,
-  estimated,sources:sh.sources};
+ return {pts:out,segs:list,range,estimated:base.estimated,sources:base.sources,target:base.target};
 }
 function profilePanel(prof,route,d,label){
  const W=580,H=176,L=52,RG=16,TOPY=34,BASE=104;
  const el=svg('svg',{viewBox:`0 0 ${W} ${H}`,class:'profileSvg',role:'img','aria-label':label});
  const X=m=>L+(W-L-RG)*m/d;
  // 出典の記述から標高列を作る。無ければ数値区間だけで作る。
- const series=elevationSeries(prof,d,route);
+ const series=elevationSeries(prof,route,d);
  let pts,shaped;
  if(series){pts=series.pts;shaped=true;}
  else{
@@ -347,17 +376,17 @@ function profilePanel(prof,route,d,label){
   const line=pts.map((q,i)=>`${i?'L':'M'} ${X(q[0]).toFixed(1)} ${Y(q[1]).toFixed(1)}`).join(' ');
   el.append(svg('path',{d:`${line} L ${X(d).toFixed(1)} ${BASE} L ${X(0).toFixed(1)} ${BASE} Z`,fill:'#1D3A52',opacity:0.8}),
    svg('path',{d:line,fill:'none',stroke:'#F6C55A','stroke-width':3,'stroke-linejoin':'round'}));
-  for(const sg of prof.numeric_segments){
-   if(sg.type!=='uphill'||typeof sg.rise_m!=='number')continue;
-   el.append(svg('line',{x1:X(sg.from_m),x2:X(sg.to_m),y1:TOPY-14,y2:TOPY-14,stroke:'#FF6B4A','stroke-width':5,'stroke-linecap':'round'}),
-    svg('text',{x:(X(sg.from_m)+X(sg.to_m))/2,y:TOPY-20,fill:'#FF9A82','font-size':11,'text-anchor':'middle'},
-     `上り ${Math.round(sg.to_m-sg.from_m)}m ／ +${sg.rise_m.toFixed(1)}m`));
+  for(const sg of (series?series.segs:[])){
+   if(!sg.numeric||sg.dir!=='up'||!(sg.rise>0))continue;
+   el.append(svg('line',{x1:X(sg.a),x2:X(sg.b),y1:TOPY-14,y2:TOPY-14,stroke:'#FF6B4A','stroke-width':5,'stroke-linecap':'round'}),
+    svg('text',{x:(X(sg.a)+X(sg.b))/2,y:TOPY-20,fill:'#FF9A82','font-size':11,'text-anchor':'middle'},
+     `上り ${Math.round(sg.b-sg.a)}m ／ +${sg.rise.toFixed(1)}m`));
   }
   if(series&&series.estimated)
    el.append(svg('text',{x:L,y:H-26,fill:'#7f93a6','font-size':10,'text-anchor':'start'},
-    '上り下りの並びは出典の記述どおり。数値が示されている区間はその値、'),
+    '上り下りの方向は出典記述に基づきます。数値のない区間の高さと'),
     svg('text',{x:L,y:H-12,fill:'#7f93a6','font-size':10,'text-anchor':'start'},
-    '数値の無い区間の高さは公式高低差の範囲内で模式化しています。'));
+    '未記載区間は公式高低差に合わせた模式補間です。'));
  }else{
   el.append(svg('line',{x1:X(0),x2:X(d),y1:Y(0),y2:Y(0),stroke:'#6C8095','stroke-width':2.5,'stroke-dasharray':'8 7'}),
    svg('text',{x:(X(0)+X(d))/2,y:TOPY+14,fill:'#8195A8','font-size':11,'text-anchor':'middle'},'区間ごとの起伏の形はJRA公式が非公表のため描いていません'),

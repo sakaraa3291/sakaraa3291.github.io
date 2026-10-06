@@ -246,10 +246,9 @@ function routeGeometry(route){
 }
 // 公式に確定しているのは「1周距離」「直線距離」「高低差」だけの距離を描く。
 // コーナーまでの距離は数値を持たないので、図の中でも数値を出さず未確定と明記する。
-// 起伏プロファイル＋距離目盛。公式に数値がある区間だけを線として描き、
-// 数値が無い距離は形状を一切描かず「公式非公表」と示す（波形の創作をしない）。
-// 出典の記述を距離軸の標高列へ。up/down は出典どおりの向き、
-// 高さは数値がある区間はその値、無い区間は合計からの按分（模式）。
+// 起伏プロファイル＋距離目盛。上り下りの方向は出典記述を優先し、
+// 数値のある区間はその値を保持する。数値が無い区間は公式高低差の範囲へ模式補間する。
+// 距離別の発走位置は周回距離で折り返し、内外回りは route.shape_id ごとの形状を使う。
 const ELEVATION_SHAPE_PROFILE={
  'tokyo-turf':'東京|芝|1600','tokyo-dirt':'東京|ダート|1600',
  'nakayama-inner':'中山|芝|2000','nakayama-outer':'中山|芝|1600','nakayama-dirt':'中山|ダート|1800',
@@ -263,9 +262,10 @@ const ELEVATION_SHAPE_PROFILE={
  'kokura-turf':'小倉|芝|1800','kokura-dirt':'小倉|ダート|1700'
 };
 function routeHeightDiff(route,shape){
+ if(typeof shape?.total_m==='number'&&shape.total_m>0)return shape.total_m;
  const t=route&&route.display&&route.display.hill_fact||'';
  const m=t.match(/高低差\s*([0-9.]+)m/);
- return m?Number(m[1]):typeof shape?.total_m==='number'?shape.total_m:null;
+ return m?Number(m[1]):null;
 }
 function routeElevationShape(prof,route){
  const key=ELEVATION_SHAPE_PROFILE[route&&route.shape_id];
@@ -376,17 +376,17 @@ function profilePanel(prof,route,d,label){
   const line=pts.map((q,i)=>`${i?'L':'M'} ${X(q[0]).toFixed(1)} ${Y(q[1]).toFixed(1)}`).join(' ');
   el.append(svg('path',{d:`${line} L ${X(d).toFixed(1)} ${BASE} L ${X(0).toFixed(1)} ${BASE} Z`,fill:'#1D3A52',opacity:0.8}),
    svg('path',{d:line,fill:'none',stroke:'#F6C55A','stroke-width':3,'stroke-linejoin':'round'}));
-  for(const sg of prof.numeric_segments){
-   if(sg.type!=='uphill'||typeof sg.rise_m!=='number')continue;
-   el.append(svg('line',{x1:X(sg.from_m),x2:X(sg.to_m),y1:TOPY-14,y2:TOPY-14,stroke:'#FF6B4A','stroke-width':5,'stroke-linecap':'round'}),
-    svg('text',{x:(X(sg.from_m)+X(sg.to_m))/2,y:TOPY-20,fill:'#FF9A82','font-size':11,'text-anchor':'middle'},
-     `上り ${Math.round(sg.to_m-sg.from_m)}m ／ +${sg.rise_m.toFixed(1)}m`));
+  for(const sg of (series?series.segs:[])){
+   if(!sg.numeric||sg.dir!=='up'||!(sg.rise>0))continue;
+   el.append(svg('line',{x1:X(sg.a),x2:X(sg.b),y1:TOPY-14,y2:TOPY-14,stroke:'#FF6B4A','stroke-width':5,'stroke-linecap':'round'}),
+    svg('text',{x:(X(sg.a)+X(sg.b))/2,y:TOPY-20,fill:'#FF9A82','font-size':11,'text-anchor':'middle'},
+     `上り ${Math.round(sg.b-sg.a)}m ／ +${sg.rise.toFixed(1)}m`));
   }
   if(series&&series.estimated)
    el.append(svg('text',{x:L,y:H-26,fill:'#7f93a6','font-size':10,'text-anchor':'start'},
     '上り下りの方向は出典記述に基づきます。数値のない区間の高さと'),
     svg('text',{x:L,y:H-12,fill:'#7f93a6','font-size':10,'text-anchor':'start'},
-    '数値の無い区間の高さは公式高低差の範囲内で模式化しています。'));
+    '未記載区間は公式高低差に合わせた模式補間です。'));
  }else{
   el.append(svg('line',{x1:X(0),x2:X(d),y1:Y(0),y2:Y(0),stroke:'#6C8095','stroke-width':2.5,'stroke-dasharray':'8 7'}),
    svg('text',{x:(X(0)+X(d))/2,y:TOPY+14,fill:'#8195A8','font-size':11,'text-anchor':'middle'},'区間ごとの起伏の形はJRA公式が非公表のため描いていません'),
