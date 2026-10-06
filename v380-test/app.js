@@ -250,32 +250,67 @@ function routeGeometry(route){
 // 数値が無い距離は形状を一切描かず「公式非公表」と示す（波形の創作をしない）。
 // 出典の記述を距離軸の標高列へ。up/down は出典どおりの向き、
 // 高さは数値がある区間はその値、無い区間は合計からの按分（模式）。
-function elevationSeries(prof,d){
+function routeHeightDiff(route){
+ const t=route&&route.display&&route.display.hill_fact||'';
+ const m=t.match(/高低差\s*([0-9.]+)m/);
+ return m?Number(m[1]):null;
+}
+function elevationSeries(prof,d,route){
  const sh=prof&&prof.shape;if(!sh||!Array.isArray(sh.segments)||!sh.segments.length)return null;
- const list=[];
+ let list=[];
  for(const sg of sh.segments){
   const a=Math.max(0,d-sg.to_rem),b=Math.min(d,d-sg.from_rem);
   if(b-a<=0.5)continue;
-  list.push({a,b,dir:sg.dir,rise:sg.rise_m||0,numeric:sg.precision==='numeric'});
+  const mag=typeof sg.rise_m==='number'?Math.abs(sg.rise_m):null;
+  list.push({a,b,dir:sg.dir,rise:mag,numeric:sg.precision==='numeric'&&mag!==null});
  }
  if(!list.length)return null;
  list.sort((x,y)=>x.a-y.a);
- let e=0;const pts=[[list[0].a,0]];
+ // 同じ向きの重複区間は二重加算しない。複数資料の表現が重なる場合は1区間として扱う。
+ const merged=[];
+ for(const sg of list){
+  const z=merged[merged.length-1];
+  if(z&&sg.a<z.b-0.5&&sg.dir===z.dir){
+   z.b=Math.max(z.b,sg.b);
+   if(z.rise===null)z.rise=sg.rise;
+   else if(sg.rise!==null)z.rise=Math.max(z.rise,sg.rise);
+   z.numeric=z.numeric&&sg.numeric;
+  }else merged.push({...sg});
+ }
+ list=merged;
+ const target=(typeof sh.total_m==='number'&&sh.total_m>0)?sh.total_m:routeHeightDiff(route);
+ let e=0,minE=0,maxE=0,estimated=!!sh.has_estimated_heights;
+ const pts=[[list[0].a,0]];
  for(const sg of list){
   if(pts[pts.length-1][0]<sg.a-0.5)pts.push([sg.a,e]);
-  e+=sg.dir==='up'?sg.rise:sg.dir==='down'?-sg.rise:0;
+  let delta=0;
+  if(sg.dir==='up'||sg.dir==='down'){
+   let mag=sg.rise;
+   if(!(typeof mag==='number'&&mag>0)){
+    estimated=true;
+    // 高低差の総量は公式値、区間ごとの高さが非公表なら、
+    // 方向だけは資料どおりにし、公式高低差の範囲内で模式化する。
+    if(target>0){
+     if(sg.dir==='up')mag=Math.max(0,(minE+target)-e);
+     else mag=Math.max(0,e-(maxE-target));
+     if(mag<target*0.12)mag=target*0.35;
+    }else mag=1;
+   }
+   delta=(sg.dir==='up'?1:-1)*mag;
+  }
+  e+=delta;minE=Math.min(minE,e);maxE=Math.max(maxE,e);
   pts.push([sg.b,e]);
  }
  const lo=Math.min(...pts.map(p=>p[1])),hi=Math.max(...pts.map(p=>p[1]));
- return {pts:pts.map(p=>[p[0],p[1]-lo]),segs:list,range:hi-lo,
-  estimated:sh.has_estimated_heights,sources:sh.sources};
+ return {pts:pts.map(p=>[p[0],p[1]-lo]),segs:list,range:hi-lo,target,
+  estimated,sources:sh.sources};
 }
 function profilePanel(prof,route,d,label){
  const W=580,H=176,L=52,RG=16,TOPY=34,BASE=104;
  const el=svg('svg',{viewBox:`0 0 ${W} ${H}`,class:'profileSvg',role:'img','aria-label':label});
  const X=m=>L+(W-L-RG)*m/d;
  // 出典の記述から標高列を作る。無ければ数値区間だけで作る。
- const series=elevationSeries(prof,d);
+ const series=elevationSeries(prof,d,route);
  let pts,shaped;
  if(series){pts=series.pts;shaped=true;}
  else{
@@ -285,7 +320,7 @@ function profilePanel(prof,route,d,label){
   }
   pts.push([d,e2]);shaped=pts.length>3;
  }
- const top=Math.max(...pts.map(q=>q[1]),1);
+ const top=Math.max(series&&series.target||0,...pts.map(q=>q[1]),1);
  const Y=v=>BASE-(BASE-TOPY)*v/top;
  for(let v=0;v<=top+1e-9;v+=(top>2.5?1:0.5)){
   el.append(svg('line',{x1:L,x2:W-RG,y1:Y(v),y2:Y(v),stroke:'#22333f','stroke-width':1}),
@@ -322,7 +357,7 @@ function profilePanel(prof,route,d,label){
    el.append(svg('text',{x:L,y:H-26,fill:'#7f93a6','font-size':10,'text-anchor':'start'},
     '上り下りの並びは出典の記述どおり。数値が示されている区間はその値、'),
     svg('text',{x:L,y:H-12,fill:'#7f93a6','font-size':10,'text-anchor':'start'},
-    '数値の無い区間の高さは合計からの按分（模式）です。'));
+    '数値の無い区間の高さは公式高低差の範囲内で模式化しています。'));
  }else{
   el.append(svg('line',{x1:X(0),x2:X(d),y1:Y(0),y2:Y(0),stroke:'#6C8095','stroke-width':2.5,'stroke-dasharray':'8 7'}),
    svg('text',{x:(X(0)+X(d))/2,y:TOPY+14,fill:'#8195A8','font-size':11,'text-anchor':'middle'},'区間ごとの起伏の形はJRA公式が非公表のため描いていません'),
