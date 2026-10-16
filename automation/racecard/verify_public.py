@@ -1,12 +1,11 @@
 """Verify every published detail/hash and freshly reconcile one actual source race."""
 import argparse
-import hashlib
 import json
 import tempfile
 from datetime import date, datetime
 from pathlib import Path
 
-import requests
+from automation.public_verify import PublicVerifier
 
 from .core import JST, require, validate_race
 from .run import ROOT, read
@@ -22,12 +21,13 @@ def main():
     public_index = f'prediction-data/{args.target_date}/index.json'
     local_index = read(ROOT / public_index)
     paths = ['prediction-data/latest.json', public_index, *[r['url'] for r in local_index['races']]]
+    verifier = PublicVerifier(base)
     for path in paths:
-        response = requests.get(base + path, params={'verify': datetime.now(JST).timestamp()}, timeout=60)
-        response.raise_for_status()
-        require(response.content == (ROOT / path).read_bytes(), f'public bytes mismatch: {path}')
+        expected = (ROOT / path).read_bytes()
+        content = verifier.verify(path, lambda content: content == expected,
+                                  f'public bytes mismatch: {path}')
         if '/races/' in path:
-            validate_race(response.json())
+            validate_race(json.loads(content))
     report = {'status': 'verified', 'target_date': args.target_date, 'public_files_verified': len(paths)}
     if local_index['races']:
         # Prefer the NAR primary source when this target has a Jpn race.
