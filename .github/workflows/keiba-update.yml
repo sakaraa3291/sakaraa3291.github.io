@@ -42,7 +42,11 @@ jobs:
       - name: Contract and safety tests
         run: python -m pytest -q automation/keiba_update_pkg/tests automation/tests
       - name: Verify persistent state against production aggregates
-        run: python automation/verify_state.py --out automation/runs/baseline-verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p automation/runs/baseline-verification
+          python automation/verify_state.py --out automation/runs/baseline-verification 2>&1 | tee automation/runs/baseline-verification/verification.log
       - name: Validate and update
         id: update
         env:
@@ -75,7 +79,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: keiba-run-${{ github.run_id }}-${{ github.run_attempt }}
-          path: automation/runs/current
+          path: |
+            automation/runs/current
+            automation/runs/baseline-verification
           if-no-files-found: ignore
           retention-days: 14
   deploy:

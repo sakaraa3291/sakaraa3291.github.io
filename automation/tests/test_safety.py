@@ -54,6 +54,24 @@ def fixture_baseline(tmp_path, monkeypatch):
     return repo, state
 
 
+def test_committed_production_baseline_is_consistent():
+    """Exercise real checked-in hashes, not only self-consistent fixtures."""
+    repo = AUTOMATION.parent
+    manifest = runner.check_baseline(repo, AUTOMATION / 'state')
+    assert manifest['through'] == runner.read_json(repo / 'lapdata.json')['meta']['to']
+
+
+@pytest.mark.parametrize('name', ['courses', 'elevation'])
+def test_stale_static_pin_fails_closed(tmp_path, monkeypatch, name):
+    repo, state = fixture_baseline(tmp_path, monkeypatch)
+    config_path = runner.PACKAGE / 'config/pwa_static.json'
+    config = runner.read_json(config_path)
+    config[f'{name}_sha256'] = '0' * 64
+    runner.write_json(config_path, config)
+    with pytest.raises(RuntimeError, match=f'static file changed: {name}'):
+        runner.check_baseline(repo, state)
+
+
 def test_noop_is_offline_and_byte_identical(tmp_path, monkeypatch):
     repo, state = fixture_baseline(tmp_path, monkeypatch)
     def forbidden(*args):
