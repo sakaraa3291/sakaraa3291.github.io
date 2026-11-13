@@ -1,7 +1,12 @@
 name: Horse racing v4.2 update
+run-name: ${{ inputs.request_id && format('keiba:{0}', inputs.request_id) || 'Horse racing v4.2 update' }}
 on:
   workflow_dispatch:
     inputs:
+      request_id:
+        description: 'Optional canonical UUID for pseudoCommander correlation'
+        required: false
+        type: string
       to_date:
         description: 'Inclusive completed JST date (YYYY-MM-DD); empty means yesterday'
         required: false
@@ -29,10 +34,28 @@ jobs:
     outputs:
       changed: ${{ steps.update.outputs.changed }}
       sha: ${{ steps.commit.outputs.sha }}
+      checkout_sha: ${{ steps.provenance.outputs.checkout_sha }}
+      saved_commit: ${{ steps.provenance.outputs.saved_commit }}
+      committed_sha: ${{ steps.provenance.outputs.committed_sha }}
+      outcome: ${{ steps.provenance.outputs.outcome }}
+      version_sha256: ${{ steps.provenance.outputs.version_sha256 }}
     steps:
+      - name: Validate optional correlation UUID
+        env:
+          REQUEST_ID: ${{ inputs.request_id }}
+        run: |
+          python3 - <<'PYCODE'
+          import os, uuid
+          value = os.environ['REQUEST_ID']
+          if value and str(uuid.UUID(value)) != value:
+              raise SystemExit('Invalid request_id UUID')
+          PYCODE
       - uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.sha }}
+      - name: Record actual update checkout
+        id: checkout_head
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
@@ -74,6 +97,13 @@ jobs:
           # Normal fast-forward push only; concurrent human changes cause a safe failure.
           git push origin HEAD:main
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Record committed update provenance
+        id: provenance
+        env:
+          CHECKOUT_SHA: ${{ steps.checkout_head.outputs.sha }}
+          COMMITTED_SHA: ${{ steps.commit.outputs.sha }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: python3 automation/commander_provenance.py update
       - name: Retain diagnostics and fetch checkpoints
         if: always()
         uses: actions/upload-artifact@v4
@@ -86,6 +116,8 @@ jobs:
           retention-days: 14
   deploy:
     needs: update
+    outputs:
+      checkout_sha: ${{ steps.deploy_checkout.outputs.sha }}
     if: needs.update.outputs.changed == 'true' && needs.update.outputs.sha != ''
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -100,6 +132,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ needs.update.outputs.sha }}
+      - name: Record actual deployment checkout
+        id: deploy_checkout
+        env:
+          EXPECTED_SHA: ${{ needs.update.outputs.sha }}
+        run: |
+          actual=$(git rev-parse HEAD)
+          test "$actual" = "$EXPECTED_SHA"
+          echo "sha=$actual" >> "$GITHUB_OUTPUT"
       - uses: actions/configure-pages@v5
       - name: Refuse stale main before staging
         run: python -m automation.racecard.guard head
@@ -116,3 +156,34 @@ jobs:
         env:
           PAGE_URL: ${{ steps.deployment.outputs.page_url }}
         run: python automation/verify_public.py --url "$PAGE_URL"
+  provenance:
+    needs: [update, deploy]
+    if: always() && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - name: Emit final provenance after deployment outcome
+        env:
+          REQUEST_ID: ${{ inputs.request_id }}
+          REQUESTED_DATE: ${{ inputs.to_date }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+          CHECKOUT_SHA: ${{ needs.update.outputs.checkout_sha }}
+          SAVED_COMMIT: ${{ needs.update.outputs.saved_commit }}
+          COMMITTED_SHA: ${{ needs.update.outputs.committed_sha }}
+          OUTCOME: ${{ needs.update.outputs.outcome }}
+          VERSION_SHA256: ${{ needs.update.outputs.version_sha256 }}
+          DEPLOY_CHECKOUT: ${{ needs.deploy.outputs.checkout_sha }}
+          UPDATE_RESULT: ${{ needs.update.result }}
+          DEPLOY_RESULT: ${{ needs.deploy.result }}
+        run: python3 automation/commander_provenance.py final
+      - uses: actions/upload-artifact@v4
+        with:
+          name: keiba-provenance-${{ github.run_id }}-${{ github.run_attempt }}
+          path: provenance.json
+          if-no-files-found: error
+          retention-days: 90
