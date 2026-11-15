@@ -230,6 +230,142 @@ def test_explicit_graded_race_column_preserves_existing_grade_history(tmp_path):
     assert got['富士S']['yrs'][0]['d']=='2026-10-17'
 
 
+def test_graded_years_remain_separate_by_actual_course():
+    from update_grade_records_incremental import rebuild_yearly_course_groups
+    import copy
+    yrs=[
+        {'y':'2022','d':'2022-11-12','c':'良','l':[12.0]*8,'w':96.0},
+        {'y':'2024','d':'2024-11-09','c':'良','l':[14.0]*8,'w':112.0},
+    ]
+    original=copy.deepcopy(yrs)
+    grade={'デイリー杯2歳S':{
+        'g':'GII','v':'阪神','s':'芝','dist':1600,'avg':[13.0]*8,
+        'segment_distances':[200]*8,'yrs':yrs}}
+    m=pd.DataFrame([
+      {'race_id':'202209050311','日付':'2022-11-12',
+       '競馬場':'阪神','馬場':'芝','距離':'1600','レース名':'第57回デイリー杯2歳S(GII)',
+       'ラップ':'-'.join(['12.0']*8)},
+      {'race_id':'202408060311','日付':'2024-11-09',
+       '競馬場':'京都','馬場':'芝','距離':'1600','レース名':'第59回デイリー杯2歳S(GII)',
+       'ラップ':'-'.join(['14.0']*8)},
+    ])
+    a=rebuild_yearly_course_groups(grade,m,'2024-11-09')
+    r=grade['デイリー杯2歳S']
+    assert a['multi_course_races']==1
+    assert [(g['v'],g['year_indices']) for g in r['groups']]==[
+        ('阪神',[0]),('京都',[1])]
+    assert r['avg']==[12.0]*8
+    assert r['groups'][1]['avg']==[14.0]*8
+    assert all(all(row[key]==value for key,value in before.items())
+               for row,before in zip(r['yrs'],original))
+    assert [y['v'] for y in r['yrs']]==['阪神','京都']
+
+
+def test_unverified_title_swap_does_not_contaminate_course_average():
+    from update_grade_records_incremental import rebuild_yearly_course_groups
+    grade={'プロキオンステークス':{
+        'g':'GII','v':'中京','s':'ダート','dist':1800,'avg':[11.5]*9,
+        'segment_distances':[200]*9,
+        'yrs':[{'y':'2021','d':'2021-01-24','c':'良','l':[11.0]*9,'w':99.0},
+               {'y':'2025','d':'2025-01-26','c':'良','l':[12.0]*9,'w':108.0}]}}
+    m=pd.DataFrame([
+      {'race_id':'202107010811','日付':'2021-01-24','競馬場':'中京','馬場':'ダート',
+       '距離':'1800','レース名':'第38回東海テレビ杯東海S(GII)','ラップ':'-'.join(['11.0']*9)},
+      {'race_id':'202507010611','日付':'2025-01-26','競馬場':'中京','馬場':'ダート',
+       '距離':'1800','レース名':'プロキオンステークス','ラップ':'-'.join(['12.0']*9)},
+    ])
+    a=rebuild_yearly_course_groups(grade,m,'2025-01-26')
+    r=grade['プロキオンステークス']
+    assert r['avg']==[12.0]*9
+    assert r['yrs'][0]['l']==[11.0]*9 and 'v' not in r['yrs'][0]
+    assert len(a['unresolved'])==1 and a['unresolved'][0]['date']=='2021-01-24'
+    assert r['groups'][0]['year_indices']==[1]
+
+
+def test_verified_short_race_title_requires_exact_lap():
+    from update_grade_records_incremental import rebuild_yearly_course_groups
+    grade={'日刊スポシンザン記念':{
+        'g':'GIII','v':'京都','s':'芝','dist':1600,'avg':[11.0]*8,
+        'segment_distances':[200]*8,
+        'yrs':[{'y':'2024','d':'2024-01-08','c':'良','l':[11.0]*8,'w':88.0}]}}
+    m=pd.DataFrame([{'race_id':'202408010311','日付':'2024-01-08',
+        '競馬場':'京都','馬場':'芝','距離':'1600','レース名':'シンザン記念',
+        'ラップ':'-'.join(['11.0']*8)}])
+    a=rebuild_yearly_course_groups(grade,m,'2024-01-08')
+    assert a['alias_verified'][0]['source_name']=='シンザン記念'
+    assert grade['日刊スポシンザン記念']['groups'][0]['year_indices']==[0]
+    m.at[0,'ラップ']='-'.join(['12.0']*8)
+    grade['日刊スポシンザン記念']['yrs'][0].pop('v')
+    grade['日刊スポシンザン記念']['yrs'][0].pop('s')
+    grade['日刊スポシンザン記念']['yrs'][0].pop('dist')
+    grade['日刊スポシンザン記念']['yrs'][0].pop('race_id')
+    b=rebuild_yearly_course_groups(grade,m,'2024-01-08')
+    assert len(b['unresolved'])==1
+    assert 'v' not in grade['日刊スポシンザン記念']['yrs'][0]
+
+
+def test_browser_grade_filter_separates_years_and_course():
+    import shutil
+    node=shutil.which('node')
+    if not node:
+        pytest.skip('Node.js is unavailable in this test environment')
+    js=r'''
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const root=process.argv[1],C=require(root+'/core.js');
+const laps=(n)=>Array(8).fill(n);
+const year=(y,v,n)=>({y:String(y),d:String(y)+'-11-12',c:'良',l:laps(n),
+ w:100,v,s:'芝',dist:1600,race_id:'2026'+String(y).slice(2)+'050311'});
+const r={g:'GII',v:'阪神',s:'芝',dist:1600,avg:laps(12),
+ segment_distances:laps(200),yrs:[
+  year(2021,'阪神',12),year(2022,'阪神',12),year(2023,'京都',14)],
+ groups:[{v:'阪神',s:'芝',dist:1600,avg:laps(12),
+   segment_distances:laps(200),year_indices:[0,1]},
+  {v:'京都',s:'芝',dist:1600,avg:laps(14),
+   segment_distances:laps(200),year_indices:[2]}]};
+const meta={schema_version:2,dataset_id:'test'};
+const ver={schema_version:2,app_version:'3.8.0',dataset_id:'test',
+  files:Object.fromEntries(C.FILES.map(f=>[f,'0'.repeat(64)])),
+  updated_at:'2026-11-15T00:00:00Z'};
+const b={version:ver,
+ 'lapdata.json':{meta:{...meta,races:0,from:null,to:null,audit:{}},grade:{'デイリー杯2歳S':r},cond:{}},
+ 'pedigree_stats.json':{meta:{...meta,source_rows:0},stats:{}},
+ 'courses.json':{meta,courses:{}},
+ 'elevation.json':{meta,profiles:{}}};
+C.validateBundle(b);
+const broken=JSON.parse(JSON.stringify(b));
+broken['lapdata.json'].grade['デイリー杯2歳S'].groups[1].avg=laps(12);
+assert.throws(()=>C.validateBundle(broken),/重賞平均/);
+class El{
+ constructor(){this.childNodes=[];this.children=this.childNodes;this.style={};
+  this.dataset={};this.value='';this.hidden=false;this.textContent='';}
+ append(...x){this.childNodes.push(...x);}
+ replaceChildren(...x){this.childNodes.splice(0,this.childNodes.length,...x);}
+ setAttribute(){}
+ addEventListener(){}
+}
+const fields={};
+const document={getElementById(id){return fields[id]??(fields[id]=new El())},
+ createElement(){return new El()},createElementNS(){return new El()}};
+const c={document,LapCore:C,LAP_TEST_MODE:true};vm.createContext(c);
+vm.runInContext(fs.readFileSync(root+'/app.js','utf8'),c);
+c.data=b;
+vm.runInContext("bundle=globalThis.data;mode='grade';"+
+ "draw=(series,dist)=>{globalThis.drawn={series,dist}};"+
+ "renderCourse=(venue,surface,dist)=>{globalThis.route={venue,surface,dist}};"+
+ "renderPedigree=()=>{};trendText=()=>'';",c);
+const rows=vm.runInContext('gradeRows()',c);
+assert.equal(rows.length,2);
+for(const [venue,count] of [['阪神',2],['京都',1]]){
+ document.getElementById('fRace').value=rows.find(x=>x.venue===venue).value;
+ vm.runInContext('render()',c);
+ assert.equal(c.route.venue,venue);
+ assert.equal(c.drawn.series.length,count+1);
+ assert(JSON.stringify(fields.readout).includes(String(count)+'R'));
+}
+'''
+    subprocess.run([node,'-e',js,str(AUTOMATION.parent)],capture_output=True,text=True,check=True)
+
+
 def test_race_class_uses_header_not_navigation():
     from bs4 import BeautifulSoup
     from fetch_netkeiba_delta import parse_meta

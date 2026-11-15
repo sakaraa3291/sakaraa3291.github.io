@@ -30,14 +30,47 @@ def main():
         assert r['s'] in {'芝','ダート'}; dist=int(r['dist']); check_laps(r['avg'],dist,r['segment_distances'])
         assert r['yrs']
         for y in r['yrs']:
-            check_laps(y['l'],dist,y.get('segment_distances')); assert y['d']<=a.to_date or y in base.get('grade',{}).get(k,{}).get('yrs',[])
-    # Existing grade year rows must be byte-semantically preserved; only new years may be appended.
+            yd=int(y.get('dist',dist))
+            check_laps(y['l'],yd,y.get('segment_distances'))
+            assert y['d']<=a.to_date or y in base.get('grade',{}).get(k,{}).get('yrs',[])
+        # Every published average is for one source-verified course only.
+        gs=r.get('groups')
+        assert isinstance(gs,list) and gs,('missing grade course groups',k)
+        used=set(); group_keys=set(); home=None
+        for group in gs:
+            venue,surf,gd=group['v'],group['s'],int(group['dist'])
+            ident=(venue,surf,gd)
+            assert venue and surf in {'芝','ダート'} and ident not in group_keys,(k,ident)
+            group_keys.add(ident)
+            check_laps(group['avg'],gd,group['segment_distances'])
+            ix=group['year_indices']
+            assert isinstance(ix,list) and len(ix)>0 and ix==sorted(set(ix)),('bad year indices',k)
+            for i in ix:
+                assert isinstance(i,int) and 0<=i<len(r['yrs']) and i not in used,(k,i)
+                used.add(i)
+                year=r['yrs'][i]
+                assert (year.get('v'),year.get('s'),year.get('dist'))==ident,(k,year['d'])
+                assert str(year.get('race_id','')).isdigit(),('unverified grade year',k,year['d'])
+            for j,a_value in enumerate(group['avg']):
+                mean=sum(float(r['yrs'][i]['l'][j]) for i in ix)/len(ix)
+                assert abs(float(a_value)-mean)<=0.011,('mixed grade average',k,ident,j)
+            if ident==(r['v'],r['s'],dist):
+                home=group
+        assert home is not None and home['avg']==r['avg'],('representative grade average differs',k)
+        for i,y in enumerate(r['yrs']):
+            tagged=any(key in y for key in ('v','s','dist','race_id'))
+            assert (i in used)==tagged,('verified grade year omitted from group',k,y['d'])
+    # Existing annual lap/time/notes remain unchanged; new source-course fields are additive.
     added=[]
     for k,br in base['grade'].items():
         assert k in lap['grade']; fr=lap['grade'][k]
         for field in ('v','s','g','dist'): assert fr.get(field)==br.get(field),(k,field,fr.get(field),br.get(field))
         fys={(str(y.get('y')),str(y.get('d'))):y for y in fr.get('yrs',[])}
-        for y in br.get('yrs',[]): assert fys.get((str(y.get('y')),str(y.get('d'))))==y,('grade historical changed',k,y.get('y'),y.get('d'))
+        for y in br.get('yrs',[]):
+            updated=fys.get((str(y.get('y')),str(y.get('d'))))
+            assert updated is not None,('grade history missing',k,y.get('d'))
+            assert all(updated.get(f)==value for f,value in y.items()),('grade historical changed',k,y.get('d'))
+            assert set(updated)-set(y) <= {'v','s','dist','race_id'},('unexpected grade year metadata',k,y.get('d'))
         bkeys={(str(y.get('y')),str(y.get('d'))) for y in br.get('yrs',[])}
         added.extend((k,y) for y in fr.get('yrs',[]) if (str(y.get('y')),str(y.get('d'))) not in bkeys)
     if a.expected_added_grade>=0: assert len(added)==a.expected_added_grade,(len(added),a.expected_added_grade)

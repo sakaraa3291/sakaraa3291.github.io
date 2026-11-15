@@ -32,6 +32,134 @@ def segdist(dist:int,n:int):
     return [dist-200*(n-1)]+[200]*(n-1)
 
 
+# These are explicitly checked abbreviations of the same race title.
+# Do not alias the historical Procyon/Tokai race-name swaps: a unique lap
+# is not by itself proof that an event belongs under another race title.
+VERIFIED_ALIASES={
+    'アイビスサマーD': ('アイビスSD',),
+    'エルムステークス': ('エルムS',),
+    'クイーンステークス': ('クイーンS',),
+    'レパードステークス': ('レパードS',),
+    '中京2歳ステークス': ('中京2歳S',),
+    '新潟2歳ステークス': ('新潟2歳S',),
+    '日刊スポシンザン記念': ('シンザン記念',),
+    '東海ステークス': ('東海S',),
+    '関西TVローズS': ('ローズS',),
+}
+
+
+def rebuild_yearly_course_groups(grade, master, to_date):
+    '''Recalculate averages from individually verified same-course seasons.
+
+    This does not insert omitted historical seasons or replace original manual
+    lap/time figures. Unmatched annual records remain in yrs and are reported,
+    but never participate in a course average.
+    '''
+    from collections import defaultdict
+    names=set(grade)
+    dates={str(y['d']) for r in grade.values() for y in r['yrs']}
+    m=master[(master['日付'].isin(dates)) & (master['日付']<=to_date)].drop_duplicates('race_id').copy()
+    m['_canonical']=m['レース名'].map(lambda v:canonical(v,names))
+    by_name=defaultdict(list)
+    by_date=defaultdict(list)
+    for x in m.to_dict('records'):
+        by_name[(str(x['_canonical']),str(x['日付']))].append(x)
+        by_date[str(x['日付'])].append(x)
+
+    verified=0
+    alias_verified=[]
+    unresolved=[]
+    group_count=0
+    mixed_count=0
+    for race,r in grade.items():
+        buckets=defaultdict(list)
+        for i,y in enumerate(r['yrs']):
+            when=str(y['d'])
+            matches=by_name.get((race,when),[])
+            matched_by='exact_name'
+            if not matches:
+                for alias in VERIFIED_ALIASES.get(race,()):
+                    matches.extend(by_name.get((alias,when),[]))
+                matched_by='verified_alias'
+            candidate=None
+            if len(matches)==1:
+                candidate=matches[0]
+                if matched_by=='verified_alias':
+                    # Require complete lap agreement before resolving aliases.
+                    try:
+                        raw=[float(v) for v in str(candidate['ラップ']).split('-')]
+                    except (TypeError,ValueError):
+                        raw=[]
+                    known=[float(v) for v in y['l']]
+                    if len(raw)!=len(known) or any(abs(a-b)>0.001 for a,b in zip(raw,known)):
+                        candidate=None
+            if candidate is None:
+                # A same-date, exact-lap candidate may help manual reconciliation;
+                # it must not automatically migrate across different race titles.
+                possible=[]
+                for x in by_date.get(when,[]):
+                    try: raw=[float(v) for v in str(x['ラップ']).split('-')]
+                    except (TypeError,ValueError):continue
+                    if len(raw)==len(y['l']) and all(abs(a-float(b))<=0.001 for a,b in zip(raw,y['l'])):
+                        possible.append({'race_id':str(x['race_id']),'name':str(x['レース名'])})
+                unresolved.append({'race':race,'date':when,
+                                   'reason':'no_unique_verified_race_name_and_laps',
+                                   'possible_source_records':possible[:3]})
+                continue
+            try:
+                venue=str(candidate['競馬場'])
+                surface={'ダ':'ダート'}.get(str(candidate['馬場']),str(candidate['馬場']))
+                distance=int(float(candidate['距離']))
+                rid=str(candidate['race_id'])
+                if surface not in {'芝','ダート'}:
+                    raise ValueError('not flat-racing surface')
+                if len(y['l'])!=(distance+199)//200:
+                    raise ValueError('lap length inconsistent with actual course')
+            except (ValueError,TypeError,KeyError) as exc:
+                raise ValueError(f'course provenance invalid: {race} {when}: {exc}') from exc
+            # A rerun must never overwrite an already verified different source.
+            for field,value in [('v',venue),('s',surface),('dist',distance),('race_id',rid)]:
+                if field in y and y[field]!=value:
+                    raise ValueError(f'year source conflict: {race} {when} {field}')
+                y[field]=value
+            buckets[(venue,surface,distance)].append(i)
+            verified+=1
+            if matched_by=='verified_alias':
+                alias_verified.append({'race':race,'date':when,'source_name':candidate['レース名'],'race_id':rid})
+
+        # A new publication must be explicit about all grouped averages.
+        if not buckets:
+            # Synthetic/legacy archives lacking provenance must keep their
+            # original manual rows. Publication validation rejects empty groups
+            # in a real full-dataset candidate; do not manufacture a venue.
+            r.pop('groups',None)
+            continue
+        primary=(str(r['v']),str(r['s']),int(r['dist']))
+        if primary not in buckets:
+            raise ValueError(f'representative grade course not source-verified: {race} {primary}')
+        groups=[]
+        for (venue,surface,distance),indices in buckets.items():
+            lengths={len(r['yrs'][i]['l']) for i in indices}
+            if lengths!={(distance+199)//200}:
+                raise ValueError(f'inconsistent course-group lap lengths: {race}')
+            avg=np.round(np.asarray([r['yrs'][i]['l'] for i in indices],dtype=float).mean(axis=0),2).tolist()
+            groups.append({'v':venue,'s':surface,'dist':distance,
+                           'avg':avg,'segment_distances':segdist(distance,len(avg)),
+                           'year_indices':indices})
+        groups.sort(key=lambda g:( (g['v'],g['s'],g['dist'])!=primary,
+                                  -int(max(r['yrs'][i]['d'] for i in g['year_indices']).replace('-','')),
+                                  -len(g['year_indices']),g['v'],g['s'],g['dist']))
+        r['groups']=groups
+        r['avg']=next(g['avg'] for g in groups if (g['v'],g['s'],g['dist'])==primary)
+        r['segment_distances']=segdist(primary[2],len(r['avg']))
+        group_count+=len(groups)
+        mixed_count+=len(groups)>1
+    return {'verified_years':verified,'alias_verified':alias_verified,
+            'unresolved':unresolved,'groups':group_count,
+            'multi_course_races':mixed_count,
+            'policy':'歴代年別ラップを保持し、元マスタと競走名・日付を照合した開催場・芝ダート・距離が一致する年だけで平均する。内外回りは未分類。'}
+
+
 def main():
     ap=argparse.ArgumentParser(description='Preserve published grade history and append only newly published graded races.')
     ap.add_argument('--master',required=True)
@@ -69,7 +197,7 @@ def main():
     r['_grade_code']=r['grade'].where(r['grade'].ne(''),suffix_grade)
     r=r.loc[r['_grade_code'].isin({'GI','GII','GIII'})].sort_values(['日付','race_id'])
 
-    added=[]; excluded=[]
+    added=[]; excluded=[]; course_variants=[]
     for _,x in r.iterrows():
         ll=parse_laps(x['ラップ'])
         if not ll: continue
@@ -85,9 +213,10 @@ def main():
         expected=[str(rec.get('v')),str(rec.get('s')),int(rec.get('dist')),len(rec.get('segment_distances',[]))]
         actual=[str(x['競馬場']),surf,dist,len(ll)]
         if expected!=actual:
-            excluded.append({'race_id':str(x['race_id']),'key':key,'date':str(x['日付']),
-                             'reason':'representative_course_mismatch','actual':actual,'expected':expected})
-            continue
+            # Keep both actual courses as separate groups instead of silently
+            # mixing or discarding a valid relocation season.
+            course_variants.append({'race_id':str(x['race_id']),'key':key,'date':str(x['日付']),
+                                    'actual':actual,'nominal':expected})
         wt=win.get(x['race_id'])
         yr={'y':str(x['年']),'d':str(x['日付']),'c':str(x['馬場状態']),'l':ll,
             'w':round(float(wt),1) if wt is not None and pd.notna(wt) else None}
@@ -95,17 +224,21 @@ def main():
         yrs=[y for y in rec.get('yrs',[]) if str(y.get('d'))!=yr['d']]
         yrs.append(yr); yrs=sorted(yrs,key=lambda y:(str(y.get('d','')),str(y.get('y',''))))
         rec['yrs']=yrs
-        rec['avg']=np.round(np.asarray([y['l'] for y in yrs],dtype=float).mean(axis=0),2).tolist()
+        # A race may have changed distance; do not compute a combined average.
+        # Verified same-course averages are built after all seasons are merged.
         grade[key]={'g':rec['g'],'v':rec['v'],'s':rec['s'],'dist':rec['dist'],'avg':rec['avg'],
                     'yrs':rec['yrs'],'segment_distances':rec['segment_distances']}
         added.append({'race_id':str(x['race_id']),'key':key,'date':str(x['日付'])})
 
+    course_audit=rebuild_yearly_course_groups(grade,m,a.to_date)
     out['grade']=grade
     out.setdefault('meta',{})['to']=a.to_date
     out['meta']['dataset_id']=a.dataset_id
+    out['meta'].setdefault('audit',{})['grade_course_groups']=course_audit
     out['meta'].setdefault('audit',{})['incremental_grade_update']={
-        'from_exclusive':from_date,'to_inclusive':a.to_date,'added':added,'excluded':excluded,
-        'policy':'既存公開gradeを保持し、公開基準日より後かつ更新上限日までの代表コース一致重賞だけ追加'
+        'from_exclusive':from_date,'to_inclusive':a.to_date,'added':added,
+        'excluded':excluded,'course_variants':course_variants,
+        'policy':'既存の年別ラップを保持し、新規重賞は実開催コース別に追加。単一コースの年だけで平均する'
     }
     Path(a.out).write_text(json.dumps(out,ensure_ascii=False,indent=2,allow_nan=False)+'\n',encoding='utf-8')
     print(json.dumps({'grade_records':len(grade),'races_seen':len(r),'added':len(added),'excluded':len(excluded),
