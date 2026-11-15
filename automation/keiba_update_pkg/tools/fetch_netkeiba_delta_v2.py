@@ -40,7 +40,16 @@ def enrich_meta(outdir:Path):
         w['winner_time']=w['タイム'].map(t2s)
         m=m.merge(w[['race_id','winner_time']],on='race_id',how='left')
     else: m['winner_time']=''
-    m['grade']=m['レース名'].map(grade_from_name)
+    # Preserve the source's explicit grade icon. The legacy name suffix is
+    # only a fallback for older input; never override an observed grade.
+    inferred=m['レース名'].map(grade_from_name)
+    explicit=m['grade'].astype(str).str.strip() if 'grade' in m else pd.Series('',index=m.index)
+    conflict=explicit.ne('') & inferred.ne('') & explicit.ne(inferred)
+    if conflict.any():
+        raise ValueError('source grade icon conflicts with name suffix')
+    m['grade']=explicit.where(explicit.ne(''),inferred)
+    if not m['grade'].isin({'','GI','GII','GIII','L','OP'}).all():
+        raise ValueError('unknown grade value')
     m.to_csv(mp,index=False,encoding='utf-8-sig')
     return m
 

@@ -26,8 +26,13 @@ def main():
     ap.add_argument('--out-master',required=True); ap.add_argument('--out-pedigree',required=True)
     ap.add_argument('--allow-replace-race-ids',default='',help='CSV containing race_id values explicitly authorized for atomic replacement')
     a=ap.parse_args(); D=Path(a.delta_dir)
-    old=read_any(Path(a.master)); cols=list(old.columns)
+    old=read_any(Path(a.master))
+    # Additive, provenance-bearing columns; all historic rows remain unchanged.
+    extra_columns=['芝馬場状態','ダート馬場状態','grade']
+    cols=list(old.columns)+[col for col in extra_columns if col not in old.columns]
     meta=rd(D/'race_meta_delta.csv'); det=rd(D/'horse_details_delta.csv'); cor=rd(D/'race_corners_delta.csv'); lap=rd(D/'race_laps_delta.csv'); dp=rd(D/'horse_pedigree_delta.csv')
+    if not set(extra_columns) <= set(meta.columns):
+        raise SystemExit('source-specific going/grade metadata missing')
     if meta.empty or det.empty or cor.empty: raise SystemExit('delta meta/details/corners required')
     # Pedigree is keyed by horse and the newest fetched row is authoritative.
     ped=read_any(Path(a.existing_pedigree)); ped=pd.concat([ped,dp],ignore_index=True,sort=False) if not dp.empty else ped
@@ -57,7 +62,7 @@ def main():
         if dst not in out.columns:return
         src=src or dst
         if src in x.columns: out[dst]=x[src].map(fn) if fn else x[src].astype(str)
-    for c in ['race_id','レース名','クラス','馬場状態','馬名','馬ID','騎手ID','タイム','着差','通過順','脚質','1コーナー順','2コーナー順','3コーナー順','4コーナー順','出走頭数','父','父父','母父','ラップ','前半3F','後半3F','ハロン数']:
+    for c in ['race_id','レース名','クラス','馬場状態','芝馬場状態','ダート馬場状態','grade','馬名','馬ID','騎手ID','タイム','着差','通過順','脚質','1コーナー順','2コーナー順','3コーナー順','4コーナー順','出走頭数','父','父父','母父','ラップ','前半3F','後半3F','ハロン数']:
         put(c)
     put('日付','date'); put('競馬場','venue'); put('距離','distance_m',nstr); put('馬番','馬番',nstr); put('着順','着順')
     put('上がり3F','上がり3F')
@@ -78,6 +83,9 @@ def main():
     if oldkeys.duplicated(keys).any() or updates.duplicated(keys).any(): raise SystemExit('duplicate overlap horse keys')
     if set(map(tuple,oldkeys.values))!=set(map(tuple,updates[keys].values)): raise SystemExit('overlap horse keys differ; manual reconciliation required')
     final=old.copy()
+    for col in extra_columns:
+        if col not in final:
+            final[col]=''
     if len(updates):
         aligned=updates.set_index(keys).reindex(pd.MultiIndex.from_frame(oldkeys)).reset_index()[cols]
         final.loc[mask,cols]=aligned.to_numpy()

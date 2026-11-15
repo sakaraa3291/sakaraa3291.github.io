@@ -121,6 +121,48 @@ def parse_meta(soup: BeautifulSoup, race_id: str, fallback: dict) -> dict:
         mg = re.search(r"馬場\s*[:：]\s*(良|稍重|稍|重|不良|不)", header_text)
     going = mg.group(1) if mg else ""
     going = {'稍':'稍重','不':'不良'}.get(going,going)
+    # Current result pages put track condition in dedicated RaceData01 spans.
+    header = soup.select_one('.RaceData01')
+    def span_going(selector):
+        tag = header.select_one(selector) if header is not None else None
+        value = tag.get_text(' ', strip=True) if tag else ''
+        value = {'稍': '稍重', '不': '不良'}.get(value, value)
+        return value if value in {'良', '稍重', '重', '不良'} else ''
+    # Preserve surface-specific readings; a mixed hurdle race has two valid
+    # observations and must not be collapsed to either track condition.
+    turf_going = ''
+    dirt_going = ''
+    if header is not None:
+        if surface == '芝':
+            going = turf_going = span_going('span.Item03') or going
+        elif surface == 'ダート':
+            going = dirt_going = span_going('span.Item04') or going
+        elif surface == '障':
+            turf, dirt = span_going('span.Item03'), span_going('span.Item04')
+            header_text = header.get_text(' ', strip=True)
+            turf_going, dirt_going = turf, dirt
+            if turf and dirt:
+                # Backwards-compatible summary is explicit about both tracks.
+                going = turf if turf == dirt else f'芝:{turf}/ダート:{dirt}'
+            elif turf and not dirt and '芝' in header_text and 'ダート' not in header_text:
+                going = turf
+            elif dirt and not turf and 'ダート' in header_text and '芝' not in header_text:
+                going = dirt
+            else:
+                raise ValueError('hurdle race has ambiguous/unknown track condition')
+    # Grade is encoded in the result page as a CSS icon, not in the name.
+    # Icon_GradeType13 and the other badge icons are not GI/GII/GIII.
+    code = {'1': 'GI', '2': 'GII', '3': 'GIII'}
+    grade_codes = set()
+    if race_name is not None:
+        for icon in race_name.select('.Icon_GradeType'):
+            for token in icon.get('class', []):
+                match = re.fullmatch(r'Icon_GradeType([123])', token)
+                if match:
+                    grade_codes.add(code[match.group(1)])
+    if len(grade_codes) > 1:
+        raise ValueError('conflicting graded-race icons')
+    grade = next(iter(grade_codes), '')
     # Class from page text/name.
     # Scope class parsing to the race header: navigation/other races may mention 未勝利.
     headers=soup.select('.RaceData02, .data_intro, .race_data, .RaceData01')
@@ -134,7 +176,8 @@ def parse_meta(soup: BeautifulSoup, race_id: str, fallback: dict) -> dict:
     elif re.search(r"(?:3勝|1600万)", class_src): klass="3勝"
     elif "オープン" in class_src or re.search(r"\((?:G[I1]+|Jpn[I1]+|OP|L)\)", name, re.I): klass="オープン"
     else: klass="その他"
-    return {"race_id":race_id,"date":date,"venue":venue,"レース名":name,"distance_m":distance,"surface":surface,"馬場状態":going,"クラス":klass}
+    return {"race_id":race_id,"date":date,"venue":venue,"レース名":name,"distance_m":distance,"surface":surface,"馬場状態":going,
+            "芝馬場状態":turf_going,"ダート馬場状態":dirt_going,"grade":grade,"クラス":klass}
 
 
 def parse_results(soup: BeautifulSoup, race_id: str):
@@ -316,7 +359,7 @@ def main():
             errors.append({"race_id":rid,"error":repr(e)})
             print(f"ERROR {rid}: {e!r}",flush=True)
         # checkpoint after every race so an interrupted run preserves progress.
-        save_csv(outdir/"race_meta_delta.csv",metas,["race_id","date","venue","レース名","distance_m","surface","馬場状態","クラス"])
+        save_csv(outdir/"race_meta_delta.csv",metas,["race_id","date","venue","レース名","distance_m","surface","馬場状態","芝馬場状態","ダート馬場状態","grade","クラス"])
         save_csv(outdir/"race_laps_delta.csv",laps,["race_id","ラップ","累計ペース","前半3F","後半3F","ハロン数"])
         save_csv(outdir/"horse_details_delta.csv",details,["race_id","馬番","馬名","着順","タイム","着差","通過順","上がり3F"])
         save_csv(outdir/"race_corners_delta.csv",corners_from_entries(entries_all),["race_id","馬番","馬名","馬ID","騎手ID","1コーナー順","2コーナー順","3コーナー順","4コーナー順","出走頭数","脚質"])

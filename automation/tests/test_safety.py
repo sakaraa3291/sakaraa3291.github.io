@@ -126,7 +126,7 @@ def strict_fixture(tmp_path):
     rid='202606040101'
     def write(name, rows):
         pd.DataFrame(rows).to_csv(tmp_path/name,index=False)
-    write('race_meta_delta.csv',[dict(race_id=rid,date='2026-09-13',surface='芝',distance_m='400',レース名='test',馬場状態='良',winner_time='24.0',クラス='新馬')])
+    write('race_meta_delta.csv',[dict(race_id=rid,date='2026-09-13',surface='芝',distance_m='400',レース名='test',馬場状態='良',芝馬場状態='良',ダート馬場状態='',grade='',winner_time='24.0',クラス='新馬')])
     write('horse_details_delta.csv',[dict(race_id=rid,馬番='1',着順='1',タイム='24.0')])
     write('race_corners_delta.csv',[dict(race_id=rid,馬番='1',馬ID='2020100001',出走頭数='1')])
     write('race_laps_delta.csv',[dict(race_id=rid,ラップ='12.0-12.0')])
@@ -155,6 +155,23 @@ def test_strict_delta_rejects_incomplete(tmp_path,file,column,value):
         validate(target,tmp_path,ped)
 
 
+@pytest.mark.parametrize('field,value',[
+    ('芝馬場状態',''),
+    ('ダート馬場状態','良'),
+    ('馬場状態','重'),
+    ('grade','invalid'),
+    ('grade','GI'),
+])
+def test_strict_rejects_conflicting_track_or_grade(tmp_path,field,value):
+    target,ped=strict_fixture(tmp_path)
+    path=tmp_path/'race_meta_delta.csv'
+    df=pd.read_csv(path,dtype=str,encoding='utf-8-sig').fillna('')
+    df.at[0,field]=value
+    df.to_csv(path,index=False,encoding='utf-8-sig')
+    with pytest.raises(ValueError):
+        validate(target,tmp_path,ped)
+
+
 def test_master_overlap_merge_is_idempotent_and_preserves_untouched_order(tmp_path):
     target,ped=strict_fixture(tmp_path)
     rid=target.iloc[0].race_id
@@ -177,8 +194,40 @@ def test_master_overlap_merge_is_idempotent_and_preserves_untouched_order(tmp_pa
     two=pd.read_csv(tmp_path/'two.csv.gz',dtype=str).fillna('')
     assert one.equals(two)
     assert one[['race_id','馬番']].equals(old[['race_id','馬番']])
-    assert one.iloc[[0,2]].equals(old.iloc[[0,2]])
+    assert one.iloc[[0,2]][list(old.columns)].equals(old.iloc[[0,2]])
+    assert one.iloc[[0,2]][['芝馬場状態','ダート馬場状態','grade']].eq('').all().all()
     assert one.iloc[1]['クラス']=='新馬'
+    assert one.iloc[1]['芝馬場状態']=='良'
+    assert one.iloc[1]['ダート馬場状態']==''
+    assert one.iloc[1]['grade']==''
+
+
+def test_explicit_graded_race_column_preserves_existing_grade_history(tmp_path):
+    baseline={'meta':{'to':'2026-10-04'},'cond':{},
+        'grade':{'菊花賞':{'g':'GI','v':'京都','s':'芝','dist':3000,
+                           'segment_distances':[200]*15,
+                           'avg':[12.0]*15,
+                           'yrs':[{'y':'2025','d':'2025-10-26','c':'良',
+                                   'l':[12.0]*15,'w':180.0}]}}}
+    (tmp_path/'lap.json').write_text(json.dumps(baseline),encoding='utf-8')
+    pd.DataFrame([
+        {'race_id':'202608040911','日付':'2026-10-25','年':'2026','レース名':'菊花賞',
+         'grade':'GI','馬場':'芝','競馬場':'京都','距離':'3000','馬場状態':'良',
+         'ラップ':'-'.join(['12.0']*15),'着順':'1','走破秒':'180.0'},
+        {'race_id':'202605040611','日付':'2026-10-17','年':'2026','レース名':'富士S',
+         'grade':'GII','馬場':'芝','競馬場':'東京','距離':'1600','馬場状態':'良',
+         'ラップ':'-'.join(['11.0']*8),'着順':'1','走破秒':'88.0'},
+    ]).to_csv(tmp_path/'master.csv',index=False,encoding='utf-8-sig')
+    subprocess.run([sys.executable,str(AUTOMATION/'keiba_update_pkg/tools/update_grade_records_incremental.py'),
+        '--master',str(tmp_path/'master.csv'),'--baseline',str(tmp_path/'lap.json'),
+        '--cond',str(tmp_path/'lap.json'),'--out',str(tmp_path/'graded.json'),
+        '--to-date','2026-10-25','--dataset-id','test'],check=True)
+    got=json.loads((tmp_path/'graded.json').read_text(encoding='utf-8'))['grade']
+    assert got['菊花賞']['yrs'][0]==baseline['grade']['菊花賞']['yrs'][0]
+    assert len(got['菊花賞']['yrs'])==2
+    assert got['菊花賞']['yrs'][1]['d']=='2026-10-25'
+    assert got['富士S']['g']=='GII'
+    assert got['富士S']['yrs'][0]['d']=='2026-10-17'
 
 
 def test_race_class_uses_header_not_navigation():

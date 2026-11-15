@@ -58,7 +58,16 @@ def main():
     m['_winsec']=pd.to_numeric(m['走破秒'],errors='coerce')
     win=m[m['_rank']==1][['race_id','_winsec']].drop_duplicates('race_id').set_index('race_id')['_winsec'].to_dict()
     r=m[(m['日付']>from_date)&(m['日付']<=a.to_date)&(m['ラップ']!='')].drop_duplicates('race_id').copy()
-    r=r.loc[r['レース名'].map(lambda s:bool(GRADE_RE.search(str(s)))).astype(bool)].sort_values(['日付','race_id'])
+    # The source's grade icon is now kept in a dedicated master column.
+    # Historic '(GI)' suffixes remain supported without renaming races.
+    if 'grade' not in r:
+        r['grade']=''
+    suffix_grade=r['レース名'].map(lambda s: GRADE_RE.search(str(s)).group(1) if GRADE_RE.search(str(s)) else '')
+    collision=r['grade'].ne('') & suffix_grade.ne('') & r['grade'].ne(suffix_grade)
+    if collision.any():
+        raise ValueError('explicit grade conflicts with name suffix')
+    r['_grade_code']=r['grade'].where(r['grade'].ne(''),suffix_grade)
+    r=r.loc[r['_grade_code'].isin({'GI','GII','GIII'})].sort_values(['日付','race_id'])
 
     added=[]; excluded=[]
     for _,x in r.iterrows():
@@ -68,7 +77,7 @@ def main():
         surf='ダート' if x['馬場'] in ('ダ','ダート') else str(x['馬場'])
         dist=int(float(x['距離']))
         if key not in grade:
-            g=GRADE_RE.search(str(x['レース名'])).group(1)
+            g=str(x['_grade_code'])
             grade[key]={'g':g,'v':str(x['競馬場']),'s':surf,'dist':dist,'avg':ll,'yrs':[],
                         'segment_distances':segdist(dist,len(ll))}
             existing.add(key)
