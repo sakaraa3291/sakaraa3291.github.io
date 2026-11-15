@@ -41,7 +41,37 @@ function validateBundle(b){
  for(const [k,r] of Object.entries(lap.grade)){
   assert(text(k)&&obj(r)&&text(r.v)&&['芝','ダート'].includes(r.s)&&text(r.g),'重賞キー不正');lapRecord(r,r.dist,true);
   assert(Array.isArray(r.yrs)&&r.yrs.length>0,'重賞年次なし');
-  for(const y of r.yrs){assert(obj(y)&&text(y.y)&&text(y.d)&&text(y.c)&&num(y.w,0.01),'重賞年次不正');segments(y.l,r.dist,y.segment_distances)}
+  for(const y of r.yrs){
+   assert(obj(y)&&text(y.y)&&text(y.d)&&text(y.c)&&num(y.w,0.01),'重賞年次不正');
+   segments(y.l,y.dist??r.dist,y.segment_distances);
+  }
+  // The historical JSON remains readable, but new course-grouped records
+  // must never mix laps from different verified venues/surfaces/distances.
+  if(r.groups!==undefined){
+   assert(Array.isArray(r.groups)&&r.groups.length>0,'重賞コースグループなし');
+   const seen=new Set(),identities=new Set();
+   let representative=null;
+   for(const g of r.groups){
+    const id=JSON.stringify([g.v,g.s,g.dist]);
+    assert(obj(g)&&text(g.v)&&['芝','ダート'].includes(g.s)&&!identities.has(id),'重賞コース不正');
+    identities.add(id);segments(g.avg,g.dist,g.segment_distances);
+    assert(Array.isArray(g.year_indices)&&g.year_indices.length>0,'重賞コース年次なし');
+    let prev=-1;
+    for(const i of g.year_indices){
+     assert(Number.isInteger(i)&&i>prev&&i<r.yrs.length&&!seen.has(i),'重賞年次重複');
+     prev=i;seen.add(i);
+     const y=r.yrs[i];
+     assert(y.v===g.v&&y.s===g.s&&y.dist===g.dist&&text(y.race_id),'重賞実開催コース不一致');
+    }
+    for(let j=0;j<g.avg.length;j++){
+     const avg=g.year_indices.reduce((sum,i)=>sum+r.yrs[i].l[j],0)/g.year_indices.length;
+     assert(Math.abs(g.avg[j]-avg)<=0.011,'異なるコースを含む重賞平均');
+    }
+    if(g.v===r.v&&g.s===r.s&&g.dist===r.dist)representative=g;
+   }
+   assert(representative&&representative.avg.every((v,i)=>v===r.avg[i]),'代表コース平均不一致');
+   r.yrs.forEach((y,i)=>assert(seen.has(i)===(y.v!==undefined),'重賞年次の分類漏れ'));
+  }
  }
  assert(Number.isInteger(lap.meta.races)&&lap.meta.races>=0&&lap.meta.races===Object.values(lap.cond).reduce((n,r)=>n+r.n,0),'収録件数不一致');
  for(const k of ['from','to'])assert(lap.meta[k]===null||(typeof lap.meta[k]==='string'&&Number.isFinite(Date.parse(lap.meta[k]))),'収録期間不正');

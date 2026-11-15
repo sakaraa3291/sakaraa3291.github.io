@@ -32,7 +32,7 @@ def test_current_result_layout_parses_required_fields():
     meta=parse_meta(soup,RID,{})
     assert meta == {
         'race_id':RID,'date':'2026-09-19','venue':'中山','レース名':'2歳未勝利',
-        'distance_m':1200,'surface':'ダート','馬場状態':'良','クラス':'未勝利'
+        'distance_m':1200,'surface':'ダート','馬場状態':'良','芝馬場状態':'','ダート馬場状態':'良','grade':'','クラス':'未勝利'
     }
     details,entries=parse_results(soup,RID)
     assert details == [{'race_id':RID,'馬番':'9','馬名':'スマートブライド','着順':'1','タイム':'1:11.8','着差':'','通過順':'2-2','上がり3F':'37.8'}]

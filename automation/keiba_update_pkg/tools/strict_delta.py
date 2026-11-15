@@ -25,6 +25,31 @@ def validate(target, directory, base_pedigree, allow_nar=False):
     require(meta.loc[jra & (meta.surface != '障'), 'クラス'].isin({'未勝利','新馬','1勝','2勝','3勝','オープン'}).all(), 'unknown flat race class')
     require(set(meta.surface) <= {'芝','ダ','ダート','障'}, 'unknown surface')
     require(meta[['レース名','date','distance_m','馬場状態','winner_time']].ne('').all().all(), 'blank metadata')
+    # Keep both source-observed track conditions in each new race record.
+    fields={'芝馬場状態','ダート馬場状態','grade'}
+    require(fields <= set(meta.columns), 'surface-specific going/grade columns missing')
+    allowed_going={'良','稍重','重','不良'}
+    for r in meta.itertuples(index=False):
+        turf=str(getattr(r,'芝馬場状態'))
+        dirt=str(getattr(r,'ダート馬場状態'))
+        legacy=str(getattr(r,'馬場状態'))
+        surface=str(getattr(r,'surface'))
+        require(not turf or turf in allowed_going, 'invalid turf going')
+        require(not dirt or dirt in allowed_going, 'invalid dirt going')
+        if surface=='芝':
+            require(bool(turf) and not dirt and legacy==turf, 'flat turf going mismatch')
+        elif surface in {'ダ','ダート'}:
+            require(bool(dirt) and not turf and legacy==dirt, 'flat dirt going mismatch')
+        elif surface=='障':
+            require(bool(turf or dirt), 'hurdle going missing')
+            expected=(turf if turf and not dirt else dirt if dirt and not turf else
+                      turf if turf==dirt else f'芝:{turf}/ダート:{dirt}')
+            require(legacy==expected, 'hurdle track readings disagree with summary')
+        else:
+            require(False, 'unknown race surface')
+    require(meta['grade'].isin({'','GI','GII','GIII','L','OP'}).all(), 'unknown grade')
+    require(meta.loc[meta.grade.isin({'GI','GII','GIII'}),'クラス'].eq('オープン').all(),
+            'graded race class mismatch')
     require(dict(zip(meta.race_id, meta.date)) == dict(zip(target.race_id, target.date)), 'race dates differ from discovery')
     keys = ['race_id','馬番']
     for frame in (horses, corners):

@@ -83,7 +83,15 @@ def check_candidate(repo, state, work, cutoff):
              '--delta-dir', work / 'delta', '--base-pedigree', state / STATE_FILES[2], '--strict')
     for name in STATE_FILES[:2]:
         before, after = read(state / name), read(work / 'state' / name)
-        require(after.iloc[:len(before)].reset_index(drop=True).equals(before), f'history/order changed: {name}')
+        historic=after.iloc[:len(before)].reset_index(drop=True)
+        require(set(before.columns) <= set(after.columns), f'history schema dropped columns: {name}')
+        require(historic[list(before.columns)].equals(before.reset_index(drop=True)), f'history/order changed: {name}')
+        extra=list(set(after.columns)-set(before.columns))
+        if name == 'keiba_master.csv.gz':
+            require(set(extra) <= {'芝馬場状態','ダート馬場状態','grade'}, 'unexpected extra master columns')
+            require(not extra or historic[extra].eq('').all().all(), 'historic added fields must remain empty')
+        else:
+            require(not extra, f'unexpected extra payout columns: {name}')
         added = after.iloc[len(before):]
         require(set(added.race_id) == ids and not ids & set(before.race_id), f'race coverage mismatch: {name}')
     master = read(work / 'state' / STATE_FILES[0])

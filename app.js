@@ -24,7 +24,15 @@ function refreshFilters(){
  const d=+$('fDist').value;overlays=overlays.filter(k=>cond()[k]&&+k.split('|')[2]===d);
 }
 function gradeRows(){
- return Object.entries(grades()).map(([name,r])=>({name,grade:r.g||'その他',dist:+r.dist,venue:r.v,surface:r.s}));
+ return Object.entries(grades()).flatMap(([name,r])=>{
+  if(!Array.isArray(r.groups)||!r.groups.length)
+   return [{name,value:name,grade:r.g||'その他',dist:+r.dist,venue:r.v,surface:r.s,latest:'',count:r.yrs.length,legacy:true}];
+  return r.groups.map(g=>{
+   const latest=g.year_indices.map(i=>r.yrs[i]?.d||'').sort().at(-1)||'';
+   return {name,value:JSON.stringify([name,g.v,g.s,g.dist]),grade:r.g||'その他',
+           dist:+g.dist,venue:g.v,surface:g.s,latest,count:g.year_indices.length,legacy:false};
+  });
+ });
 }
 function gradeSort(a,b){
  const ai=GRADE_ORDER.indexOf(a),bi=GRADE_ORDER.indexOf(b);
@@ -36,10 +44,12 @@ function refreshGradeFilters(){
  fill('fGradeClass',[{value:'',label:'すべて'},...gs.map(x=>({value:x,label:x}))],gKeep);
  const byGrade=rows.filter(x=>!$('fGradeClass').value||x.grade===$('fGradeClass').value);
  const ds=[...new Set(byGrade.map(x=>x.dist))].sort((a,b)=>a-b);
- fill('fGradeDist',[{value:'',label:'すべて'},...ds.map(x=>({value:x,label:`${x}m`}))],dKeep);
+ fill('fGradeDist',[{value:'',label:'すべて'},...ds.map(x=>({value:x,label:String(x)+'m'}))],dKeep);
  const filtered=byGrade.filter(x=>!$('fGradeDist').value||String(x.dist)===$('fGradeDist').value)
-  .sort((a,b)=>gradeSort(a.grade,b.grade)||a.dist-b.dist||a.name.localeCompare(b.name,'ja'));
- fill('fRace',filtered.map(x=>({value:x.name,label:`${x.grade}｜${x.dist}m｜${x.name}（${x.venue}${x.surface}）`})),rKeep);
+  .sort((a,b)=>gradeSort(a.grade,b.grade)||a.dist-b.dist||a.name.localeCompare(b.name,'ja')||
+                    b.latest.localeCompare(a.latest)||SORT(a.venue,VORDER)-SORT(b.venue,VORDER));
+ fill('fRace',filtered.map(x=>({value:x.value,
+   label:x.grade+'｜'+x.dist+'m｜'+x.name+'（'+x.venue+x.surface+'・'+x.count+'年'+(x.legacy?'／コース未分類':'')+'）'})),rKeep);
 }
 function rebuild(){
  refreshFilters();
@@ -588,31 +598,86 @@ function render(){
  if(!bundle)return;
  $('paneCond').hidden=mode!=='cond';$('paneGrade').hidden=mode!=='grade';
  $('tabCond').setAttribute('aria-selected',String(mode==='cond'));$('tabGrade').setAttribute('aria-selected',String(mode==='grade'));
- const k=mode==='cond'?currentKey():$('fRace').value,r=mode==='cond'?cond()[k]:grades()[k];
- if(!r){for(const id of ['readout','chart','strip','tbl','legend','courseBody','pedigreeBody','pedigreeMeta'])$(id).replaceChildren();$('note').textContent='';$('trendMemoText').textContent='この条件のデータは未登録です。';empty('readout','この条件のデータは未登録です。');return}
- const [v,s,ds,cls,going]=mode==='cond'?k.split('|'):[r.v,r.s,String(r.dist),'オープン','全'],d=+ds,raw=mode==='cond'?r.l:r.avg;
+ const key=mode==='cond'?currentKey():$('fRace').value;
+ let gradeChoice=null;
+ if(mode==='grade'){
+  try{
+   const parsed=JSON.parse(key);
+   if(Array.isArray(parsed)&&parsed.length===4&&typeof parsed[0]==='string')gradeChoice=parsed;
+  }catch{}
+ }
+ const raceName=mode==='grade'?(gradeChoice?gradeChoice[0]:key):'';
+ const r=mode==='cond'?cond()[key]:grades()[raceName];
+ const group=gradeChoice&&r?.groups?.find(g=>g.v===gradeChoice[1]&&g.s===gradeChoice[2]&&g.dist===gradeChoice[3]);
+ if(!r||(mode==='grade'&&Array.isArray(r.groups)&&!group)){
+  for(const id of ['readout','chart','strip','tbl','legend','courseBody','pedigreeBody','pedigreeMeta'])$(id).replaceChildren();
+  $('note').textContent='';$('trendMemoText').textContent='この条件のデータは未登録です。';
+  empty('readout','この条件のデータは未登録です。');return;
+ }
+ const [v,s,ds,cls,going]=mode==='cond'?key.split('|'):[group?.v??r.v,group?.s??r.s,String(group?.dist??r.dist),'オープン','全'];
+ const d=+ds,raw=mode==='cond'?r.l:(group?.avg??r.avg);
+ const yearRecords=mode==='grade'?(group?group.year_indices.map(i=>r.yrs[i]):r.yrs):[];
  const ss=C.segments(raw,d),front=C.section(raw,d),back=C.section(raw,d,600,true);
  const read=node('div',undefined,'readout'),top=node('div',undefined,'rTop'),grid=node('div',undefined,'rGrid');
- top.append(node('span',mode==='cond'?label(k):`${k} ${r.g}`,'rTitle'),node('span',pace(front.seconds,back.seconds),'badge'));
+ const title=mode==='cond'?label(key):raceName+' '+r.g+'（'+v+s+d+'m）';
+ top.append(node('span',title,'rTitle'),node('span',pace(front.seconds,back.seconds),'badge'));
  const fastest=ss.reduce((a,b)=>a.normalized<=b.normalized?a:b);
- const vals=[[`前半3F${front.estimated?'（推定）':''}`,front.seconds.toFixed(1)],['上がり3F',back.seconds.toFixed(1)],['最速区間',`${fastest.start}–${fastest.end}m`],['サンプル',mode==='cond'?`${r.n}R`:`${r.yrs.length}R`]];
- if(mode==='cond')vals.push(['平均勝時計',fmt(r.w)],['最速勝時計',fmt(r.wb)],['前半−上がり',(front.seconds-back.seconds).toFixed(1)],['区間数',raw.length]);
- for(const [a,b]of vals){const x=node('div',undefined,'cell');x.append(node('div',a,'k'),node('div',b,'v'));grid.append(x)}read.append(top,grid);$('readout').replaceChildren(read);
- const series=mode==='cond'?[{raw,color:SER[0],heat:true},...overlays.filter(o=>o!==k&&cond()[o]&&+o.split('|')[2]===d).map((o,i)=>({raw:cond()[o].l,color:SER[(i+1)%SER.length],key:o}))]:[...r.yrs.map(y=>({raw:y.l,color:'#8195A8',thin:true})),{raw,color:SER[0],heat:true}];draw(series,d);
+ const vals=[['前半3F'+(front.estimated?'（推定）':''),front.seconds.toFixed(1)],
+             ['上がり3F',back.seconds.toFixed(1)],['最速区間',fastest.start+'–'+fastest.end+'m'],
+             ['サンプル',mode==='cond'?r.n+'R':yearRecords.length+'R']];
+ if(mode==='cond')vals.push(['平均勝時計',fmt(r.w)],['最速勝時計',fmt(r.wb)],
+                            ['前半−上がり',(front.seconds-back.seconds).toFixed(1)],['区間数',raw.length]);
+ for(const [a,b]of vals){
+  const x=node('div',undefined,'cell');x.append(node('div',a,'k'),node('div',b,'v'));grid.append(x);
+ }
+ read.append(top,grid);$('readout').replaceChildren(read);
+ const series=mode==='cond'?
+  [{raw,color:SER[0],heat:true},...overlays.filter(o=>o!==key&&cond()[o]&&+o.split('|')[2]===d)
+    .map((o,i)=>({raw:cond()[o].l,color:SER[(i+1)%SER.length],key:o}))]:
+  [...yearRecords.map(y=>({raw:y.l,color:'#8195A8',thin:true})),{raw,color:SER[0],heat:true}];
+ draw(series,d);
  const legend=$('legend');legend.replaceChildren();
- if(mode==='cond'){series.forEach((x,i)=>{const chip=node('span',i===0?label(k):label(x.key),'chip');if(i){const b=node('button','×');b.type='button';b.setAttribute('aria-label','比較から削除');b.addEventListener('click',()=>{overlays=overlays.filter(o=>o!==x.key);render()});chip.append(b)}legend.append(chip)})}
- else{legend.append(node('span',`${r.yrs.length}R平均`,'chip'));r.yrs.forEach(y=>legend.append(node('span',`${y.y} ${y.c} ${fmt(y.w)}`,'chip')))}
- const lo=Math.min(...ss.map(x=>x.normalized)),hi=Math.max(...ss.map(x=>x.normalized));$('strip').replaceChildren(...ss.map(p=>{const x=node('div',p.normalized.toFixed(1));x.style.flex=String(p.distance);x.style.background=color(p.normalized,lo,hi);x.title=`${p.start}–${p.end}m`;return x}));
- let total=0;const t=table(['通過(m)',...ss.map(x=>x.end)],[['ラップ(秒)',...raw.map(x=>x.toFixed(1))],['累計(秒)',...raw.map(x=>(total+=x).toFixed(1))]]);$('tbl').replaceChildren(...t.childNodes);
- $('note').textContent='前半3Fが区間境界と一致しない場合は区間内を等速として600m分を比例配分した推定値です。グラフは200m換算、横軸は実距離。比較は同距離のみ。表は収録ラップ（集計値）です。';
+ if(mode==='cond'){
+  series.forEach((x,i)=>{
+   const chip=node('span',i===0?label(key):label(x.key),'chip');
+   if(i){const b=node('button','×');b.type='button';b.setAttribute('aria-label','比較から削除');
+    b.addEventListener('click',()=>{overlays=overlays.filter(o=>o!==x.key);render()});chip.append(b)}
+   legend.append(chip);
+  });
+ }else{
+  legend.append(node('span',yearRecords.length+'R平均（'+v+s+d+'m）','chip'));
+  yearRecords.forEach(y=>legend.append(node('span',y.y+' '+y.c+' '+fmt(y.w),'chip')));
+ }
+ const lo=Math.min(...ss.map(x=>x.normalized)),hi=Math.max(...ss.map(x=>x.normalized));
+ $('strip').replaceChildren(...ss.map(p=>{
+  const x=node('div',p.normalized.toFixed(1));x.style.flex=String(p.distance);
+  x.style.background=color(p.normalized,lo,hi);x.title=p.start+'–'+p.end+'m';return x;
+ }));
+ let total=0;
+ const t=table(['通過(m)',...ss.map(x=>x.end)],
+               [['ラップ(秒)',...raw.map(x=>x.toFixed(1))],
+                ['累計(秒)',...raw.map(x=>(total+=x).toFixed(1))]]);
+ $('tbl').replaceChildren(...t.childNodes);
+ $('note').textContent='前半3Fが区間境界と一致しない場合は区間内を等速として600m分を比例配分した推定値です。グラフは200m換算、横軸は実距離。比較は同距離のみ。表は収録ラップ（集計値）です。'+
+    (mode==='grade'&&group?' 重賞平均は元マスタで確認できた同一競馬場・芝／ダート・距離の年だけから計算。内外回りは未分類。':'');
  renderCourse(v,s,d,raw);renderPedigree(v,s,d,cls,going,mode==='grade');
  $('trendMemoText').textContent=trendText(v,s,d,cls,going,mode==='grade',front,back,fastest);
- // 収録データの実施場を訂正したレースは、その旨を必ず出す
  if(mode==='grade'){
+  if(group){
+   const totalVerified=r.groups.reduce((n,g)=>n+g.year_indices.length,0);
+   const unverified=r.yrs.length-totalVerified;
+   $('courseBody').append(node('p','実開催コース：'+v+s+d+'m。比較対象：'+yearRecords.length+'年分。異なるコースの記録は平均に含めません。','note'));
+   if(unverified){
+    const uncertain=r.yrs.filter(y=>y.v===undefined).map(y=>y.y+'年 '+y.d);
+    $('courseBody').append(node('p','開催コース未照合のため平均対象外：'+uncertain.join('、'),'note'));
+   }
+  }else{
+   $('courseBody').append(node('p','旧形式：年別開催コース未分類のデータです。','note'));
+  }
   const fixes=bundle['lapdata.json'].meta.audit?.grade_venue_fixes||[];
-  const hit=fixes.find(x=>x.race===k);
-  if(hit)$('courseBody').append(node('p',`このレースの収録競馬場を${hit.from}から${hit.to}へ訂正しています（${hit.note}）。コース図は${hit.to}のものです。`,'note'));
-  const nt=(bundle['lapdata.json'].meta.audit?.grade_notes||[]).find(x=>x.race===k);
+  const hit=fixes.find(x=>x.race===raceName);
+  if(hit)$('courseBody').append(node('p','過去の代表コース訂正記録：'+hit.from+'→'+hit.to+'（'+hit.note+'）。表示中の実開催場は'+v+'です。','note'));
+  const nt=(bundle['lapdata.json'].meta.audit?.grade_notes||[]).find(x=>x.race===raceName);
   if(nt)$('courseBody').append(node('p',nt.text,'note'),node('p','根拠：'+nt.sources.join(' ／ '),'note'));
  }
 }
