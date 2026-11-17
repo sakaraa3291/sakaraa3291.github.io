@@ -119,12 +119,18 @@ def parse_meta(soup: BeautifulSoup, race_id: str, fallback: dict) -> dict:
     header_nodes = soup.select('.RaceData01, .RaceData02, .data_intro')
     header_text = " ".join(x.get_text(" ", strip=True) for x in header_nodes)
     going_values = []
-    for node in soup.select('.RaceData01 .Item03, .RaceData01 .Item04'):
+    # Mixed obstacle courses publish TWO conditions, not conflicting readings.
+    # Keep the historical single-field convention: obstacle going is turf going
+    # (e.g. stored 202606040101 is 稍重, while its dirt condition is 重).
+    # Never substitute dirt if the obstacle turf condition is missing.
+    going_selector = '.RaceData01 .Item03' if surface == '障' else '.RaceData01 .Item03, .RaceData01 .Item04'
+    for node in soup.select(going_selector):
         value = clean(node.get_text(" ", strip=True))
         value = re.sub(r'^(?:芝|ダート|ダ|馬場)[:：]', '', value)
         if re.fullmatch(r'良|稍重|稍|重|不良|不', value):
             going_values.append({'稍':'稍重','不':'不良'}.get(value,value))
-    for match in re.finditer(r"(?:芝|ダート|ダ|馬場)\s*[:：]\s*(稍重|不良|良|稍|重|不)(?![一-龥])", header_text):
+    labels = r'(?:芝|馬場)' if surface == '障' else r'(?:芝|ダート|ダ|馬場)'
+    for match in re.finditer(labels + r"\s*[:：]\s*(稍重|不良|良|稍|重|不)(?![一-龥])", header_text):
         value = match.group(1)
         going_values.append({'稍':'稍重','不':'不良'}.get(value,value))
     if len(set(going_values)) > 1:

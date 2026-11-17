@@ -31,6 +31,24 @@ def test_conflict_fails_closed():
     with pytest.raises(ValueError, match='conflicting going'):
         parse('<div class="RaceData01">芝:良<span class="Item03">重</span></div>')
 
+@pytest.mark.parametrize('race_id,expected', [('202608040804','稍重'),('202608041004','良'),('202608041104','良')])
+def test_observed_mixed_obstacle_headers(race_id, expected):
+    # Exact source headers retrieved 2026-11-17 from race.netkeiba.com/race/result.html.
+    html = (Path(__file__).parent / 'fixtures' / f'going_{race_id}.html').read_text()
+    meta = M.parse_meta(BeautifulSoup(html, 'lxml'), race_id, {})
+    assert meta['surface'] == '障'
+    assert meta['馬場状態'] == expected
+
+def test_legacy_mixed_obstacle_uses_historical_turf_convention():
+    assert parse('<div class="RaceData01">障3200m 芝:稍重 ダート:重</div>') == '稍重'
+
+def test_obstacle_missing_turf_not_filled_from_dirt():
+    assert parse('<div class="RaceData01">障2910m ダート:重<span class="Item04">重</span></div>') == ''
+
+def test_obstacle_turf_conflict_still_fails_closed():
+    with pytest.raises(ValueError, match='conflicting going'):
+        parse('<div class="RaceData01">障2910m 芝:良<span class="Item03">重</span><span class="Item04">不</span></div>')
+
 @pytest.mark.parametrize('label,expected', [('オープン','オープン'),('1勝クラス','1勝'),('2勝クラス','2勝'),('3勝クラス','3勝'),('500万円以下','1勝'),('1000万円以下','2勝'),('1600万円以下','3勝')])
 def test_class_does_not_read_prize_money(label, expected):
     html = f'<div class="RaceName">対象レース</div><div class="RaceData02">{label}<br>本賞金:15000,6000,3800,2300,1500万円</div>'
