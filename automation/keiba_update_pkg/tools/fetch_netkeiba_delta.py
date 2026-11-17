@@ -114,24 +114,35 @@ def parse_meta(soup: BeautifulSoup, race_id: str, fallback: dict) -> dict:
     surface_raw = md.group(1) if md else ""
     distance = int(md.group(2)) if md else None
     surface = "ダート" if surface_raw == "ダ" else surface_raw
-    # Going. Netkeiba labels are usually 芝 : 良 / ダート : 重.
-    mg = re.search(r"(?:芝|ダート)\s*[:：]\s*(良|稍重|稍|重|不良|不)", text)
-    if not mg:
-        header_text = " ".join(x.get_text(" ", strip=True) for x in soup.select('.RaceData01, .RaceData02'))
-        mg = re.search(r"馬場\s*[:：]\s*(良|稍重|稍|重|不良|不)", header_text)
-    going = mg.group(1) if mg else ""
-    going = {'稍':'稍重','不':'不良'}.get(going,going)
+    # Scope going to the race header; never borrow a value from other races.
+    # Current result pages render a label-free .Item03 (e.g. "重").
+    header_nodes = soup.select('.RaceData01, .RaceData02, .data_intro')
+    header_text = " ".join(x.get_text(" ", strip=True) for x in header_nodes)
+    going_values = []
+    for node in soup.select('.RaceData01 .Item03'):
+        value = clean(node.get_text(" ", strip=True))
+        value = re.sub(r'^(?:芝|ダート|ダ|馬場)[:：]', '', value)
+        if re.fullmatch(r'良|稍重|稍|重|不良|不', value):
+            going_values.append({'稍':'稍重','不':'不良'}.get(value,value))
+    for match in re.finditer(r"(?:芝|ダート|ダ|馬場)\s*[:：]\s*(稍重|不良|良|稍|重|不)(?![一-龥])", header_text):
+        value = match.group(1)
+        going_values.append({'稍':'稍重','不':'不良'}.get(value,value))
+    if len(set(going_values)) > 1:
+        raise ValueError('conflicting going values in race header')
+    going = going_values[0] if going_values else ""
     # Class from page text/name.
     # Scope class parsing to the race header: navigation/other races may mention 未勝利.
     headers=soup.select('.RaceData02, .data_intro, .race_data, .RaceData01')
-    class_src = " ".join(node.get_text(" ",strip=True) for node in headers) + " " + name
+    class_src = " ".join(node.get_text(" ",strip=True) for node in headers)
     import unicodedata
     class_src = unicodedata.normalize('NFKC',class_src)
+    # Prize money is not a class label (1500万円 contains 500万).
+    class_src = re.split(r'本賞金|付加賞', class_src, maxsplit=1)[0] + ' ' + unicodedata.normalize('NFKC', name)
     if "未勝利" in class_src: klass="未勝利"
     elif "新馬" in class_src: klass="新馬"
-    elif re.search(r"(?:1勝|500万)", class_src): klass="1勝"
-    elif re.search(r"(?:2勝|1000万)", class_src): klass="2勝"
-    elif re.search(r"(?:3勝|1600万)", class_src): klass="3勝"
+    elif re.search(r"(?:1勝|(?<!\d)500万)", class_src): klass="1勝"
+    elif re.search(r"(?:2勝|(?<!\d)1000万)", class_src): klass="2勝"
+    elif re.search(r"(?:3勝|(?<!\d)1600万)", class_src): klass="3勝"
     elif "オープン" in class_src or re.search(r"\((?:G[I1]+|Jpn[I1]+|OP|L)\)", name, re.I): klass="オープン"
     else: klass="その他"
     return {"race_id":race_id,"date":date,"venue":venue,"レース名":name,"distance_m":distance,"surface":surface,"馬場状態":going,"クラス":klass}
