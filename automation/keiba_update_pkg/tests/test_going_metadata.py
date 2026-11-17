@@ -12,8 +12,9 @@ def parse(html):
     return M.parse_meta(BeautifulSoup(html, 'lxml'), '202608050411', {})['馬場状態']
 
 @pytest.mark.parametrize('raw,expected', [('良','良'),('稍重','稍重'),('稍','稍重'),('重','重'),('不良','不良'),('不','不良')])
-def test_current_header(raw, expected):
-    assert parse(f'<div class="RaceData01"><span>芝2200m</span><span class="Item03"> {raw}</span></div>') == expected
+@pytest.mark.parametrize('going_class', ['Item03', 'Item04'])
+def test_current_header(raw, expected, going_class):
+    assert parse(f'<div class="RaceData01"><span>芝2200m</span><span class="{going_class}"> {raw}</span></div>') == expected
 
 @pytest.mark.parametrize('label', ['芝','ダート','ダ','馬場'])
 def test_legacy_header(label):

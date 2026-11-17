@@ -115,11 +115,11 @@ def parse_meta(soup: BeautifulSoup, race_id: str, fallback: dict) -> dict:
     distance = int(md.group(2)) if md else None
     surface = "ダート" if surface_raw == "ダ" else surface_raw
     # Scope going to the race header; never borrow a value from other races.
-    # Current result pages render a label-free .Item03 (e.g. "重").
+    # Current result pages render a label-free .Item03 (turf) / .Item04 (dirt) (e.g. "重").
     header_nodes = soup.select('.RaceData01, .RaceData02, .data_intro')
     header_text = " ".join(x.get_text(" ", strip=True) for x in header_nodes)
     going_values = []
-    for node in soup.select('.RaceData01 .Item03'):
+    for node in soup.select('.RaceData01 .Item03, .RaceData01 .Item04'):
         value = clean(node.get_text(" ", strip=True))
         value = re.sub(r'^(?:芝|ダート|ダ|馬場)[:：]', '', value)
         if re.fullmatch(r'良|稍重|稍|重|不良|不', value):
