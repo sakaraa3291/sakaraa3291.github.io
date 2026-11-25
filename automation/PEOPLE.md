@@ -46,3 +46,19 @@ python -X utf8 automation/people.py query --group jockey --where 'prior_style=�
 - 取消・除外は117行が明示され、5,617行は出走自体が未確定。出走確認済みの中央280,011行・地方208,489行に限定すると、騎手IDの残存欠損114、騎手名30,891、調教師ID488,484、調教師名36,584、人気と単勝オッズ各29,515。同一騎手IDで既存の表示名を返せる出走は、騎手名欠損のうち別途30,776行。行に記録された当時の氏名は未確認。
 - 東京芝1600mの騎手ID `05339` を2025-11-24～2026-11-23で照合。47騎乗19勝、勝率40.43%、単勝実払戻4,370円・回収率92.98%、複勝実払戻3,830円・回収率81.49%。原本CSVを pandas で独立再集計し一致。
 - 本番投入の前に、補完元の利用・保存許諾を確認し、中央・地方の歴史的未取得範囲を埋める。先に `people-pending.json` と保存済みHTMLを照合し、再取得対象を減らす。既存 GitHub Actions の本番起動はマージ後に検証する。最新版の監査・テスト証跡は作業クローンの `automation/runs/` に保存。
+
+## 公式データを使うWindows補助PCの週次運用
+
+Windows補助PC内では、作業クローンの `automation/runs/` に中央と地方の参照用データを保存できる。`people_local_weekly.py` は中央・地方を独立に実行し、片方の失敗で他方を取り消さない。新しい版がハッシュと集計を通過したあとで各 `current.json` が切り替わる。実行結果は `automation/runs/private-weekly.json`。
+
+- 中央は公開GitHubの `main` を読み取り、コミットに固定したマスターと払戻のハッシュを照合する。既存の欠損があるJRAの開催だけ、公式の成績表PDFを取り込む。開催・開催日・レース番号・馬番・馬名が一致した行を使う。オッズが全部揃ったレースに限り、単勝払戻表の人気との一致を確認して同値のないオッズから人気順を補完する。調教師IDはJRA名鑑の同じ氏名・所属が一意で、引退日との矛盾がないものを `jra:` 形式で付ける。PDFから得た氏名に所属がない場合は、同じ馬の対象日前の成績で氏名・所属を照合する。 [JRA公式成績表](https://www.jra.go.jp/datafile/seiseki/report/) · [JRAの騎手・調教師データ](https://www.jra.go.jp/datafile/meikan/)
+- 地方はNAR公式月次ZIPの出馬表、レース一覧、払戻金を利用する。公式説明書FAQの専用機能だけを使い、月次ファイルごとに同一JST日内の再取得を防止する。既存ZIPのハッシュが一致して対象日までを覆っていれば再使用する。単勝・複勝は公式払戻を使う。公式CSVには人物・馬のIDがなく、既存結果と同一レース・馬番・馬名・着順、または保存済み公式の同一馬の確定情報と照合できた場合にIDを付ける。名称と所属で確認する場合は `jockey-label`、`trainer-label`、`pair-label` を明示して使う。 [NAR公式ダウンロード説明書](https://www.keiba.go.jp/pdf/manual/data_pdf_manual.pdf) · [NAR公式利用規約](https://www.keiba.go.jp/terms.html)
+- 取得元の条件に沿って両データは補助PC内の `automation/runs/` に置く。公開リポジトリやGitHub Actionsの公開成果物へのデータ追加は許諾確認後に有効にする。GitHub側では既存の火曜05:23 JSTおよび予備06:23 JSTを使用する。Windows側で自動実行する場合は、両便の後に当たる火曜07:23 JSTに `people_local_weekly.py` を実行する。ローカル処理は `main` に書き込まない。
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 automation/people_local_weekly.py --runs automation/runs
+.\.venv\Scripts\python.exe -X utf8 automation/people.py --state automation/runs/jra-official/state query --group trainer --where 'trainer_id=jra:001020' --period 1y
+.\.venv\Scripts\python.exe -X utf8 automation/people.py --state automation/runs/nar-official/state query --group trainer-label --where 'trainer_label=荒山勝' --where 'trainer_affiliation=大井' --where 'venue=大井' --period 1y
+```
+
+中央・地方それぞれの版の `people-summary.json` に競馬場・馬場・距離別の週次集計がある。中央版の `coverage.json` と `pending.json`、地方版の `manifest.json` から収録日、欠損数、取得元を確認できる。中央の `--as-observed` は補完資料の取得日時を確認する。地方について当時取得済みの状態まで再現する場合は対象日以前に保存された版を選ぶ。期間内の履歴は `--before` で対象開催日前日までに制限する。

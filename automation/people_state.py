@@ -10,19 +10,44 @@ from collections import Counter, defaultdict
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from tempfile import NamedTemporaryFile
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, urlsplit
 
 MASTER = 'keiba_master.csv.gz'
 PAYOUT = 'payout.csv.gz'
 PEOPLE = 'people_observations.csv.gz'
 FIELDS = {
-    'jockey_id': '騎手ID', 'jockey_name': '騎手', 'jockey_affiliation': None,
-    'trainer_id': None, 'trainer_name': '調教師', 'trainer_affiliation': None,
-    'gate': '枠番', 'popularity': '人気', 'win_odds': '単勝', 'course': None,
+    'jockey_id': '騎手ID', 'jockey_name': '騎手', 'jockey_affiliation': '騎手所属',
+    'trainer_id': '調教師ID', 'trainer_name': '調教師', 'trainer_affiliation': '調教師所属',
+    'gate': '枠番', 'popularity': '人気', 'win_odds': '単勝', 'course': 'コース区分',
 }
 COLUMNS = ['race_id', 'horse_no', 'horse_id', 'date', 'source', 'observed_at', 'evidence', *FIELDS]
 ID = re.compile(r'[0-9A-Za-z]+')
 JST = timezone(timedelta(hours=9))
+JRA_PDF_EVIDENCE = {'jra_pdf', 'jra_pdf_odds_order'}
+JRA_TRAINER_EVIDENCE = 'jra_trainer_profile'
+
+
+def jra_profile_id(source):
+    if source.netloc != 'www.jra.go.jp' or source.path != '/JRADB/accessC.html' or source.fragment:
+        return None
+    query = parse_qs(source.query)
+    token = query.get('CNAME', [])
+    if set(query) != {'CNAME'} or len(token) != 1:
+        return None
+    found = re.fullmatch(r'pw05cmk(\d{6})/[A-Z0-9]{2}', token[0])
+    return f'jra:{found[1]}' if found else None
+
+
+def valid_observation_source(evidence, source):
+    if source.scheme != 'https' or source.username or source.password:
+        return False
+    if evidence in JRA_PDF_EVIDENCE:
+        return (source.netloc == 'www.jra.go.jp' and not source.query and not source.fragment
+                and bool(re.fullmatch(r'/datafile/seiseki/report/\d{4}/\d{4}-\d+[a-z]+\d+\.pdf', source.path)))
+    if evidence == JRA_TRAINER_EVIDENCE:
+        return bool(jra_profile_id(source))
+    return (evidence in {'result', 'prior_result', 'final_odds'}
+            and source.hostname in {'race.netkeiba.com', 'db.netkeiba.com'})
 
 
 def read_csv(path):
@@ -79,13 +104,15 @@ def observations(paths):
             source = urlsplit(row['source'])
             identity = (*key(row), row['evidence'], row['source'])
             when = datetime.fromisoformat(row['observed_at'])
+            trainer_profile = row['evidence'] == JRA_TRAINER_EVIDENCE
             if (not re.fullmatch(r'\d{12}', row['race_id'])
                 or not key(row)[1] or not ID.fullmatch(row['horse_id'])
-                or row['evidence'] not in {'result', 'prior_result', 'final_odds'}
-                or source.scheme != 'https' or source.hostname not in {'race.netkeiba.com', 'db.netkeiba.com'}
-                or source.username or source.password or when.utcoffset() is None
+                or not valid_observation_source(row['evidence'], source) or when.utcoffset() is None
                 or when.astimezone(JST).date() < date.fromisoformat(row['date'])
-                or any(row[f] and not ID.fullmatch(row[f]) for f in ('jockey_id', 'trainer_id'))):
+                or (row['evidence'] in JRA_PDF_EVIDENCE and (row['jockey_id'] or row['trainer_id']))
+                or (trainer_profile and (row['trainer_id'] != jra_profile_id(source)
+                                         or any(row[f] for f in FIELDS if f != 'trainer_id')))
+                or (not trainer_profile and any(row[f] and not ID.fullmatch(row[f]) for f in ('jockey_id', 'trainer_id')))):
                 raise ValueError(f'invalid observation: {identity}')
             if identity in seen:
                 raise ValueError(f'duplicate observation: {identity}')
@@ -117,6 +144,8 @@ def by_runner(records, before=None):
 def values_for(master, records, counts):
     values = {field: master.get(col, '').strip() if col else '' for field, col in FIELDS.items()}
     evidence = defaultdict(set)
+    direct = defaultdict(set)
+    official = defaultdict(set)
     for row in records:
         if (row['horse_id'], row['date']) != (master['馬ID'], master['日付']):
             raise ValueError(f'observation does not match master horse/date: {key(row)}')
@@ -127,7 +156,12 @@ def values_for(master, records, counts):
         for field in FIELDS:
             if row[field]:
                 evidence[field].add(row[field])
+                if row['evidence'] != 'jra_pdf_odds_order':
+                    direct[field].add(row[field])
+                if row['evidence'] in {'jra_pdf', JRA_TRAINER_EVIDENCE}:
+                    official[field].add(row[field])
     for field, candidates in evidence.items():
+        candidates = official[field] or direct[field] or candidates
         if not values[field] and len(candidates) == 1:
             values[field] = next(iter(candidates))
             counts[field] += 1

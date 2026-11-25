@@ -20,10 +20,13 @@ FIRST = date(2021, 1, 1)
 STYLES = ('逃げ', '先行', '差し', '追込')
 BET_TYPES = {'単勝': 'win', '複勝': 'place'}
 GROUPS = {'jockey': ('jockey_id',), 'trainer': ('trainer_id',),
-          'pair': ('jockey_id', 'trainer_id'), 'horse': ('horse_id',), 'total': ()}
+          'pair': ('jockey_id', 'trainer_id'), 'horse': ('horse_id',), 'total': (),
+          'jockey-label': ('jockey_label', 'jockey_affiliation'),
+          'trainer-label': ('trainer_label', 'trainer_affiliation'),
+          'pair-label': ('jockey_label', 'jockey_affiliation', 'trainer_label', 'trainer_affiliation')}
 FILTERS = ('year', 'organization', 'venue', 'distance', 'surface', 'course', 'course_variant',
            'going', 'class', 'popularity', 'gate', 'style', 'jockey_id', 'trainer_id', 'horse_id',
-           'jockey_affiliation', 'trainer_affiliation', 'prior_style')
+           'jockey_affiliation', 'trainer_affiliation', 'jockey_label', 'trainer_label', 'prior_style')
 
 
 def payout_tables(path):
@@ -77,6 +80,7 @@ def dimensions(row, values, prior_style):
         'popularity': str(integer(values['popularity']) or ''), 'gate': str(integer(values['gate']) or ''),
         'style': row['脚質'], 'prior_style': prior_style, 'horse_id': row['馬ID'],
         'jockey_id': values['jockey_id'], 'trainer_id': values['trainer_id'],
+        'jockey_label': values['jockey_name'], 'trainer_label': values['trainer_name'],
         'jockey_affiliation': values['jockey_affiliation'], 'trainer_affiliation': values['trainer_affiliation'],
     }
 
@@ -203,7 +207,7 @@ def query(master, payout, supplemental, *, start, end, group, by=(), filters=(),
             continue
         coverage.update(f'missing:{f}' for f, v in dims.items() if not v and (prior or f != 'prior_style'))
         if any(not dims[f] for f in GROUPS[group]):
-            coverage['missing_group_id'] += 1
+            coverage['missing_group_label' if group.endswith('-label') else 'missing_group_id'] += 1
             continue
         result = stats[tuple(dims[f] for f in group_fields)]
         add_start(result, row, dims, tables, prior_n, prior_top3)
@@ -220,7 +224,8 @@ def query(master, payout, supplemental, *, start, end, group, by=(), filters=(),
                 row[f'{role}_name'] = sorted(options, key=lambda n: (-options[n], n))[0]
         rows.append(row | summarize(bucket))
     return {'from': start, 'through': end, 'observed_range_by_organization': range_by_org,
-            'group': group, 'by': list(by), 'filters': dict(filters), 'coverage': coverage,
+            'group': group, 'group_identity': 'published label and affiliation' if group.endswith('-label') else 'ids',
+            'by': list(by), 'filters': dict(filters), 'coverage': coverage,
             'groups_found': len(stats), 'groups_returned': len(rows), 'results': rows}
 
 
@@ -251,6 +256,15 @@ def lookup(master, supplement, role, label, end):
     return matches
 
 
+def resolve_state(path):
+    if (path / 'manifest.json').is_file() or not (path / 'current.json').is_file():
+        return path
+    selected = json.loads((path / 'current.json').read_text(encoding='utf-8')).get('snapshot', '')
+    if not isinstance(selected, str) or not re.fullmatch(r'[0-9a-f]{24}', selected):
+        raise ValueError('invalid local snapshot pointer')
+    return path / selected
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--state', type=Path, default=ROOT / 'state')
@@ -276,7 +290,7 @@ def main():
     find.add_argument('--role', choices=('jockey', 'trainer'), required=True)
     find.add_argument('--name', required=True)
     args = parser.parse_args()
-    state = args.state
+    state = resolve_state(args.state)
     supplement = args.people or state / PEOPLE
     paths = [supplement] if supplement.is_file() else []
     cutoff = json.loads((state / 'manifest.json').read_text(encoding='utf-8'))['through']
