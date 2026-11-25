@@ -75,6 +75,7 @@ jobs:
         env:
           REQUESTED_DATE: ${{ inputs.to_date }}
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+          KEIBA_CAPTURE_PEOPLE: ${{ vars.KEIBA_PEOPLE_PUBLICATION == 'authorized' && '1' || '0' }}
         shell: bash
         run: |
           set -euo pipefail
@@ -82,12 +83,26 @@ jobs:
           if [[ -n "$REQUESTED_DATE" ]]; then args+=(--to-date "$REQUESTED_DATE"); fi
           if [[ "$DRY_RUN" != 'true' ]]; then args+=(--apply); fi
           python automation/run_update.py "${args[@]}"
+      - name: Validate jockey and trainer observations and rebuild summaries
+        id: people
+        if: vars.KEIBA_PEOPLE_PUBLICATION == 'authorized'
+        continue-on-error: true
+        env:
+          PEOPLE_RETRY_LIMIT: ${{ vars.KEIBA_PEOPLE_RETRY_LIMIT || '0' }}
+        run: python automation/people_weekly.py weekly --state automation/state --work automation/runs/current --retry-limit "$PEOPLE_RETRY_LIMIT"
       - name: Commit state and public data together
         if: steps.update.outputs.changed == 'true'
         id: commit
         shell: bash
+        env:
+          PEOPLE_OUTCOME: ${{ steps.people.outcome }}
         run: |
           set -euo pipefail
+          candidate=automation/runs/current/people-candidate
+          if [[ "$PEOPLE_OUTCOME" == 'success' && -f "$candidate/people-summary.json" ]]; then
+            cp "$candidate/people_observations.csv.gz" "$candidate/people-summary.json" automation/state/
+            git add -- automation/state/people_observations.csv.gz automation/state/people-summary.json
+          fi
           python automation/check_changes.py
           git add -- lapdata.json pedigree_stats.json data-version.json automation/state/keiba_master.csv.gz automation/state/payout.csv.gz automation/state/horse_pedigree.csv automation/state/manifest.json
           if git diff --cached --quiet; then exit 0; fi

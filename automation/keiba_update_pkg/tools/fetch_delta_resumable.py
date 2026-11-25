@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, json, shutil, subprocess, sys, tempfile
+import argparse, json, os, shutil, subprocess, sys, tempfile
 from pathlib import Path
 import pandas as pd
 
@@ -44,6 +44,7 @@ def main():
     ap.add_argument('--input',required=True); ap.add_argument('--out',required=True); ap.add_argument('--existing-pedigree',required=True)
     ap.add_argument('--delay',type=float,default=.5); ap.add_argument('--batch-size',type=int,default=12)
     a=ap.parse_args(); root=Path(__file__).resolve().parents[1]; out=Path(a.out); out.mkdir(parents=True,exist_ok=True)
+    capture_people = os.environ.get('KEIBA_CAPTURE_PEOPLE') == '1'
     target=pd.read_csv(a.input,dtype=str,encoding='utf-8-sig',low_memory=False).fillna('').drop_duplicates('race_id')
     done=complete_ids(out); pending=target[~target.race_id.astype(str).isin(done)].copy()
     print(json.dumps({'target':len(target),'already_complete':len(done & set(target.race_id.astype(str))),'pending':len(pending)},ensure_ascii=False),flush=True)
@@ -53,6 +54,8 @@ def main():
             td=Path(td0); inp=td/'batch.csv'; bo=td/'out'; batch.to_csv(inp,index=False,encoding='utf-8-sig')
             cmd=[sys.executable,str(root/'tools'/'fetch_netkeiba_delta.py'),'--input',str(inp),'--out',str(bo),'--delay',str(a.delay)]
             cp=subprocess.run(cmd)
+            if capture_people:
+                merge_one(out/'people_delta.csv', bo/'people_delta.csv', ['race_id', 'horse_no', 'horse_id'])
             for f,keys in SPECS.items(): merge_one(out/f,bo/f,keys)
             # Successful rows supersede an earlier error for the same race.
             e=rd(out/'errors.csv'); c=complete_ids(out)

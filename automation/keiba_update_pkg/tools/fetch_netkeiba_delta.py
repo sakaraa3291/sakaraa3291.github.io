@@ -9,10 +9,14 @@ from __future__ import annotations
 import argparse
 import csv
 import math
+import os
 import re
 import time
+import unicodedata
+from datetime import datetime
 from pathlib import Path
 from typing import Iterable
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 import requests
@@ -21,6 +25,10 @@ from bs4 import BeautifulSoup
 BASE = "https://race.netkeiba.com/race/result.html?race_id={race_id}"
 BET_TYPES = {"単勝","複勝","枠連","馬連","ワイド","馬単","三連複","3連複","三連単","3連単"}
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
+PEOPLE_DELTA = 'people_delta.csv'
+PEOPLE_COLUMNS = ['race_id', 'horse_no', 'horse_id', 'date', 'source', 'observed_at', 'evidence',
+                  'jockey_id', 'jockey_name', 'jockey_affiliation', 'trainer_id', 'trainer_name',
+                  'trainer_affiliation', 'gate', 'popularity', 'win_odds', 'course']
 
 
 def clean(s: object) -> str:
@@ -77,6 +85,8 @@ def header_map(table) -> tuple[list[str], dict[str,int]]:
         "着順": ("着順","着"), "馬番": ("馬番","馬"), "馬名": ("馬名",),
         "タイム": ("タイム",), "着差": ("着差",), "通過順": ("通過","コーナー通過順"),
         "上がり3F": ("上り","上がり","上り3F","上がり3F","後3F"),
+        "枠番": ("枠", "枠番"), "人気": ("人気",), "単勝": ("単勝", "単勝オッズ", "オッズ"),
+        "騎手": ("騎手", "騎手名"), "調教師": ("調教師", "厩舎", "調教師名"),
     }
     out = {}
     for key, names in aliases.items():
@@ -152,6 +162,64 @@ def parse_meta(soup: BeautifulSoup, race_id: str, fallback: dict) -> dict:
     elif "オープン" in class_src or re.search(r"\((?:G[I1]+|Jpn[I1]+|OP|L)\)", name, re.I): klass="オープン"
     else: klass="その他"
     return {"race_id":race_id,"date":date,"venue":venue,"レース名":name,"distance_m":distance,"surface":surface,"馬場状態":going,"クラス":klass}
+
+
+def race_course(soup):
+    for header in soup.select('.RaceData01, .data_intro, .race_data'):
+        value = unicodedata.normalize('NFKC', header.get_text(' ', strip=True))
+        match = re.search(r'(?:芝|ダート|ダ|障)\s*([右左直](?:\s*[内外])?)\s*\d{3,4}\s*m', value)
+        if not match:
+            match = re.search(r'(?:芝|ダート|ダ|障)\s*\d{3,4}\s*m\s*(?:\(\s*)?'
+                              r'([右左直](?:\s*[内外])?(?:\s*[ABCD])?)(?=\s*(?:\)|/|$))', value)
+        if match:
+            return clean(match[1])
+    return ''
+
+
+def result_person(row, cells, columns, role, label):
+    link = row.find('a', href=re.compile(fr'/{role}/(?:result/recent/)?[0-9A-Za-z]+(?:[/?#]|$)'))
+    href = link.get('href', '') if link else ''
+    match = re.search(fr'/{role}/(?:result/recent/)?([0-9A-Za-z]+)(?:[/?#]|$)', href)
+    cell = link.find_parent('td') if link else None
+    raw = cell.get_text(' ', strip=True) if cell else get_cell(cells, columns, label)
+    name = link.get_text(' ', strip=True) if link else raw
+    region = re.search(r'^\s*(?:[\[(]\s*)?(美浦|栗東|地方|海外|招待|東|西|地|外)(?=\s|[\])])',
+                       unicodedata.normalize('NFKC', raw))
+    affiliation = {'東': '美浦', '西': '栗東', '地': '地方', '外': '海外'}.get(region[1], region[1]) if region else ''
+    if not link and region:
+        name = unicodedata.normalize('NFKC', raw)[region.end():].lstrip(']) ').strip()
+    return match[1] if match else '', name if name not in ('-', '—', '--', '未定') else '', affiliation
+
+
+def parse_people(soup, race_id, meta, parsed_entries, observed_at, source):
+    """Extract extra fields from the already downloaded result, independent of legacy CSVs."""
+    table = find_result_table(soup)
+    _, columns = header_map(table)
+    entries = {str(int(x['馬番'])): x for x in parsed_entries if x['馬番'].isdigit()}
+    course = race_course(soup)
+    result = []
+    for row in table.find_all('tr'):
+        cells = row.find_all('td')
+        number = clean(get_cell(cells, columns, '馬番'))
+        if not number.isdigit():
+            continue
+        number = str(int(number))
+        entry = entries.get(number)
+        horse = row.find('a', href=re.compile(r'/horse/[^/?#]+'))
+        if not entry or not horse or not re.search(fr'/horse/{re.escape(entry["馬ID"])}(?:[/?#]|$)', horse['href']):
+            continue
+        jockey = result_person(row, cells, columns, 'jockey', '騎手')
+        trainer = result_person(row, cells, columns, 'trainer', '調教師')
+        record = dict(zip(PEOPLE_COLUMNS[:7], (race_id, number, entry['馬ID'], meta['date'], source, observed_at, 'result')))
+        for role, values in [('jockey', jockey), ('trainer', trainer)]:
+            for suffix, value in zip(('id', 'name', 'affiliation'), values):
+                record[f'{role}_{suffix}'] = value
+        for field, label in [('gate', '枠番'), ('popularity', '人気'), ('win_odds', '単勝')]:
+            value = unicodedata.normalize('NFKC', clean(get_cell(cells, columns, label)))
+            record[field] = value if re.fullmatch(r'\d+(?:\.\d+)?', value) else ''
+        record['course'] = course
+        result.append(record)
+    return result
 
 
 def parse_results(soup: BeautifulSoup, race_id: str):
@@ -317,6 +385,8 @@ def main():
     outdir=Path(args.out); outdir.mkdir(parents=True,exist_ok=True)
     session=requests.Session(); session.headers.update({"User-Agent":UA,"Accept-Language":"ja,en;q=0.8"})
     metas=[]; laps=[]; details=[]; entries_all=[]; payouts=[]; errors=[]
+    capture_people = os.environ.get('KEIBA_CAPTURE_PEOPLE') == '1'
+    people = []
     for i,row in inp.iterrows():
         rid=str(row["race_id"])
         try:
@@ -326,6 +396,12 @@ def main():
             ds,es=parse_results(soup,rid)
             lp=parse_lap(soup,rid,meta["distance_m"])
             ps=parse_payouts(soup,rid)
+            if capture_people:
+                try:
+                    stamp = datetime.now(ZoneInfo('Asia/Tokyo')).isoformat(timespec='seconds')
+                    people.extend(parse_people(soup, rid, meta, es, stamp, BASE.format(race_id=rid)))
+                except (ValueError, KeyError, AttributeError) as exc:
+                    print(f'PEOPLE INCOMPLETE {rid}: {exc}', flush=True)
             metas.append(meta); details.extend(ds); entries_all.extend(es); payouts.extend(ps)
             if lp: laps.append(lp)
             print(f"OK {rid}: {meta['venue']} {meta['surface']}{meta['distance_m']} {meta['馬場状態']} horses={len(ds)} lap={'yes' if lp else 'no'} payouts={len(ps)}",flush=True)
@@ -339,6 +415,8 @@ def main():
         save_csv(outdir/"race_corners_delta.csv",corners_from_entries(entries_all),["race_id","馬番","馬名","馬ID","騎手ID","1コーナー順","2コーナー順","3コーナー順","4コーナー順","出走頭数","脚質"])
         save_csv(outdir/"payout_delta.csv",payouts,["race_id","券種","組み合わせ","払戻金","人気"])
         save_csv(outdir/"errors.csv",errors,["race_id","error"])
+        if capture_people:
+            save_csv(outdir / PEOPLE_DELTA, people, PEOPLE_COLUMNS)
     if errors:
         raise SystemExit(f"{len(errors)} race(s) failed; see errors.csv")
 
