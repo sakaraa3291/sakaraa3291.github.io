@@ -72,6 +72,16 @@ def test_nar_zip_rejects_nonofficial_members(tmp_path):
     assert nar_people.ranks('(1,1),2') == {}
 
 
+def test_nar_reads_only_final_win_records_for_the_known_race(tmp_path):
+    path = tmp_path / 'odds.zip'
+    with ZipFile(path, 'w') as archive:
+        archive.writestr('202603_01_odds.csv', '競馬場,競走年月日,レース番号,賭式,番号1,オッズ,人気\n'
+                         '川崎,20260304,7,単勝,2,8.9,5\n川崎,20260304,7,３連単,2,120.2,23\n'
+                         '川崎,20260304,8,単勝,1,3.9,2\n')
+    key = ('川崎', date(2026, 3, 4), 7)
+    assert nar_people.monthly_win_odds(path, date(2026, 3, 1), {key}) == {(key, 2): ('8.9', 5)}
+
+
 def test_jra_profile_requires_exact_id_and_authoritative_evidence(tmp_path):
     url = 'https://www.jra.go.jp/JRADB/accessC.html?CNAME=pw05cmk001020%2F47'
     good = observation('202105010101', 1, 'TEST1', '2021-01-04', url, '2026-11-25T12:00:00+09:00',

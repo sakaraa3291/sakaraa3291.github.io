@@ -49,11 +49,11 @@ python -X utf8 automation/people.py query --group jockey --where 'prior_style=�
 
 ## 公式データを使うWindows補助PCの週次運用
 
-Windows補助PC内では、作業クローンの `automation/runs/` に中央と地方の参照用データを保存できる。`people_local_weekly.py` は中央・地方を独立に実行し、片方の失敗で他方を取り消さない。新しい版がハッシュと集計を通過したあとで各 `current.json` が切り替わる。実行結果は `automation/runs/private-weekly.json`。
+Windows補助PC内では、作業クローンの `automation/runs/` に中央と地方の参照用データを保存できる。`people_local_weekly.py` は中央・地方を独立に実行し、検証が通過した版の `current.json` を切り替える。実行結果は `automation/runs/private-weekly.json`。
 
 - 中央は公開GitHubの `main` を読み取り、コミットに固定したマスターと払戻のハッシュを照合する。既存の欠損があるJRAの開催だけ、公式の成績表PDFを取り込む。開催・開催日・レース番号・馬番・馬名が一致した行を使う。オッズが全部揃ったレースに限り、単勝払戻表の人気との一致を確認して同値のないオッズから人気順を補完する。調教師IDはJRA名鑑の同じ氏名・所属が一意で、引退日との矛盾がないものを `jra:` 形式で付ける。PDFから得た氏名に所属がない場合は、同じ馬の対象日前の成績で氏名・所属を照合する。 [JRA公式成績表](https://www.jra.go.jp/datafile/seiseki/report/) · [JRAの騎手・調教師データ](https://www.jra.go.jp/datafile/meikan/)
-- 地方はNAR公式月次ZIPの出馬表、レース一覧、払戻金を利用する。公式説明書FAQの専用機能だけを使い、月次ファイルごとに同一JST日内の再取得を防止する。既存ZIPのハッシュが一致して対象日までを覆っていれば再使用する。単勝・複勝は公式払戻を使う。公式CSVには人物・馬のIDがなく、既存結果と同一レース・馬番・馬名・着順、または保存済み公式の同一馬の確定情報と照合できた場合にIDを付ける。名称と所属で確認する場合は `jockey-label`、`trainer-label`、`pair-label` を明示して使う。 [NAR公式ダウンロード説明書](https://www.keiba.go.jp/pdf/manual/data_pdf_manual.pdf) · [NAR公式利用規約](https://www.keiba.go.jp/terms.html)
-- 取得元の条件に沿って両データは補助PC内の `automation/runs/` に置く。公開リポジトリやGitHub Actionsの公開成果物へのデータ追加は許諾確認後に有効にする。GitHub側では既存の火曜05:23 JSTおよび予備06:23 JSTを使用する。Windows側で自動実行する場合は、両便の後に当たる火曜07:23 JSTに `people_local_weekly.py` を実行する。ローカル処理は `main` に書き込まない。
+- 地方はNAR公式月次ZIPの出馬表、レース一覧、払戻金を利用する。2026年3月以降の別配布ファイルでは単勝確定オッズを照合する。両種類とも公式説明書FAQの専用機能を使い、ファイルごとに同一JST日内の再取得を防止する。既存ZIPのハッシュが一致して対象日までを覆っていれば再使用する。単勝・複勝は公式払戻を使う。公式CSVには人物・馬のIDがなく、既存結果と同一レース・馬番・馬名・着順、または保存済み公式の同一馬の確定情報と照合できた場合にIDを付ける。名称と所属で確認する場合は `jockey-label`、`trainer-label`、`pair-label` を明示して使う。 [NAR公式ダウンロード説明書](https://www.keiba.go.jp/pdf/manual/data_pdf_manual.pdf) · [NAR公式利用規約](https://www.keiba.go.jp/terms.html)
+- 取得元の条件に沿って両データは補助PC内の `automation/runs/` に置く。公開リポジトリやGitHub Actionsの公開成果物へのデータ追加は許諾確認後に有効にする。GitHub側の本便は火曜05:23 JST、予備便は06:23 JST。Windows側の `KeibaPeopleOfficialWeekly` は両便の後の火曜07:23 JSTに実行する。復旧時はこのタスクの状態を確認し、保存済みの正常版の `current.json` を選び直せる。
 
 ```powershell
 .\.venv\Scripts\python.exe -X utf8 automation/people_local_weekly.py --runs automation/runs

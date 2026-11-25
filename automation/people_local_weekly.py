@@ -7,6 +7,7 @@ import os
 import re
 import shutil
 import subprocess
+import time
 from datetime import datetime, timedelta
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -143,12 +144,21 @@ def refresh_nar(local, runs, yesterday, offline):
     work = runs / 'nar-official'
     source = work / 'source'
     downloaded = None
+    odds_status = None
     if not offline:
         downloaded = nar_download.download(source, FIRST, yesterday)
         if downloaded['failures'] or downloaded['cached'] + downloaded['downloaded'] != downloaded['expected']:
             raise ValueError('NAR monthly downloads are incomplete; see downloads.json')
-    result = nar_people.build(source, work / 'state', FIRST, yesterday, ROOT / 'prediction-data', local / MASTER)
-    return {k: v for k, v in result.items() if k != 'sources'} | {'download': downloaded, 'status': 'complete'}
+        if downloaded['downloaded']:
+            time.sleep(nar_download.INTERVAL)
+        try:
+            odds_status = nar_download.download(work / 'odds', nar_download.FIRST_ODDS, yesterday, 'odds')
+        except (OSError, ValueError) as exc:
+            odds_status = {'error': str(exc)}
+    result = nar_people.build(source, work / 'state', FIRST, yesterday, ROOT / 'prediction-data', local / MASTER,
+                              work / 'odds')
+    return {k: v for k, v in result.items() if k not in ('sources', 'odds_sources')} | {
+        'download': downloaded, 'odds_download': odds_status, 'status': 'complete'}
 
 
 def main():

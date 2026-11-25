@@ -16,12 +16,12 @@ from tempfile import TemporaryDirectory
 from urllib.parse import urlsplit
 from zipfile import ZipFile
 
-from nar_download import GUIDE, download, months, zip_members
+from nar_download import FIRST_ODDS, GUIDE, download, months, zip_members
 from people import query
 from people_state import JST, MASTER, PAYOUT, integer, read_csv, start_status, write_json
 
 
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
 MASTER_COLUMNS = ('race_id', '日付', '中央地方', '競馬場', '馬場', '距離', '馬場状態', 'クラス', '枠番',
                   '馬番', '馬名', '馬ID', '騎手', '騎手ID', '騎手所属', '調教師', '調教師ID', '調教師所属',
                   '着順', 'タイム', '通過順', '脚質', '出走頭数', '人気', '単勝', 'コース区分', '前半3F', '後半3F')
@@ -141,7 +141,41 @@ def legacy_nar_runners(path, start, through):
     return results
 
 
-def runner_record(key, raw, detail, corners, early, card, legacy, counts):
+def monthly_win_odds(path, month, expected_keys):
+    if path is None:
+        return {}
+    values = {}
+    with ZipFile(path) as archive:
+        parts = zip_members(archive, month, 'odds')
+        for part in parts.values():
+            with archive.open(part) as binary, io.TextIOWrapper(binary, encoding='utf-8-sig', newline='') as source:
+                reader = csv.reader(source)
+                columns = [compact(s) for s in next(reader)]
+                required = (*RACE_KEYS, '賭式', '番号1', 'オッズ', '人気')
+                if len(columns) != len(set(columns)) or not set(required) <= set(columns):
+                    raise ValueError(f'unexpected NAR odds columns: {part.filename}')
+                bet_col = columns.index('賭式')
+                for row in reader:
+                    if len(row) != len(columns):
+                        raise ValueError(f'invalid NAR odds row: {part.filename}')
+                    if row[bet_col] != '単勝' and compact(row[bet_col]) != '単勝':
+                        continue
+                    item = dict(zip(columns, row))
+                    key = race_key(item)
+                    if key not in expected_keys:
+                        continue
+                    num, popularity = integer(item['番号1']), integer(item['人気'])
+                    odds = compact(item['オッズ'])
+                    if not num or not re.fullmatch(r'\d+(?:\.\d+)?', odds) or float(odds) < 1:
+                        continue
+                    key = (key, num)
+                    value = (odds, popularity)
+                    if values.setdefault(key, value) != value:
+                        raise ValueError(f'conflicting official win odds: {key}')
+    return values
+
+
+def runner_record(key, raw, detail, corners, early, card, legacy, official_odds, counts):
     venue, day, _ = key
     number, gate = integer(raw['馬番']), integer(raw['枠番'])
     if not number:
@@ -150,6 +184,8 @@ def runner_record(key, raw, detail, corners, early, card, legacy, counts):
     rank = {'取': '取消', '除': '除外', '止': '競走中止', '失': '失格'}.get(rank, rank)
     finish_time = compact(raw['タイム']) if rank and rank not in {'取消', '除外'} else ''
     authority = [positions[number] for positions in corners if number in positions]
+    passage = '-'.join(map(str, authority))
+    started = start_status({'着順': rank, 'タイム': finish_time, '通過順': passage})
     style = ''
     headcount = integer(detail['頭数'])
     if len(authority) >= 2 and headcount and integer(rank):
@@ -171,7 +207,6 @@ def runner_record(key, raw, detail, corners, early, card, legacy, counts):
             counts['linked:legacy_騎手ID'] += 1
         if popularity and legacy[5] == popularity and re.fullmatch(r'\d+(?:\.\d+)?', legacy[6]) and float(legacy[6]) >= 1:
             win_odds = legacy[6]
-            counts['linked:legacy_単勝'] += 1
     if (card and integer(rank) and popularity and card.get('popularity') == popularity
         and compact(card.get('horse_name')) == horse and card.get('gate_number') == gate):
         for field, key_name, actual in [('馬ID', 'horse', horse), ('騎手ID', 'jockey', jockey), ('調教師ID', 'trainer', trainer)]:
@@ -180,8 +215,19 @@ def runner_record(key, raw, detail, corners, early, card, legacy, counts):
                 and compact(card.get(f'{key_name}_name')) == actual):
                 ids[field] = f'nar:{identifier}'
                 counts[f'linked:{field}'] += 1
-    passage = '-'.join(map(str, authority))
-    counts[f'rows:{start_status({"着順": rank, "タイム": finish_time, "通過順": passage})}'] += 1
+    if official_odds and started == 'started' and (not popularity or not official_odds[1] or official_odds[1] == popularity):
+        win_odds = official_odds[0]
+        counts['linked:official_単勝'] += 1
+        if not popularity and official_odds[1]:
+            popularity = official_odds[1]
+            counts['linked:official_人気'] += 1
+    elif win_odds:
+        counts['linked:legacy_単勝'] += 1
+    if official_odds and popularity and official_odds[1] and official_odds[1] != popularity:
+        counts['odds:popularity_conflict'] += 1
+    if started == 'started' and not win_odds:
+        counts['rows:started_missing_win_odds'] += 1
+    counts[f'rows:{started}'] += 1
     counts['rows:rank_missing'] += not bool(rank)
     counts['rows:popularity_missing'] += not bool(popularity)
     return {'race_id': race_id(key), '日付': day.isoformat(), '中央地方': '地方', '競馬場': venue,
@@ -194,7 +240,7 @@ def runner_record(key, raw, detail, corners, early, card, legacy, counts):
             '後半3F': detail['上がり3F'], **ids}
 
 
-def normalized_month(path, month, start, through, cards, legacy, master, payout, counts):
+def normalized_month(path, month, start, through, cards, legacy, odds_path, master, payout, counts):
     with ZipFile(path) as archive:
         files = zip_members(archive, month)
         # The two CSVs can include upcoming cards. Confirmed finish or payout is required.
@@ -205,6 +251,7 @@ def normalized_month(path, month, start, through, cards, legacy, master, payout,
                 if key in races:
                     raise ValueError(f'duplicate race {key}')
                 races[key] = row
+        win_odds = monthly_win_odds(odds_path, month, races)
         payouts = defaultdict(dict)
         incomplete_types = defaultdict(set)
         for row in source_rows(archive, files['payback'], 'payback'):
@@ -235,7 +282,7 @@ def normalized_month(path, month, start, through, cards, legacy, master, payout,
                 continue
             corners, early = course_data(detail)
             runners = [runner_record(key, r, detail, corners, early, cards.get((key, integer(r['馬番']))),
-                                     legacy.get((key, integer(r['馬番']))), counts)
+                                     legacy.get((key, integer(r['馬番']))), win_odds.get((key, integer(r['馬番']))), counts)
                        for r in declared]
             if not runners or len(runners) != len({r['馬番'] for r in runners}):
                 raise ValueError(f'missing or duplicate starters in {key}')
@@ -260,7 +307,24 @@ def file_sha(path):
         return hashlib.file_digest(handle, 'sha256').hexdigest()
 
 
-def build(source, output, start, through, cards_dir=None, legacy_master=None):
+def odds_inputs(source, start, through):
+    catalog = source / 'downloads.json' if source else None
+    if not catalog or not catalog.is_file() or through < FIRST_ODDS:
+        return {}
+    records = json.loads(catalog.read_text(encoding='utf-8'))
+    selected = {}
+    for month in months(max(start, FIRST_ODDS), through):
+        label = month.strftime('%Y-%m')
+        archive = records.get(label, {}).get('archive')
+        if archive:
+            path = source / f'{label}.zip'
+            if archive['kind'] != 'odds' or not path.is_file() or archive['sha256'] != file_sha(path):
+                raise ValueError(f'invalid NAR odds archive {label}')
+            selected[month] = (path, archive)
+    return selected
+
+
+def build(source, output, start, through, cards_dir=None, legacy_master=None, odds_source=None):
     if not date(2021, 1, 1) <= start <= through < datetime.now(JST).date():
         raise ValueError('use completed JST dates starting in 2021')
     catalog = json.loads((source / 'downloads.json').read_text(encoding='utf-8'))
@@ -281,8 +345,10 @@ def build(source, output, start, through, cards_dir=None, legacy_master=None):
     try:
         cards = {(key, number): card for (key, number), card in approved_card_values(cards_dir).items()
                  if start <= key[1] <= through}
+        odds = odds_inputs(odds_source, start, through)
         legacy_sha = file_sha(legacy_master) if legacy_master else None
         inputs = [SCHEMA_VERSION, start.isoformat(), through.isoformat(), legacy_sha, [e['sha256'] for _, _, e in paths],
+                  {m.isoformat(): v[1]['sha256'] for m, v in odds.items()},
                   [(race_id(key), number, card) for (key, number), card in sorted(cards.items())]]
         tag = hashlib.sha256(json.dumps(inputs, sort_keys=True).encode()).hexdigest()[:24]
         snapshot = output / tag
@@ -307,12 +373,14 @@ def build(source, output, start, through, cards_dir=None, legacy_master=None):
                 master.writeheader()
                 payout.writeheader()
                 for month, path, _ in paths:
-                    last_result = normalized_month(path, month, start, through, cards, legacy, master, payout, counts) or last_result
+                    odds_path = odds[month][0] if month in odds else None
+                    last_result = normalized_month(path, month, start, through, cards, legacy, odds_path, master, payout, counts) or last_result
             if last_result is None:
                 raise ValueError('no confirmed NAR results in requested period')
             report = {'schema_version': SCHEMA_VERSION, 'from': start.isoformat(), 'through': last_result.isoformat(),
                       'requested_through': through.isoformat(), 'months': len(paths), 'stats': dict(counts),
                       'source_guide': GUIDE, 'sources': [{**e, 'month': m.strftime('%Y-%m')} for m, _, e in paths],
+                      'odds_sources': [{**e, 'month': m.strftime('%Y-%m')} for m, (_, e) in odds.items()],
                       'files': {name: file_sha(staging / name) for name in (MASTER, PAYOUT)},
                       'legacy_master_sha256': legacy_sha}
             write_json(staging / 'manifest.json', report)
@@ -332,6 +400,7 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--cards', type=Path)
     parser.add_argument('--legacy-master', type=Path)
+    parser.add_argument('--odds-source', type=Path)
     parser.add_argument('--from', dest='start', type=date.fromisoformat, default=date(2021, 1, 1))
     parser.add_argument('--through', type=date.fromisoformat, default=datetime.now(JST).date() - timedelta(days=1))
     parser.add_argument('--sync', action='store_true')
@@ -343,8 +412,8 @@ def main():
             result['download'] = download(args.source, args.start, args.through)
             if result['download']['failures']:
                 raise ValueError('official download is incomplete')
-        report = build(args.source, args.output, args.start, args.through, args.cards, args.legacy_master)
-        report = {k: v for k, v in report.items() if k != 'sources'}
+        report = build(args.source, args.output, args.start, args.through, args.cards, args.legacy_master, args.odds_source)
+        report = {k: v for k, v in report.items() if k not in ('sources', 'odds_sources')}
         result.update(status='complete', build=report)
         print(json.dumps(report, ensure_ascii=False))
     except (OSError, ValueError) as exc:
