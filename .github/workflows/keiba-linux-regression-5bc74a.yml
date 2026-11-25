@@ -1,0 +1,26 @@
+name: Verify the existing Linux racecard test once
+on:
+  push:
+    branches:
+      - codex/keiba-verify-20261125-5bc74a
+    paths:
+      - '.github/workflows/keiba-linux-regression-5bc74a.yml'
+permissions:
+  contents: read
+jobs:
+  atomic-racecard:
+    if: github.repository == 'sakaraa3291/sakaraa3291.github.io'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 9f1a4e05e51f9815af1e2ff5dc08eb961f803d3e
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install the existing test requirements
+        run: python -m pip install -r automation/racecard/requirements.txt
+      - name: Run the existing Linux racecard publication test
+        run: python -m pytest -q automation/racecard/tests/test_racecard.py::test_no_changes_and_atomic_publication
