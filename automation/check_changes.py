@@ -5,6 +5,7 @@ ALLOWED = {
     'lapdata.json', 'pedigree_stats.json', 'data-version.json',
     'automation/state/keiba_master.csv.gz', 'automation/state/payout.csv.gz',
     'automation/state/horse_pedigree.csv', 'automation/state/manifest.json',
+    'automation/state/people_observations.csv.gz', 'automation/state/people-summary.json',
 }
 if __name__ == '__main__':
     changed = set(subprocess.check_output(['git', 'diff', '--name-only', 'HEAD', '-z']).decode().split('\0')) - {''}
